@@ -1,0 +1,1 @@
+https://battle-cats.fandom.com/wiki/Battle_Cats_Wiki - 냥코 리소스 참조
