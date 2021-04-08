@@ -1,10 +1,14 @@
 <template>
-    <div>
+    <div id="container">
         <header-component></header-component>
-        <main>
-            <h1>This is Main Page</h1>
-        </main>
-        <footerComponent></footerComponent>
+        <div id="main-content">
+            <main>
+                <article id="main-slide-banner">
+                    <img src="/../../imgs/res/event/event_banner_easter.png" alt="">
+                </article>
+            </main>
+            <footerComponent></footerComponent>
+        </div>
     </div>
 </template>
 
@@ -21,5 +25,5 @@ export default {
 </script>
 
 <style scoped>
-
+    
 </style>
