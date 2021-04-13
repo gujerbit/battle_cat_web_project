@@ -1,19 +1,26 @@
 package com.gujerbit.battle_cat_web.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
+import com.gujerbit.battle_cat_web.service.MemberService;
+import com.gujerbit.battle_cat_web.vo.MemberVO;
 import com.gujerbit.battle_cat_web.vo.TempVO;
 
-@RestController
+@Controller
 public class InitController {
+	
+	@Autowired
+	MemberService service;
 	
 	@GetMapping("/msg")
 	public @ResponseBody Map<String, Object> initConsole() {
@@ -33,6 +40,12 @@ public class InitController {
 		System.out.println(vo.toString());
 		
 		return map;
+	}
+	
+	@GetMapping("/db")
+	public @ResponseBody List<MemberVO> selectListMembers() {
+		List<MemberVO> list = service.selectAllMembers();
+		return list;
 	}
 	
 }
