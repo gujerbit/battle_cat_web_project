@@ -1,4 +1,8 @@
 @charset "utf-8";
+@font-face {
+    font-family: 'jua';
+    src: url(./Jua-Regular.ttf);
+}
 
 /* font - em rem */
 /* normal - em rem % */
@@ -10,6 +14,7 @@
     text-decoration: none;
     list-style: none;
     color: #333333;
+    font-family: 'jua';
 }
 
 #app {
@@ -33,11 +38,11 @@ header {
     height: 100%;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 30% 70%;
+    grid-template-columns: 10% 80% 10%;
     grid-template-rows: 100%;
 }
 
-.header-logo {
+.header-logo, .header-menu, .header-user {
     width: 100%;
     height: 100%;
     display: flex;
@@ -46,6 +51,45 @@ header {
 
 .header-logo > img {
     height: 70%;
+}
+
+.menu-bar {
+    width: 100%;
+    height: 100%;
+}
+
+.main-menu-bar {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.main-menu-bar > li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.header-user {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+main {
+    width: 100%;
+}
+
+.main-container {
+    width: 80%;
+    height: 80vh;
+    margin: 0 auto;
+}
+
+.main-banner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 @media(max-width:480px) { /* 모바일용 */
