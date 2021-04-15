@@ -8,9 +8,7 @@
             </div>
             <div class="main-contents">
                 <div class="main-schedule">
-                    
-                    <router-link to="/msg">msg</router-link> <br>
-                    <router-link to="/db">db</router-link>
+                    <router-link to="/updateVersion">updateVersion</router-link>
                 </div>
             </div>
         </div>
@@ -19,8 +17,16 @@
 
 <script>
 export default {
+    data() {
+        return {
+
+        }
+    },
     components: {
 
+    },
+    mounted() {
+        
     }
 }
 </script>

@@ -1,7 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import centerComponent from '../components/CenterComponent.vue';
-import msg from '../components/MsgComponent.vue';
-import member from '../components/MemberComponent.vue';
+import updateVersionComponent from '../components/UpdateVersionComponent.vue';
 
 const routes = [
     {
@@ -9,12 +8,8 @@ const routes = [
         component: centerComponent
     },
     {
-        path: '/msg',
-        component: msg
-    },
-    {
-        path: '/db',
-        component: member
+        path: '/updateVersion',
+        component: updateVersionComponent
     }
 ];
 

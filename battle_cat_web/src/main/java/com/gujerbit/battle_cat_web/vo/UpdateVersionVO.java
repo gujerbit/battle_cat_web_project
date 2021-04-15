@@ -13,9 +13,9 @@ public class UpdateVersionVO {
 	private int id;
 	
 	@JsonProperty
-	private Date updateDate;
+	private String updateContent;
 	
 	@JsonProperty
-	private String updateContent;
+	private Date updateDate;
 	
 }
