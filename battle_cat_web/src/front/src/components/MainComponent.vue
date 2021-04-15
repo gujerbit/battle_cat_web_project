@@ -8,6 +8,7 @@
             </div>
             <div class="main-contents">
                 <div class="main-schedule">
+                    
                     <router-link to="/msg">msg</router-link> <br>
                     <router-link to="/db">db</router-link>
                 </div>

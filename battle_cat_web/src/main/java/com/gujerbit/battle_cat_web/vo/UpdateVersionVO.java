@@ -1,22 +1,21 @@
 package com.gujerbit.battle_cat_web.vo;
 
+import java.sql.Date;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
 @Data
-public class MemberVO {
+public class UpdateVersionVO {
 	
 	@JsonProperty
 	private int id;
 	
 	@JsonProperty
-	private String name;
+	private Date updateDate;
 	
 	@JsonProperty
-	private String email;
-	
-	@JsonProperty
-	private String info;
+	private String updateContent;
 	
 }
