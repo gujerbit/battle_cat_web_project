@@ -1,15 +1,15 @@
 import {createRouter, createWebHistory} from 'vue-router';
-import centerComponent from '../components/CenterComponent.vue';
-import updateVersionComponent from '../components/UpdateVersionComponent.vue';
+import mainComponent from '../components/MainComponent.vue';
+import mainNoticeComponent from '../components/MainNoticeComponent.vue';
 
 const routes = [
     {
         path: '/',
-        component: centerComponent
+        component: mainNoticeComponent
     },
     {
-        path: '/updateVersion',
-        component: updateVersionComponent
+        path: '/main',
+        component: mainComponent
     }
 ];
 

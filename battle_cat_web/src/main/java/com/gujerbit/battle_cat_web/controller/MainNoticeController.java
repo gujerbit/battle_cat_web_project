@@ -11,12 +11,12 @@ import com.gujerbit.battle_cat_web.service.UpdateVersionService;
 import com.gujerbit.battle_cat_web.vo.UpdateVersionVO;
 
 @Controller
-public class UpdateVersionController {
-
+public class MainNoticeController {
+	
 	@Autowired
 	private UpdateVersionService updateVersionService;
 	
-	@GetMapping("/updateVersion")
+	@GetMapping("/")
 	public @ResponseBody List<UpdateVersionVO> getUpdateVersion() {
 		List<UpdateVersionVO> updateVersionList = updateVersionService.selectUpdateVersion();
 		

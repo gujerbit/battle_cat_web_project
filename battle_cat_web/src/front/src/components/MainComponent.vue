@@ -1,36 +1,31 @@
 <template>
-    <main>
-        <div class="main-container">
-            <div class="main-banner">
-                <div class="banner-imgs">
-                    <img src="/../../imgs/res/event/event_banner_easter.png" alt="">
-                </div>
-            </div>
-            <div class="main-contents">
-                <div class="main-schedule">
-                    <router-link to="/updateVersion">updateVersion</router-link>
-                </div>
-            </div>
-        </div>
-    </main>
+    <div id="container">
+        <headerComponent></headerComponent>
+        <mainContentComponent></mainContentComponent>
+        <footerComponent></footerComponent>
+    </div>
 </template>
 
 <script>
+import headerComponent from './HeaderComponent.vue';
+import mainContentComponent from './MainContentComponent.vue';
+import footerComponent from './FooterComponent.vue';
+import axios from 'axios';
+
 export default {
-    data() {
-        return {
-
-        }
-    },
     components: {
-
+        headerComponent,
+        mainContentComponent,
+        footerComponent
     },
     mounted() {
-        
+        axios.get('/').then(res => {
+            console.log(res);
+        });
     }
 }
 </script>
 
 <style scoped>
-    
+
 </style>

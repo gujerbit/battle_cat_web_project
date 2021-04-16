@@ -12,7 +12,6 @@ import com.gujerbit.battle_cat_web.service.UpdateVersionService;
 import com.gujerbit.battle_cat_web.vo.UpdateVersionVO;
 
 @Controller
-@RequestMapping("/")
 public class MainController {
 	
 }
