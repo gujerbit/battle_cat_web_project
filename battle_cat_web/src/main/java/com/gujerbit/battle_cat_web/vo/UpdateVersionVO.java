@@ -13,7 +13,13 @@ public class UpdateVersionVO {
 	private int id;
 	
 	@JsonProperty
-	private String update_content;
+	private String version;
+	
+	@JsonProperty
+	private String title;
+	
+	@JsonProperty
+	private String content;
 	
 	@JsonProperty
 	private Date update_date;

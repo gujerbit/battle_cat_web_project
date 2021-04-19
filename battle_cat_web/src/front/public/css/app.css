@@ -82,12 +82,44 @@ main {
 
 .main-container {
     width: 80%;
-    height: 80vh;
     margin: 0 auto;
+    margin-top: 0.5vh;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
 }
 
-.main-banner {
+.main-left {
+    display: flex;
+    justify-content: center;
+}
+
+.main-update-version {
     width: 100%;
+    border: 1px solid #000000;
+}
+
+.update-version-element {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    text-align: center;
+    font-size: 1.5rem;
+    background-color: #f0a535;
+}
+
+.update-version-content {
+    display: flex;
+    justify-content: center;
+}
+
+.content-list > .content {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+.main-center {
     display: flex;
     justify-content: center;
 }

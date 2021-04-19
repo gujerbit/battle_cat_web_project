@@ -8,5 +8,7 @@ import com.gujerbit.battle_cat_web.vo.UpdateVersionVO;
 
 @Mapper
 public interface UpdateVersionDAO {
+	public List<UpdateVersionVO> selectUpdateVersionTitle();
+	
 	public List<UpdateVersionVO> selectUpdateVersion();
 }

@@ -14,6 +14,10 @@ public class UpdateVersionService {
 	@Autowired
 	UpdateVersionDAO instance;
 	
+	public List<UpdateVersionVO> selectUpdateVersionTitle() {
+		return instance.selectUpdateVersionTitle();
+	}
+	
 	public List<UpdateVersionVO> selectUpdateVersion() {
 		return instance.selectUpdateVersion();
 	}
