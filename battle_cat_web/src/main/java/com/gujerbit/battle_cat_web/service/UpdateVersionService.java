@@ -18,8 +18,8 @@ public class UpdateVersionService {
 		return instance.selectUpdateVersionTitle();
 	}
 	
-	public List<UpdateVersionVO> selectUpdateVersion() {
-		return instance.selectUpdateVersion();
+	public List<UpdateVersionVO> selectUpdateVersion(String version) {
+		return instance.selectUpdateVersion(version);
 	}
 	
 }

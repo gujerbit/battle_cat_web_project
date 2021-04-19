@@ -4,9 +4,9 @@
 
 <mapper namespace="com.gujerbit.battle_cat_web.dao.UpdateVersionDAO">
 	<select id="selectUpdateVersionTitle" resultType="UpdateVersionVO">
-		SELECT DISTINCT title, update_date FROM update_version ORDER BY id DESC
+		SELECT DISTINCT title, update_date, version FROM update_version ORDER BY id DESC
 	</select>
 	<select id="selectUpdateVersion" resultType="UpdateVersionVO">
-		SELECT * FROM update_version ORDER BY id DESC
+		SELECT * FROM update_version WHERE version = #{version} ORDER BY id DESC
 	</select>
 </mapper>

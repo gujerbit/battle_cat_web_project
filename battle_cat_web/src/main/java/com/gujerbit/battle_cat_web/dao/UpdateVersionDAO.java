@@ -10,5 +10,5 @@ import com.gujerbit.battle_cat_web.vo.UpdateVersionVO;
 public interface UpdateVersionDAO {
 	public List<UpdateVersionVO> selectUpdateVersionTitle();
 	
-	public List<UpdateVersionVO> selectUpdateVersion();
+	public List<UpdateVersionVO> selectUpdateVersion(String version);
 }

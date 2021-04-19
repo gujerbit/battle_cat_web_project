@@ -5,45 +5,51 @@
         <div class="main-update-version">
           <!-- {{updateVersionData[0]['update_content']}} -->
           <div class="update-version-element">
+            <div class="element-list">
               <p class="update-title-element">제목</p>
               <p class="update-date-element">날짜</p>
+            </div>
           </div>
           <div class="update-version-content">
-              <div class="content-list">
-                  <router-link to="" class="content" v-for="value in updateVersionData" :key="value">
-                    <p class="title">{{value['title']}}</p>
-                    <p class="update-date">{{value['update_date']}}</p>
-                  </router-link>
-              </div>
+            <div class="content-list">
+              <router-link :to="'/update_version/'+value['version']" @click="pageMove(value)" class="content" v-for="value in updateVersionData" :key="value">
+                <p class="title">{{value['title']}}</p>
+                <p class="update-date">{{value['update_date']}}</p>
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
       <div class="main-center">
         <div class="banner-imgs">
-          <img src="/../../imgs/res/event/event_banner_easter.png" alt="" />
+          <img src="/../../imgs/res/event/event_banner_easter.png" alt />
         </div>
       </div>
       <div class="main-right">
-
       </div>
     </div>
   </main>
 </template>
 
 <script>
+import axios from 'axios';
+
+const domain = "http://localhost:8090";
+
 export default {
   data() {
-    return {
-
-    };
+    return {};
   },
   components: {},
-  mounted() {
-      
+  mounted() {},
+  methods: {
+    async pageMove(value) {
+      await axios.post(`${domain}/update_version`, value['version']);
+    }
   },
   props: {
-    updateVersionData: { type: Array, default: () => [] },
-  },
+    updateVersionData: { type: Array, default: () => [] }
+  }
 };
 </script>
 
