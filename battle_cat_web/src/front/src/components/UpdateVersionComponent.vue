@@ -1,15 +1,35 @@
 <template>
-    <div id="update-version-container">
-        
+    <div class="update-version-container">
+        <headerComponent></headerComponent>
+        <footerComponent></footerComponent>
     </div>
 </template>
 
 <script>
+import headerComponent from "./HeaderComponent.vue";
+import footerComponent from "./FooterComponent.vue";
+import axios from 'axios';
+
+const DOMAIN = "http://localhost:8090";
+
 export default {
-    
+    data() {
+        return {
+            updateVersionData: []
+        }
+    },
+    components: {
+        headerComponent,
+        footerComponent
+    },
+    async mounted() {
+        let {data} = await axios.get(`${DOMAIN}/update_version`);
+        this.updateVersionData = data;
+        console.log(data);
+    }
 }
 </script>
 
 <style scoped>
-
+    @import url('./../../public/css/app.css');
 </style>

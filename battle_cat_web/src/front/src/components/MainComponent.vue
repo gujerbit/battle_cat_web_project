@@ -14,7 +14,7 @@ import mainContentComponent from "./MainContentComponent.vue";
 import footerComponent from "./FooterComponent.vue";
 import axios from "axios";
 
-const domain = "http://localhost:8090";
+const DOMAIN = "http://localhost:8090";
 
 export default {
   data() {
@@ -31,7 +31,7 @@ export default {
     // axios.get("/notice").then((res) => {
     //   console.log(res);
     // });
-    let { data } = await axios.get(`${domain}/main_update_version`);
+    let { data } = await axios.get(`${DOMAIN}/main_update_version`);
     this.updateVersionData = data;
     console.log(data);
   },

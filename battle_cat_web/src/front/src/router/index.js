@@ -10,6 +10,10 @@ const routes = [
     {
         path: '/update_version/:version',
         component: updateVersionComponent
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        redirect: '/'
     }
 ];
 

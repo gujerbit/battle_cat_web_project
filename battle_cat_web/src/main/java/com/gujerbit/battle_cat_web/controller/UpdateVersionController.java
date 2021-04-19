@@ -20,6 +20,8 @@ public class UpdateVersionController {
 	@Autowired
 	private UpdateVersionService service;
 	
+	private List<UpdateVersionVO> updateVersionList = null;
+	
 	@GetMapping("/main_update_version")
 	public @ResponseBody List<UpdateVersionVO> getUpdateVersionTitle() {
 		List<UpdateVersionVO> list = service.selectUpdateVersionTitle();
@@ -28,9 +30,16 @@ public class UpdateVersionController {
 	}
 	
 	@PostMapping("/update_version")
-	public @ResponseBody void getUpdateVersionContent(@RequestBody String version) {
+	public @ResponseBody void getUpdateVersionData(@RequestBody String version) {
 		String versionData = version.substring(0, version.length()-1);
+		List<UpdateVersionVO> list = service.selectUpdateVersion(versionData);
+		updateVersionList = list;
 		System.out.println(versionData);
+	}
+	
+	@GetMapping("/update_version")
+	public @ResponseBody List<UpdateVersionVO> getUpdateVersionContent() {
+		return updateVersionList;
 	}
 	
 }

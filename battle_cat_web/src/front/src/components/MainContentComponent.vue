@@ -34,7 +34,7 @@
 <script>
 import axios from 'axios';
 
-const domain = "http://localhost:8090";
+const DOMAIN = "http://localhost:8090";
 
 export default {
   data() {
@@ -44,7 +44,7 @@ export default {
   mounted() {},
   methods: {
     async pageMove(value) {
-      await axios.post(`${domain}/update_version`, value['version']);
+      await axios.post(`${DOMAIN}/update_version`, value['version']);
     }
   },
   props: {
