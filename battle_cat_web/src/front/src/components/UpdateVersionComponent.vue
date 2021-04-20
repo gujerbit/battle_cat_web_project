@@ -1,6 +1,11 @@
 <template>
     <div class="update-version-container">
         <headerComponent></headerComponent>
+        <main>
+            <div class="temp" v-for="value in updateVersionData" :key="value">
+                {{value}}
+            </div>
+        </main>
         <footerComponent></footerComponent>
     </div>
 </template>

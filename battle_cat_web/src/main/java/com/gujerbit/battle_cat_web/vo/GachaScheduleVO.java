@@ -5,24 +5,26 @@ import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-public class UpdateVersionVO {
-	
+public class GachaScheduleVO {
+
 	@JsonProperty
 	private int id;
-	
-	@JsonProperty
-	private String version;
-	
-	@JsonProperty
-	private String title;
 	
 	@JsonProperty
 	private String content;
 	
 	@JsonProperty
-	private Date update_date;
+	private Date gacha_start_date;
+	
+	@JsonProperty
+	private Date gacha_end_date;
+	
+	@JsonProperty
+	private String gacha_series;
+	
+	@JsonProperty
+	private boolean is_unconditional;
 	
 }

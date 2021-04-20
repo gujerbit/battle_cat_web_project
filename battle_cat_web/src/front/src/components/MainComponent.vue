@@ -3,6 +3,7 @@
     <headerComponent></headerComponent>
     <mainContentComponent
       :updateVersionData="updateVersionData"
+      :gachaScheduleData="gachaScheduleData"
     ></mainContentComponent>
     <footerComponent></footerComponent>
   </div>
@@ -20,6 +21,7 @@ export default {
   data() {
     return {
       updateVersionData: [],
+      gachaScheduleData: []
     };
   },
   components: {
@@ -31,9 +33,12 @@ export default {
     // axios.get("/notice").then((res) => {
     //   console.log(res);
     // });
-    let { data } = await axios.get(`${DOMAIN}/main_update_version`);
-    this.updateVersionData = data;
-    console.log(data);
+    //let { data } = await axios.get(`${DOMAIN}/main_update_version`);
+    let updateVersion = await axios.get(`${DOMAIN}/main_update_version`);
+    this.updateVersionData = updateVersion.data;
+    
+    let gachaSchedule = await axios.get(`${DOMAIN}/gacha_schedule`);
+    this.gachaScheduleData = gachaSchedule.data;
   },
 };
 </script>
