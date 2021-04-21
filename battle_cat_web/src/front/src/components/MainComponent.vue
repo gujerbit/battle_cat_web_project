@@ -36,7 +36,7 @@ export default {
     //let { data } = await axios.get(`${DOMAIN}/main_update_version`);
     let updateVersion = await axios.get(`${DOMAIN}/main_update_version`);
     this.updateVersionData = updateVersion.data;
-    
+
     let gachaSchedule = await axios.get(`${DOMAIN}/gacha_schedule`);
     this.gachaScheduleData = gachaSchedule.data;
   },
@@ -44,4 +44,7 @@ export default {
 </script>
 
 <style scoped>
+#container {
+    width: 100%;
+}
 </style>

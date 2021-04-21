@@ -9,7 +9,8 @@ const routes = [
     },
     {
         path: '/update_version/:version',
-        component: updateVersionComponent
+        component: updateVersionComponent,
+        props: true
     },
     {
         path: '/:pathMatch(.*)*',

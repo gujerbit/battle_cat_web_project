@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,8 +21,6 @@ public class UpdateVersionController {
 	@Autowired
 	private UpdateVersionService service;
 	
-	private List<UpdateVersionVO> updateVersionList = null;
-	
 	@GetMapping("/main_update_version")
 	public @ResponseBody List<UpdateVersionVO> getUpdateVersionTitle() {
 		List<UpdateVersionVO> list = service.selectUpdateVersionTitle();
@@ -29,17 +28,11 @@ public class UpdateVersionController {
 		return list;
 	}
 	
-	@PostMapping("/update_version")
-	public @ResponseBody void getUpdateVersionData(@RequestBody String version) {
-		String versionData = version.substring(0, version.length()-1);
+	@GetMapping("/update_version_data/{version}")
+	public @ResponseBody List<UpdateVersionVO> getUpdateVersionData(@PathVariable String version) {
+		String versionData = version;
 		List<UpdateVersionVO> list = service.selectUpdateVersion(versionData);
-		updateVersionList = list;
-		System.out.println(versionData);
-	}
-	
-	@GetMapping("/update_version")
-	public @ResponseBody List<UpdateVersionVO> getUpdateVersionContent() {
-		return updateVersionList;
+		return list;
 	}
 	
 }

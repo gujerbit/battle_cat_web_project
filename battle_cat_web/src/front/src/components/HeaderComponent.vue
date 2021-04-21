@@ -7,41 +7,66 @@
             <div class="header-menu">
                 <nav class="menu-bar">
                     <ul class="main-menu-bar">
-                        <li>
-                            <router-link to="">아군 캐릭터 정보</router-link>
-                        </li>
-                        <li>
-                            <router-link to="">적군 캐릭터 정보</router-link>
-                        </li>
-                        <li>
-                            <router-link to="">스테이지 정보</router-link>
-                        </li>
-                        <li>
-                            <router-link to="">기타 정보</router-link>
-                        </li>
-                        <li>
-                            <router-link to="">커뮤니티</router-link>
-                        </li>
-                        <li>
-                            <router-link to="">정보/유저 검색</router-link>
-                        </li>
+                        <headerMenuComponent :menuName="'아군 캐릭터 정보'" :linkName="''" />
+                        <headerMenuComponent :menuName="'적군 캐릭터 정보'" :linkName="''" />
+                        <headerMenuComponent :menuName="'스테이지 정보'" :linkName="''" />
+                        <headerMenuComponent :menuName="'기타 정보'" :linkName="''" />
+                        <headerMenuComponent :menuName="'커뮤니티'" :linkName="''" />
+                        <headerMenuComponent :menuName="'정보/유저 검색'" :linkName="''" />
+                        <headerMenuComponent :menuName="'로그인'" :linkName="''" />
+                        <headerMenuComponent :menuName="'회원가입'" :linkName="''" />
                     </ul>
                 </nav>
             </div>
-            <div class="header-user">
-                <router-link to="">로그인</router-link>
-                <router-link to="">회원가입</router-link>
-            </div>
         </div>
-    </header>    
+    </header>
 </template>
 
 <script>
+import headerMenuComponent from './HeaderMenuComponent.vue';
+
 export default {
-    
+    components: {
+        headerMenuComponent
+    }
 }
 </script>
 
 <style scoped>
+header {
+    width: 100%;
+    height: 10vh;
+    box-shadow: 0px 5px 3px #0003;
+}
 
+.header-container {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 10% 90%;
+    grid-template-rows: 100%;
+}
+
+.header-logo, .header-menu {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.header-logo > img {
+    height: 70%;
+}
+
+.menu-bar {
+    width: 100%;
+    height: 100%;
+}
+
+.main-menu-bar {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+}
 </style>
