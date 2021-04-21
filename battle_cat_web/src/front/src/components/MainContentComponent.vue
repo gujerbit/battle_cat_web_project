@@ -37,29 +37,36 @@ export default {
 
 <style scoped>
 main {
-    width: 100%;
+  width: 100%;
 }
 
 .main-container {
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 0.5vh;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 2%;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-gap: 1%;
 }
 
 .main-left {
-    display: flex;
-    justify-content: center;
+  width: 100%;
 }
 
 .main-center {
-    display: flex;
-    justify-content: center;
+  width: 100%;
 }
 
 .main-right {
-    display: flex;
-    justify-content: center;
+  width: 100%;
+}
+
+.banner-imgs {
+  width: 100%;
+}
+
+.banner-imgs > img {
+  width: 100%;
+  min-width: 500px;
 }
 </style>
