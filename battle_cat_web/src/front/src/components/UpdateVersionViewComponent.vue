@@ -30,6 +30,8 @@ export default {
 .main-update-version {
   width: 100%;
   height: 30vh;
+  min-width: 300px;
+  min-height: 200px;
   display: grid;
   grid-template-rows: 15% 85%;
 }

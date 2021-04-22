@@ -1,9 +1,9 @@
 <template>
   <header>
     <div class="header-container">
-      <div class="header-logo">
+      <router-link to="/" class="header-logo">
         <img src="/../../imgs/temp/header_logo.png" alt />
-      </div>
+      </router-link>
       <nav class="menu-bar">
         <ul class="main-menu-bar">
           <headerMenuComponent :menuName="'아군 캐릭터 정보'" :linkName="''" />

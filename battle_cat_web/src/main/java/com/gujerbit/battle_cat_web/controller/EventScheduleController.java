@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gujerbit.battle_cat_web.service.GachaScheduleService;
-import com.gujerbit.battle_cat_web.vo.GachaScheduleVO;
+import com.gujerbit.battle_cat_web.service.EventScheduleService;
+import com.gujerbit.battle_cat_web.vo.EventScheduleVO;
 
-@Controller
 @CrossOrigin("*")
-public class GachaScheduleController {
+@Controller
+public class EventScheduleController {
 
 	@Autowired
-	private GachaScheduleService service;
+	private EventScheduleService service;
 	
-	@GetMapping("/gacha_schedule_list")
-	public @ResponseBody List<GachaScheduleVO> getGachaSchedule() {
-		List<GachaScheduleVO> list = service.selectGachaSchedule();
+	@GetMapping("/event_schedule_list")
+	public @ResponseBody List<EventScheduleVO> getEventSchedule() {
+		List<EventScheduleVO> list = service.selectEventSchedule();
 		
 		return list;
 	}

@@ -7,7 +7,7 @@
     </div>
     <div class="gacha-schedule-content">
       <router-link
-        to
+        to=""
         class="gacha-content"
         v-for="gachaScheduleValue in gachaScheduleData"
         :key="gachaScheduleValue"
@@ -35,10 +35,17 @@ export default {
 <style scoped>
 .main-gacha-schedule {
   width: 100%;
+  height: 30vh;
+  min-width: 400px;
+  min-height: 250px;
+  display: grid;
+  grid-template-rows: 15% 85%;
+  text-align: center;
 }
 
 .gacha-schedule-element {
   width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   font-size: 2rem;
@@ -53,11 +60,13 @@ export default {
 
 .gacha-schedule-content {
   width: 100%;
+  height: 100%;
   font-size: 1.5rem;
 }
 
 .gacha-content {
   width: 100%;
+  height: 20%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   border-bottom: 1px solid #fab92c;

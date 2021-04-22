@@ -21,7 +21,7 @@ public class UpdateVersionController {
 	@Autowired
 	private UpdateVersionService service;
 	
-	@GetMapping("/main_update_version")
+	@GetMapping("/update_version_list")
 	public @ResponseBody List<UpdateVersionVO> getUpdateVersionTitle() {
 		List<UpdateVersionVO> list = service.selectUpdateVersionTitle();
 		
