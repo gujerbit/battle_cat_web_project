@@ -3,7 +3,8 @@
     <div class="main-container">
       <div class="main-left">
         <updateVersionViewComponent :updateVersionData="updateVersionData" />
-        <eventScheduleViewComponent :eventScheduleData="eventScheduleData" />
+        <gachaScheduleViewComponent :gachaScheduleData="gachaScheduleData" />
+        <dailyScheduleViewComponent :dailyScheduleData="dailyScheduleData" />
       </div>
       <div class="main-center">
         <div class="banner-imgs">
@@ -11,7 +12,7 @@
         </div>
       </div>
       <div class="main-right">
-        <gachaScheduleViewComponent :gachaScheduleData="gachaScheduleData" />
+        <eventScheduleViewComponent :eventScheduleData="eventScheduleData" />
       </div>
     </div>
   </main>
@@ -21,6 +22,7 @@
 import updateVersionViewComponent from "./UpdateVersionViewComponent.vue";
 import gachaScheduleViewComponent from "./GachaScheduleViewComponent.vue";
 import eventScheduleViewComponent from "./EventScheduleViewComponent.vue";
+import dailyScheduleViewComponent from "./DailyScheduleViewComponent.vue";
 
 export default {
   data() {
@@ -30,11 +32,13 @@ export default {
     updateVersionViewComponent,
     gachaScheduleViewComponent,
     eventScheduleViewComponent,
+    dailyScheduleViewComponent,
   },
   props: {
     updateVersionData: { type: Array, default: () => [] },
     gachaScheduleData: { type: Array, default: () => [] },
     eventScheduleData: { type: Array, default: () => [] },
+    dailyScheduleData: { type: Array, default: () => [] },
   },
 };
 </script>

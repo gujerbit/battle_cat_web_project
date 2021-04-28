@@ -5,6 +5,7 @@
       :updateVersionData="updateVersionData"
       :gachaScheduleData="gachaScheduleData"
       :eventScheduleData="eventScheduleData"
+      :dailyScheduleData="dailyScheduleData"
     ></mainContentComponent>
     <footerComponent></footerComponent>
   </div>
@@ -24,6 +25,7 @@ export default {
       updateVersionData: [],
       gachaScheduleData: [],
       eventScheduleData: [],
+      dailyScheduleData: [],
     };
   },
   components: {
@@ -44,6 +46,10 @@ export default {
 
     let eventSchedule = await axios.get(`${DOMAIN}/event_schedule_list`);
     this.eventScheduleData = eventSchedule.data;
+
+    let dailySchedule = await axios.get(`${DOMAIN}/daily_schedule_list`);
+    this.dailyScheduleData = dailySchedule.data;
+    console.log(dailySchedule.data);
   },
 };
 </script>

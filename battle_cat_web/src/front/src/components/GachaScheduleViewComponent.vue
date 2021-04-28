@@ -35,11 +35,11 @@ export default {
 <style scoped>
 .main-gacha-schedule {
   width: 100%;
-  height: 30vh;
+  height: 50vh;
   min-width: 400px;
   min-height: 250px;
   display: grid;
-  grid-template-rows: 15% 85%;
+  grid-template-rows: 10% 90%;
   text-align: center;
 }
 
@@ -66,7 +66,7 @@ export default {
 
 .gacha-content {
   width: 100%;
-  height: 20%;
+  height: 11%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   border-bottom: 1px solid #fab92c;
