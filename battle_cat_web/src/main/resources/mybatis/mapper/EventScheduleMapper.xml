@@ -4,6 +4,9 @@
 
 <mapper namespace="com.gujerbit.battle_cat_web.dao.EventScheduleDAO">
 	<select id="selectEventSchedule" resultType="EventScheduleVO">
-		SELECT * FROM event_schedule ORDER BY event_end_date DESC, event_start_date DESC
+		SELECT * FROM event_schedule ORDER BY event_end_date DESC, event_start_date DESC LIMIT #{limit}, 5
+	</select>
+	<select id="selectEventScheduleSize" resultType="int">
+		SELECT COUNT(id) FROM event_schedule
 	</select>
 </mapper>

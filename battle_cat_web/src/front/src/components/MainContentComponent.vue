@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="main-container">
-      <div class="main-left">
+      <!-- <div class="main-left">
         <updateVersionViewComponent :updateVersionData="updateVersionData" />
         <gachaScheduleViewComponent :gachaScheduleData="gachaScheduleData" />
         <dailyScheduleViewComponent :dailyScheduleData="dailyScheduleData" />
@@ -13,32 +13,33 @@
       </div>
       <div class="main-right">
         <eventScheduleViewComponent :eventScheduleData="eventScheduleData" />
-      </div>
+      </div> -->
+      <event-schedule-view-component />
     </div>
   </main>
 </template>
 
 <script>
-import updateVersionViewComponent from "./UpdateVersionViewComponent.vue";
-import gachaScheduleViewComponent from "./GachaScheduleViewComponent.vue";
+// import updateVersionViewComponent from "./UpdateVersionViewComponent.vue";
+// import gachaScheduleViewComponent from "./GachaScheduleViewComponent.vue";
 import eventScheduleViewComponent from "./EventScheduleViewComponent.vue";
-import dailyScheduleViewComponent from "./DailyScheduleViewComponent.vue";
+// import dailyScheduleViewComponent from "./DailyScheduleViewComponent.vue";
 
 export default {
   data() {
     return {};
   },
   components: {
-    updateVersionViewComponent,
-    gachaScheduleViewComponent,
+    // updateVersionViewComponent,
+    // gachaScheduleViewComponent,
     eventScheduleViewComponent,
-    dailyScheduleViewComponent,
+    // dailyScheduleViewComponent,
   },
   props: {
-    updateVersionData: { type: Array, default: () => [] },
-    gachaScheduleData: { type: Array, default: () => [] },
+    // updateVersionData: { type: Array, default: () => [] },
+    // gachaScheduleData: { type: Array, default: () => [] },
     eventScheduleData: { type: Array, default: () => [] },
-    dailyScheduleData: { type: Array, default: () => [] },
+    // dailyScheduleData: { type: Array, default: () => [] },
   },
 };
 </script>

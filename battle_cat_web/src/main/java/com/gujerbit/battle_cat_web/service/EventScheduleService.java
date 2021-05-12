@@ -14,8 +14,12 @@ public class EventScheduleService {
 	@Autowired
 	private EventScheduleDAO dao;
 	
-	public List<EventScheduleVO> selectEventSchedule() {
-		return dao.selectEventSchedule();
+	public List<EventScheduleVO> selectEventSchedule(int limit) {
+		return dao.selectEventSchedule(limit);
+	}
+	
+	public int selectEventScheduleSize() {
+		return dao.selectEventScheduleSize();
 	}
 	
 }

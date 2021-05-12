@@ -8,5 +8,7 @@ import com.gujerbit.battle_cat_web.vo.EventScheduleVO;
 
 @Mapper
 public interface EventScheduleDAO {
-	public List<EventScheduleVO> selectEventSchedule();
+	public List<EventScheduleVO> selectEventSchedule(int limit);
+	
+	public int selectEventScheduleSize();
 }
