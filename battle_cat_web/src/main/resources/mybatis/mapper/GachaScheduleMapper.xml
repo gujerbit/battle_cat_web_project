@@ -4,6 +4,9 @@
 
 <mapper namespace="com.gujerbit.battle_cat_web.dao.GachaScheduleDAO">
 	<select id="selectGachaSchedule" resultType="GachaScheduleVO">
-		SELECT * FROM gacha_schedule ORDER BY gacha_start_date DESC, gacha_end_date DESC
+		SELECT * FROM gacha_schedule ORDER BY gacha_start_date DESC, gacha_end_date DESC LIMIT #{limit}, 5
+	</select>
+	<select id="selectGachaScheduleSize" resultType="int">
+		SELECT COUNT(id) FROM gacha_schedule
 	</select>
 </mapper>

@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-public class UpdateVersionVO {
+public class UpdateScheduleVO {
 	
 	@JsonProperty
 	private int id;

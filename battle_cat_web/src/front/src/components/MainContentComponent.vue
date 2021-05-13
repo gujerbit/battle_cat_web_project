@@ -2,46 +2,38 @@
   <main>
     <div class="main-container">
       <div class="main-left">
-        <!--
-        <updateVersionViewComponent :updateVersionData="updateVersionData" />
-        <gachaScheduleViewComponent :gachaScheduleData="gachaScheduleData" />
-        <dailyScheduleViewComponent :dailyScheduleData="dailyScheduleData" />
-        -->
-        <event-schedule-view-component />
+        <updateVersionViewComponent />
+        <gachaScheduleViewComponent />
       </div>
       <div class="main-center">
-        <div class="banner-imgs">
-          <img src="/../../imgs/res/event/event_banner_easter.png" alt />
+        <div class="gacha-banner-imgs">
+          <img src="/../../imgs/res/gacha/gacha_banner_easter.png" />
+        </div>
+        <div class="event-banner-imgs">
+          <img src="/../../imgs/res/event/event_banner_goldrush.jpg" >
         </div>
       </div>
       <div class="main-right">
-        <!--
-        <eventScheduleViewComponent :eventScheduleData="eventScheduleData" />
-        -->
         <event-schedule-view-component />
+        <!-- <dailyScheduleViewComponent /> -->
       </div>
     </div>
   </main>
 </template>
 
 <script>
-// import updateVersionViewComponent from "./UpdateVersionViewComponent.vue";
-// import gachaScheduleViewComponent from "./GachaScheduleViewComponent.vue";
+import updateVersionViewComponent from "./UpdateVersionViewComponent.vue";
+import gachaScheduleViewComponent from "./GachaScheduleViewComponent.vue";
 import eventScheduleViewComponent from "./EventScheduleViewComponent.vue";
 // import dailyScheduleViewComponent from "./DailyScheduleViewComponent.vue";
 
 export default {
-  data() {
-    return {};
-  },
   components: {
-    // updateVersionViewComponent,
-    // gachaScheduleViewComponent,
+    updateVersionViewComponent,
+    gachaScheduleViewComponent,
     eventScheduleViewComponent,
     // dailyScheduleViewComponent,
-  },
-  props: {
-  },
+  }
 };
 </script>
 
@@ -55,7 +47,7 @@ main {
   margin: 0 auto;
   margin-top: 2%;
   display: grid;
-  grid-template-columns: 30% 35% 30%;
+  grid-template-columns: 25% 45% 25%;
   grid-gap: 1%;
 }
 
@@ -71,13 +63,11 @@ main {
   width: 100%;
 }
 
-.banner-imgs {
+.gacha-banner-imgs, .event-banner-imgs {
   width: 100%;
 }
 
-.banner-imgs > img {
+.gacha-banner-imgs > img, .event-banner-imgs > img {
   width: 100%;
-  max-width: 400px;
-  min-width: 300px;
 }
 </style>

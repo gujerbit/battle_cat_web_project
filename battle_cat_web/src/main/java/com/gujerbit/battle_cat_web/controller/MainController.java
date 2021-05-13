@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gujerbit.battle_cat_web.service.UpdateVersionService;
-import com.gujerbit.battle_cat_web.vo.UpdateVersionVO;
+import com.gujerbit.battle_cat_web.service.UpdateScheduleService;
+import com.gujerbit.battle_cat_web.vo.UpdateScheduleVO;
 
 @Controller
 public class MainController {

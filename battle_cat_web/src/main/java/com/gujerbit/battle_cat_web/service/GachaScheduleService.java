@@ -12,10 +12,14 @@ import com.gujerbit.battle_cat_web.vo.GachaScheduleVO;
 public class GachaScheduleService {
 
 	@Autowired
-	private GachaScheduleDAO instance;
+	private GachaScheduleDAO dao;
 	
-	public List<GachaScheduleVO> selectGachaSchedule() {
-		return instance.selectGachaSchedule();
+	public List<GachaScheduleVO> selectGachaSchedule(int limit) {
+		return dao.selectGachaSchedule(limit);
+	}
+	
+	public int selectGachaScheduleSize() {
+		return dao.selectGachaScheduleSize();
 	}
 	
 }

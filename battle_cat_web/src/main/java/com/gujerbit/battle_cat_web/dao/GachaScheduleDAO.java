@@ -9,6 +9,8 @@ import com.gujerbit.battle_cat_web.vo.GachaScheduleVO;
 @Mapper
 public interface GachaScheduleDAO {
 	
-	public List<GachaScheduleVO> selectGachaSchedule();
+	public List<GachaScheduleVO> selectGachaSchedule(int limit);
+	
+	public int selectGachaScheduleSize();
 	
 }

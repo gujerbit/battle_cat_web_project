@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<mappers>
-		<mapper resource="UpdateVersionMapper.xml" />
+		<mapper resource="UpdateScheduleMapper.xml" />
 		<mapper resource="GachaScheduleMapper.xml" />
 		<mapper resource="EventScheduleMapper.xml" />
 		<mapper resource="DailyScheduleMapper.xml" />

@@ -13,7 +13,7 @@
         :key="value"
       >
         <p class="title" v-if="value['content'].length <= 10">{{value['content']}}</p>
-        <p class="title" v-else>{{value['content'].substring(0, 7) + '...'}}</p>
+        <p class="title" v-else>{{value['content'].substring(0, 8) + '..'}}</p>
         <p class="start">{{value['event_start_date']}}</p>
         <p class="end">{{value['event_end_date']}}</p>
       </router-link>
@@ -106,7 +106,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.3%;
-  font-size: 1.9rem;
+  font-size: 1.8rem;
 }
 
 .element {
@@ -120,7 +120,7 @@ export default {
 .contents {
   width: 100%;
   height: 100%;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
 }
 
 .content {

@@ -32,9 +32,6 @@ export default {
     // let updateVersion = await axios.get(`${DOMAIN}/update_version_list`);
     // this.updateVersionData = updateVersion.data;
 
-    // let gachaSchedule = await axios.get(`${DOMAIN}/gacha_schedule_list`);
-    // this.gachaScheduleData = gachaSchedule.data;
-
     // let dailySchedule = await axios.get(`${DOMAIN}/daily_schedule_list`);
     // this.dailyScheduleData = dailySchedule.data;
   }
