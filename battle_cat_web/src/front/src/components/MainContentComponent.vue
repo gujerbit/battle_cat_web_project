@@ -1,10 +1,13 @@
 <template>
   <main>
     <div class="main-container">
-      <!-- <div class="main-left">
+      <div class="main-left">
+        <!--
         <updateVersionViewComponent :updateVersionData="updateVersionData" />
         <gachaScheduleViewComponent :gachaScheduleData="gachaScheduleData" />
         <dailyScheduleViewComponent :dailyScheduleData="dailyScheduleData" />
+        -->
+        <event-schedule-view-component />
       </div>
       <div class="main-center">
         <div class="banner-imgs">
@@ -12,9 +15,11 @@
         </div>
       </div>
       <div class="main-right">
+        <!--
         <eventScheduleViewComponent :eventScheduleData="eventScheduleData" />
-      </div> -->
-      <event-schedule-view-component />
+        -->
+        <event-schedule-view-component />
+      </div>
     </div>
   </main>
 </template>
@@ -36,10 +41,6 @@ export default {
     // dailyScheduleViewComponent,
   },
   props: {
-    // updateVersionData: { type: Array, default: () => [] },
-    // gachaScheduleData: { type: Array, default: () => [] },
-    eventScheduleData: { type: Array, default: () => [] },
-    // dailyScheduleData: { type: Array, default: () => [] },
   },
 };
 </script>
@@ -54,7 +55,7 @@ main {
   margin: 0 auto;
   margin-top: 2%;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 30% 35% 30%;
   grid-gap: 1%;
 }
 
@@ -76,6 +77,7 @@ main {
 
 .banner-imgs > img {
   width: 100%;
-  min-width: 500px;
+  max-width: 400px;
+  min-width: 300px;
 }
 </style>

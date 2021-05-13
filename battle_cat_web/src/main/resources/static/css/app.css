@@ -22,7 +22,7 @@
 }
 
 html {
-    font-size: 62.5%;
+    font-size: 1vmin;
 }
 
 @media(max-width:480px) { /* 모바일용 */

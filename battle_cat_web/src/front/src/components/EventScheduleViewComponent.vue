@@ -1,25 +1,26 @@
 <template>
-  <div class="main-event-schedule">
-    <div class="event-schedule-element">
-      <p class="event-element">제목</p>
-      <p class="event-element">시작 날짜</p>
-      <p class="event-element">종료 날짜</p>
+  <div class="event-schedule">
+    <div class="elements">
+      <p class="element">이벤트</p>
+      <p class="element">시작 날짜</p>
+      <p class="element">종료 날짜</p>
     </div>
-    <div class="event-schedule-content">
+    <div class="contents">
       <router-link
         to=""
-        class="event-content"
-        v-for="eventScheduleValue in eventScheduleData"
-        :key="eventScheduleValue"
+        class="content"
+        v-for="value in eventScheduleData"
+        :key="value"
       >
-        <p class="event-title">{{eventScheduleValue['content']}}</p>
-        <p class="event-start-date">{{eventScheduleValue['event_start_date']}}</p>
-        <p class="event-end-date">{{eventScheduleValue['event_end_date']}}</p>
+        <p class="title" v-if="value['content'].length <= 10">{{value['content']}}</p>
+        <p class="title" v-else>{{value['content'].substring(0, 7) + '...'}}</p>
+        <p class="start">{{value['event_start_date']}}</p>
+        <p class="end">{{value['event_end_date']}}</p>
       </router-link>
     </div>
-    <div class="size">
+    <div class="pages">
       <router-link class="prev" to="" @click="prevPage">&laquo;</router-link>
-      <router-link class="page" to="" @click="pageChange(value)" v-for="value in currentPages[currentViewIdx]" :key="value">{{value}}</router-link>
+      <router-link class="current" to="" @click="pageChange(value)" v-for="value in currentPages[currentViewIdx]" :key="value">{{value}}</router-link>
       <router-link class="next" to="" @click="nextPage">&raquo;</router-link>
     </div>
   </div>
@@ -63,8 +64,6 @@ export default {
           sizeArr = [];
         }
       }
-      console.log(Math.ceil(this.eventScheduleSizeData/5));
-      console.log(this.currentPages);
     },
     async nextPage() {
       if(this.currentPages.length-1 > this.currentViewIdx) {
@@ -92,48 +91,64 @@ export default {
 </script>
 
 <style scoped>
-.main-event-schedule {
+.event-schedule {
   width: 100%;
   height: 30vh;
-  min-width: 400px;
-  min-height: 250px;
   display: grid;
-  grid-template-rows: 15% 85%;
+  grid-template-rows: 15% 75% 10%;
   text-align: center;
+  /* border: 1px solid #fab92c; */
 }
 
-.event-schedule-element {
+.elements {
   width: 100%;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  font-size: 2rem;
-  background-color: #fab92c;
+  gap: 0.3%;
+  font-size: 1.9rem;
 }
 
-.event-element {
+.element {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #fab92c;
+  border-radius: 5px 5px 0 0;
 }
 
-.event-schedule-content {
+.contents {
   width: 100%;
   height: 100%;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 
-.event-content {
+.content {
   width: 100%;
   height: 20%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-bottom: 1px solid #fab92c;
+  gap: 0.3%;
+  /* border-bottom: 1px solid #fab92c; */
+  overflow: hidden;
 }
 
-.event-content > p {
+.content:nth-child(2n - 1) > p { background-color: #fffdf8; }
+.content:nth-child(2n) > p { background-color: #fff8e4; }
+
+.content > p {
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.pages {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.25rem;
+  background-color: #fff8e4;
 }
 </style>

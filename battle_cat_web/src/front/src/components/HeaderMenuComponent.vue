@@ -19,6 +19,6 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100%;
-    font-size: 1.5rem;
+    font-size: 1.9rem;
 }
 </style>
