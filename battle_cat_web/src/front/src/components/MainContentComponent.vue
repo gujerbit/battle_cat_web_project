@@ -45,7 +45,7 @@ main {
 .main-container {
   width: 80%;
   margin: 0 auto;
-  margin-top: 2%;
+  margin-top: 0.5%;
   display: grid;
   grid-template-columns: 25% 45% 25%;
   grid-gap: 1%;

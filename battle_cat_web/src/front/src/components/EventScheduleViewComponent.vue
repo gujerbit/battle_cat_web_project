@@ -97,7 +97,7 @@ export default {
   display: grid;
   grid-template-rows: 15% 75% 10%;
   text-align: center;
-  /* border: 1px solid #fab92c; */
+  margin: 1% 0;
 }
 
 .elements {
@@ -133,8 +133,8 @@ export default {
   overflow: hidden;
 }
 
-.content:nth-child(2n - 1) > p { background-color: #fffdf8; }
-.content:nth-child(2n) > p { background-color: #fff8e4; }
+.content:nth-child(2n - 1) > p { background-color: #f7efde; }
+.content:nth-child(2n) > p { background-color: #e2e0dd; }
 
 .content > p {
   width: 100%;
@@ -149,6 +149,6 @@ export default {
   justify-content: space-around;
   align-items: center;
   font-size: 1.25rem;
-  background-color: #fff8e4;
+  background-color: #e2e0dd;
 }
 </style>

@@ -1,18 +1,14 @@
 <template>
   <div id="container">
     <headerComponent></headerComponent>
-    <mainContentComponent></mainContentComponent>
+    <router-view></router-view>
     <footerComponent></footerComponent>
   </div>
 </template>
 
 <script>
 import headerComponent from "./HeaderComponent.vue";
-import mainContentComponent from "./MainContentComponent.vue";
 import footerComponent from "./FooterComponent.vue";
-// import axios from "axios";
-
-// const DOMAIN = "http://localhost:8090";
 
 export default {
   data() {
@@ -21,7 +17,6 @@ export default {
   },
   components: {
     headerComponent,
-    mainContentComponent,
     footerComponent,
   },
   async mounted() {

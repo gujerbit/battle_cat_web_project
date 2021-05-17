@@ -6,7 +6,7 @@
       </router-link>
       <nav class="menu-bar">
         <ul class="main-menu-bar">
-          <headerMenuComponent :menuName="'아군 캐릭터 정보'" :linkName="''" />
+          <headerMenuComponent :menuName="'아군 캐릭터 정보'" :linkName="'/unitInfo'" />
           <headerMenuComponent :menuName="'적군 캐릭터 정보'" :linkName="''" />
           <headerMenuComponent :menuName="'스테이지 정보'" :linkName="''" />
           <headerMenuComponent :menuName="'기타 정보'" :linkName="''" />
