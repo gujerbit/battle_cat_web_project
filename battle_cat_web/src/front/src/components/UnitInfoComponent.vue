@@ -1,20 +1,28 @@
 <template>
   <main>
       <nav>
-          <router-link to="">등급으로 분류</router-link>
-          <router-link to="">고유 번호로 분류</router-link>
-          <router-link to="">능력으로 분류</router-link>
-          <router-link to="">캐릭터 검색</router-link>
+        <div class="elements">
+          <unit-info-element-component :title="'레어도'" :type="0" />
+          <unit-info-element-component :title="'타겟'" :type="1" />
+          <unit-info-element-component :title="'효과/능력'" :type="2" />
+        </div>
+        <div class="contents">
+
+        </div>
       </nav>
   </main>
 </template>
 
 <script>
-export default {
+import unitInfoElementComponent from './UnitInfoElementComponent.vue';
 
+export default {
+  components: {
+    unitInfoElementComponent
+  }
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
