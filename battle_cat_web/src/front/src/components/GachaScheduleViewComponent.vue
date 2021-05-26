@@ -134,8 +134,8 @@ export default {
   overflow: hidden;
 }
 
-.content:nth-child(2n - 1) > p { background-color: #f7efde; }
-.content:nth-child(2n) > p { background-color: #e2e0dd; }
+.content:nth-child(2n - 1) > p { background-color: #fdfdfd; }
+.content:nth-child(2n) > p { background-color: #f1f1f1; }
 
 .content > p {
   width: 100%;
@@ -150,10 +150,10 @@ export default {
   justify-content: space-around;
   align-items: center;
   font-size: 1.25rem;
-  background-color: #e2e0dd;
+  background-color: #fab92c;
 }
 
 .is-unconditional {
-  color: #ff5353;
+  color: #fab92c;
 }
 </style>
