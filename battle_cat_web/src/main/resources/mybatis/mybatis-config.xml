@@ -7,5 +7,6 @@
 		<mapper resource="GachaScheduleMapper.xml" />
 		<mapper resource="EventScheduleMapper.xml" />
 		<mapper resource="DailyScheduleMapper.xml" />
+		<mapper resource="UnitDataMapper.xml" />
 	</mappers>
 </configuration>

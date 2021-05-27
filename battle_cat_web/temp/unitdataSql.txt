@@ -1,0 +1,15 @@
+id - 고유 번호
+name - 캐릭터 이름
+explanation - 캐릭터 설명
+rarity - 캐릭터 등급
+image_code - 이미지 경로
+hp - 체력
+hit_back - 히트백
+attack_power - 공격력
+move_speed - 이동 속도
+produce_speed - 생산 속도
+attack_speed - 선딜
+attack_frequency - 후딜
+attack_range - 사거리
+cost - 비용
+dps - 초당 데미지

@@ -1,0 +1,127 @@
+property_attack_power_down - 공격력 다운 효과 유닛 테이블
+	id - 고유번호
+	name - 캐릭터 이름
+	type - 아군인지 적군인지
+	property_prob - 효과가 걸릴 확률
+	property_time - 효과 지속 시간
+	power_down_ratio - 공따 %
+property_stop - 정지 효과
+	id
+	name
+	type
+	property_prob
+	property_time
+property_slow - 느리게하기 효과
+	id
+	name
+	type
+	property_prob
+	property_time
+property_target_only
+	id
+	name
+	type
+property_strength
+	id
+	name
+	type
+property_hard
+	id
+	name
+	type
+property_ultimate_hard
+	id
+	name
+	type
+property_super_damage
+	id
+	name
+	type
+property_ultimate_damage
+	id
+	name
+	type
+property_knock_back
+	id
+	name
+	type
+	property_prob
+property_warp
+	id
+	name
+	type
+	property_prob
+	warp_range - 워프 거리
+property_ancient_curse
+	id
+	name
+	type
+	property_prob
+	property_time
+property_attack_invalid
+	id
+	name
+	type
+	property_prob
+	property_time
+property_attack_power_up
+	id
+	name
+	type
+	hp_down_ratio - %이하에서 공격력이 증가되는지
+	attack_power_up_ratio - 공격력이 %오르는지
+property_survive
+	id
+	name
+	type
+property_ultimate_base_crash
+	id
+	name
+	type
+property_critical
+	id
+	name
+	type
+	property_prob
+property_zombie_killer
+	id
+	name
+	type
+property_barrier_breaker
+	id
+	name
+	type
+	property_prob
+property_soul_attack
+	id
+	name
+	type
+	property_prob
+property_more_money
+	id
+	name
+	type
+property_metal
+	id
+	name
+	type
+property_mini_wave
+	id
+	name
+	type
+	property_prob
+	wave_level - 파동 레벨
+property_wave
+	id
+	name
+	type
+	property_prob
+	wave_level
+property_thermal_wave
+	id
+	name
+	type
+	property_prob
+	wave_range_start - 열파 생성 시작 범위
+	wave_range_end - 열파 생성 끝 범위
+	wave_level

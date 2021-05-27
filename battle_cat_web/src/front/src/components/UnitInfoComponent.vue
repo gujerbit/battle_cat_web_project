@@ -22,10 +22,10 @@
               <router-link name="fly-enemy" class="fly-enemy" to="">떠있는 적</router-link>
               <router-link name="black-enemy" class="black-enemy" to="">검은 적</router-link>
               <router-link name="metal-enemy" class="metal-enemy" to="">메탈 적</router-link>
-              <router-link name="engel-enemy" class="engel-enemy" to="">천사</router-link>
+              <router-link name="engel-enemy" class="angel-enemy" to="">천사</router-link>
               <router-link name="alien-enemy" class="alien-enemy" to="">에이리언</router-link>
               <router-link name="zombie-enemy" class="zombie-enemy" to="">좀비</router-link>
-              <router-link name="acient-enemy" class="acient-enemy" to="">고대종</router-link>
+              <router-link name="acient-enemy" class="ancient-enemy" to="">고대종</router-link>
             </div>
             <div class="property">
               
