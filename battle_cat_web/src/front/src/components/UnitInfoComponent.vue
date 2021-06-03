@@ -8,29 +8,7 @@
             <div class="element">타겟</div>
             <div class="element">효과/능력</div>
           </div>
-          <div class="select">
-            <div class="rarity">
-              <router-link @click="activeMenu($event)" name="normal" class="normal select-active" to="">기본 캐릭터</router-link>
-              <router-link @click="activeMenu($event)" name="special" class="special" to="">EX</router-link>
-              <router-link name="rare" class="rare" to="">레어</router-link>
-              <router-link name="super-rare" class="super-rare" to="">슈퍼 레어</router-link>
-              <router-link name="uber-rare" class="uber-rare" to="">울트라 슈퍼 레어</router-link>
-              <router-link name="legend-rare" class="legend-rare" to="">레전드 레어</router-link>
-            </div>
-            <div class="target">
-              <router-link name="red-enemy" class="red-enemy" to="">빨간 적</router-link>
-              <router-link name="fly-enemy" class="fly-enemy" to="">떠있는 적</router-link>
-              <router-link name="black-enemy" class="black-enemy" to="">검은 적</router-link>
-              <router-link name="metal-enemy" class="metal-enemy" to="">메탈 적</router-link>
-              <router-link name="engel-enemy" class="angel-enemy" to="">천사</router-link>
-              <router-link name="alien-enemy" class="alien-enemy" to="">에이리언</router-link>
-              <router-link name="zombie-enemy" class="zombie-enemy" to="">좀비</router-link>
-              <router-link name="acient-enemy" class="ancient-enemy" to="">고대종</router-link>
-            </div>
-            <div class="property">
-              
-            </div>
-          </div>
+          <unit-info-select-component />
         </div>
       </nav>
       <div class="contents">
@@ -41,28 +19,15 @@
 </template>
 
 <script>
+import unitInfoSelectComponent from './unit_info/UnitInfoSelectComponent.vue';
+
 export default {
   data() {
     return {
-      findList: []
     }
   },
-  methods: {
-    activeMenu(event) {
-      let className = event.currentTarget.className;
-      let name = event.currentTarget.name;
-      let isActive = className.includes('select-active');
-      
-      if(isActive) {
-        event.currentTarget.classList.remove('select-active');
-        this.findList = this.findList.filter((value) => value !== name);
-      } else { 
-        event.currentTarget.classList.add('select-active');
-        this.findList.push(name);
-      }
-
-      console.log(this.findList);
-    }
+  components: {
+    unitInfoSelectComponent
   }
 }
 </script>
@@ -89,6 +54,7 @@ nav, .contents, .elements {
   grid-template-columns: repeat(3, 1fr);
   text-align: center;
   font-size: 2.5rem;
+  gap: 0.2%;
 }
 
 .element {
@@ -96,37 +62,5 @@ nav, .contents, .elements {
   line-height: 5vh;
   background-color: #fab92c;
   border-radius: 10px 10px 0 0;
-}
-
-.select {
-  height: 10vh;
-  font-size: 2rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  text-align: center;
-}
-
-.select a {
-  background-color: #bbbbbb;
-  border-radius: 10px;
-  height: 50%;
-}
-
-.rarity {
-  height: 100%;
-  display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.target {
-  height: 100%;
-  display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.select-active {
-  background-color: #fab92c !important;
 }
 </style>
