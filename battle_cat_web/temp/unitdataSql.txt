@@ -51,3 +51,29 @@ ancient_curse_time - 고대의 저주 시간
 attack_invalid - 공격 무효를 하는가?
 attack_invalid_prob - 공격 무효를 할 확률
 attack_invalid_time - 공격 무효 시간
+attack_power_up - 체력 저하로 공격력이 증가하는가?
+hp_down_ratio - 공격력이 증가하는 체력 비율
+attack_power_up_ratio - 공격력이 얼마나 오르는지
+survive - 죽었을 때 피 1로 다시 살아나는가?
+survive_prob - 살아남기 확률
+ultimate_base_crash - 성 파괴가 특기인가?
+critical - 크리티컬을 발생시키는가?
+critical_prob - 크리티컬 발생 확률
+zombie_killer - 좀비킬러인가?
+barrier_breaker - 베리어 브레이커인가?
+barrier_breaker_prob - 베리어 브레이크 확률
+soul_attack - 혼신의 일격을 하는가?
+soul_attack_prob - 혼신의 일격 확률
+more_money - 적 처치시 돈을 2배로 얻는가?
+metal - 메탈 속성인가?
+mini_wave - 소파동을 발사하는가?
+mini_wave_prob - 소파동 발사 확률
+mini_wave_level - 소파동 레벨
+wave - 파동을 발사하는가?
+wave_prob - 파동 발사 확률
+wave_level - 파동 레벨
+thermal_wave - 열파를 발사하는가?
+thermal_wave_prob - 열파 발사 확률
+thermal_wave_level - 열파 레벨
+thermal_wave_range_start - 열파 생성 시작 범위
+thermal_wave_range_end - 열파 생성 끝 범위
