@@ -3,5 +3,11 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gujerbit.battle_cat_web.dao.UnitDataDAO">
-	
+	<select id="selectUnitData" resultType="UnitDataVO">
+		SELECT * FROM unit_data
+		WHERE rarity
+		<foreach collection="array" item="item" index="index" open="LIKE " separator="AND rarity LIKE ">
+			#{item}
+		</foreach>
+	</select>
 </mapper>

@@ -24,4 +24,4 @@
 		냥콤보
 커뮤니티
 
-insert into unit_data values('0-0', '고양이', '저가생산 가능한 기본 캐릭터', 'normal', 'team/normal/cat/cat.png', 250, 3, 20, 10, 60, 8, 37, 140, 75, true, false, false, false, 0, 0, false, false, false, false, false, false, false, false, false, false, 0, 0, 0, false, 0, 0, false, 0, 0, false, false, false, false, false, false, false, 0, false, 0, 0, false, 0, 0, false, 0, 0, false, 0, false, false, 0, false, false, 0, false, 0, false, false, false, 0, 0, false, 0, 0, false, 0, 0, 0, 0
+attack_type(attack_type1, start_damage_range, end_damage_range/attack_type2...) -> multi/wide,-500,300
