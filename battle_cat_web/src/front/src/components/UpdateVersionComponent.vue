@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import headerComponent from "./HeaderComponent.vue";
+import headerComponent from "./header/HeaderComponent.vue";
 import footerComponent from "./FooterComponent.vue";
 import axios from "axios";
 

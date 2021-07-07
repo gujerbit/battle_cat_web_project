@@ -1,14 +1,14 @@
 <template>
   <div id="container">
     <headerComponent></headerComponent>
-    <router-view></router-view>
-    <footerComponent></footerComponent>
+    <!-- <router-view></router-view>
+    <footerComponent></footerComponent> -->
   </div>
 </template>
 
 <script>
-import headerComponent from "./HeaderComponent.vue";
-import footerComponent from "./FooterComponent.vue";
+import headerComponent from "./header/HeaderComponent.vue";
+// import footerComponent from "./FooterComponent.vue";
 
 export default {
   data() {
@@ -17,7 +17,7 @@ export default {
   },
   components: {
     headerComponent,
-    footerComponent,
+    // footerComponent,
   },
   async mounted() {
     // axios.get("/notice").then((res) => {
