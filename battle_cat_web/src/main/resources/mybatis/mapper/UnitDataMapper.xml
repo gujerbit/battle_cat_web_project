@@ -12,25 +12,25 @@
 		<where>
 			<if test="propertys.size() != 0">
 				property
-				<foreach collection="propertys" item="item" open="LIKE " separator="AND property LIKE ">
-					#{item}
+				<foreach collection="propertys" item="item" open="LIKE " separator="OR property LIKE ">
+					CONCAT('%',#{item},'%')
 				</foreach>
 			</if>
 			<if test="raritys.size() != 0">
-				AND rarity
-				<foreach collection="raritys" item="item" open="LIKE " separator="AND rarity LIKE ">
+				OR rarity
+				<foreach collection="raritys" item="item" open="LIKE " separator="OR rarity LIKE ">
 					#{item}
 				</foreach>
 			</if>
 			<if test="targets.size() != 0">
-				AND target
-				<foreach collection="targets" item="item" open="LIKE " separator="AND target LIKE ">
-					#{item}
+				OR target
+				<foreach collection="targets" item="item" open="LIKE " separator="OR target LIKE ">
+					CONCAT('%',#{item},'%')
 				</foreach>
 			</if>
 			<if test="attackTypes.size() != 0">
-				AND attack_type
-				<foreach collection="attackTypes" item="item" open="LIKE " separator="AND attack_type LIKE ">
+				OR attack_type
+				<foreach collection="attackTypes" item="item" open="LIKE " separator="OR attack_type LIKE ">
 					#{item}
 				</foreach>
 			</if>
