@@ -1,6 +1,8 @@
 package com.gujerbit.battle_cat_web.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +16,12 @@ public class UnitDataService {
 	@Autowired
 	private UnitDataDAO dao;
 	
-	public List<UnitDataVO> selectUnitData(String[] searchData) {
-		return dao.selectUnitData(searchData);
+	public List<UnitDataVO> selectAllUnitData() {
+		return dao.selectAllUnitData();
+	}
+	
+	public List<UnitDataVO> selectSearchUnitData(Map<String, ArrayList<String>> map) {
+		return dao.selectSearchUnitData(map);
 	}
 	
 }

@@ -1,23 +1,16 @@
 <template>
-  <div id="container">
-    <headerComponent></headerComponent>
-    <!-- <router-view></router-view>
-    <footerComponent></footerComponent> -->
-  </div>
+  <main>
+  </main>
 </template>
 
 <script>
-import headerComponent from "./header/HeaderComponent.vue";
-// import footerComponent from "./FooterComponent.vue";
-
 export default {
   data() {
     return {
     };
   },
   components: {
-    headerComponent,
-    // footerComponent,
+
   },
   async mounted() {
     // axios.get("/notice").then((res) => {
@@ -34,7 +27,7 @@ export default {
 </script>
 
 <style scoped>
-#container {
+main {
   width: 100%;
 }
 </style>

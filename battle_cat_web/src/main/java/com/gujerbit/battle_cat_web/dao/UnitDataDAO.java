@@ -1,6 +1,8 @@
 package com.gujerbit.battle_cat_web.dao;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,6 +11,8 @@ import com.gujerbit.battle_cat_web.vo.UnitDataVO;
 @Mapper
 public interface UnitDataDAO {
 	
-	public List<UnitDataVO> selectUnitData(String[] searchData);
+	public List<UnitDataVO> selectAllUnitData();
+	
+	public List<UnitDataVO> selectSearchUnitData(Map<String, ArrayList<String>> map);
 	
 }

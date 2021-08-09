@@ -3,11 +3,37 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gujerbit.battle_cat_web.dao.UnitDataDAO">
-	<select id="selectUnitData" resultType="UnitDataVO">
+	<select id="selectAllUnitData" resultType="UnitDataVO">
 		SELECT * FROM unit_data
-		WHERE rarity
-		<foreach collection="array" item="item" index="index" open="LIKE " separator="AND rarity LIKE ">
-			#{item}
-		</foreach>
+	</select>
+	
+	<select id="selectSearchUnitData" resultType="UnitDataVO">
+		SELECT * FROM unit_data
+		<where>
+			<if test="propertys.size() != 0">
+				property
+				<foreach collection="propertys" item="item" open="LIKE " separator="AND property LIKE ">
+					#{item}
+				</foreach>
+			</if>
+			<if test="raritys.size() != 0">
+				AND rarity
+				<foreach collection="raritys" item="item" open="LIKE " separator="AND rarity LIKE ">
+					#{item}
+				</foreach>
+			</if>
+			<if test="targets.size() != 0">
+				AND target
+				<foreach collection="targets" item="item" open="LIKE " separator="AND target LIKE ">
+					#{item}
+				</foreach>
+			</if>
+			<if test="attackTypes.size() != 0">
+				AND attack_type
+				<foreach collection="attackTypes" item="item" open="LIKE " separator="AND attack_type LIKE ">
+					#{item}
+				</foreach>
+			</if>
+		</where>
 	</select>
 </mapper>

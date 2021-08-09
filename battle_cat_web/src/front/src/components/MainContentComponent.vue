@@ -7,10 +7,10 @@
       </div>
       <div class="main-center">
         <div class="gacha-banner-imgs">
-          <img src="/../../imgs/res/gacha/gacha_banner_easter.png" />
+          <img src="./../assets/res/gacha/gacha_banner_easter.png" />
         </div>
         <div class="event-banner-imgs">
-          <img src="/../../imgs/res/event/event_banner_goldrush.jpg" >
+          <img src="./../assets/res/event/event_banner_goldrush.jpg" >
         </div>
       </div>
       <div class="main-right">

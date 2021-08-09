@@ -1,6 +1,6 @@
 <template>
   <div class="update-version-container">
-    <headerComponent></headerComponent>
+    <!-- <headerComponent></headerComponent> -->
     <main>
       <div class="temp" v-for="value in updateVersionData" :key="value">
         {{ value }}
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import headerComponent from "./header/HeaderComponent.vue";
+// import headerComponent from "./HeaderComponent.vue";
 import footerComponent from "./FooterComponent.vue";
 import axios from "axios";
 
@@ -24,7 +24,7 @@ export default {
     };
   },
   components: {
-    headerComponent,
+    // headerComponent,
     footerComponent,
   },
   async mounted() {
