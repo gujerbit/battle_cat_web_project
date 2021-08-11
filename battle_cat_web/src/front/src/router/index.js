@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import mainComponent from '../components/MainComponent.vue';
 // import mainContentComponent from '../components/MainContentComponent.vue';
 import unitInfoComponent from '../components/UnitInfoComponent.vue';
+import unitInfoSpecComponent from '../components/UnitInfoSpecificComponent.vue';
 import updateVersionComponent from '../components/UpdateVersionComponent.vue';
 
 const routes = [
@@ -12,6 +13,11 @@ const routes = [
     {
         path: '/unitInfo',
         component: unitInfoComponent,
+    },
+    {
+        path: '/unitInfo/:unitData',
+        component: unitInfoSpecComponent,
+        props: true
     },
     {
         path: '/update_version/:version',

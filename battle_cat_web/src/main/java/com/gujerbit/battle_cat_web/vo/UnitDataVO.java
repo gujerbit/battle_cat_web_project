@@ -26,6 +26,9 @@ public class UnitDataVO {
 	private int hp;
 	
 	@JsonProperty
+	private int hit_back;
+	
+	@JsonProperty
 	private int attack_power;
 	
 	@JsonProperty

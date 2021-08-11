@@ -78,9 +78,13 @@
             <img @click="menuControl($event)" class="unselect" src="./../assets/res/elements/target/target_ancient.png" alt="">
           </div>
         </article>
+        <div class="search-area">
+          <input type="text" class="search-form" @input="enterUnitSearch($event)">
+          <img src="./../assets/temp/search_icon.png" alt="" class="searchBtn">
+        </div>
       </div>
       <router-link to="" class="element-toggle">
-        <div class="toggleBtn isUp" />
+        <div class="toggleBtn isDown" />
       </router-link>
     </div>
     <content-component :unitData="unitData" />
@@ -155,8 +159,6 @@ export default {
           this.searchData.push(element);
           event.currentTarget.classList.remove('unselect');
         } else {
-          // let tempList = this.searchData.filter(data => data != element);
-          // this.searchData = tempList;
           let tempList = this.searchData.filter(data => data != element);
           this.searchData = tempList;
           event.currentTarget.classList.add('unselect');
@@ -165,6 +167,17 @@ export default {
 
       if(this.searchData.length !== 0) {
         let { data } = await axios.get(`${DOMAIN}/unit_data_search/${this.searchData}`);
+        this.unitData = data;
+      } else {
+        let { data } = await axios.get(`${DOMAIN}/unit_data`);
+        this.unitData = data;
+      }
+    },
+    async enterUnitSearch(event) {
+      let unitName = event.currentTarget.value;
+      
+      if(unitName !== '') {
+        let { data } = await axios.get(`${DOMAIN}/unit_data_name/${unitName}`);
         this.unitData = data;
       } else {
         let { data } = await axios.get(`${DOMAIN}/unit_data`);
@@ -195,9 +208,8 @@ article {
 }
 
 .elements {
-  display: grid;
+  display: none;
   grid-template-rows: repeat(2, 1fr);
-  /* background-color: #e6ac31; */
 }
 
 .property, .rarity, .target {
@@ -273,5 +285,31 @@ article {
 
 .unselect {
   filter: grayscale(1);
+}
+
+.search-area {
+  display: flex;
+  align-items: center;
+  padding-bottom: 2vh;
+  border: 2px solid #000000;
+  border-top: none;
+  border-bottom: none;
+}
+
+.search-form {
+  height: 100%;
+  width: 90%;
+  margin-left: 0.5vw;
+  border: 2px solid #000000;
+  border-radius: 7px;
+  outline: none;
+  font-size: 2.5em;
+  text-align: center;
+}
+
+.searchBtn {
+  width: 3.5%;
+  margin-left: 1vw;
+  border-radius: 25%;
 }
 </style>

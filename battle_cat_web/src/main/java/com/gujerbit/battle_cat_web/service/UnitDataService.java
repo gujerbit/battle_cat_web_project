@@ -24,4 +24,12 @@ public class UnitDataService {
 		return dao.selectSearchUnitData(map);
 	}
 	
+	public List<UnitDataVO> selectNameUnitData(String unitName) {
+		return dao.selectNameUnitData(unitName);
+	}
+	
+	public List<UnitDataVO> selectIdUnitData(String unitId) {
+		return dao.selectIdUnitData(unitId);
+	}
+	
 }

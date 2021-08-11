@@ -36,4 +36,20 @@
 			</if>
 		</where>
 	</select>
+	
+	<select id="selectNameUnitData" resultType="UnitDataVO">
+		SELECT * FROM unit_data
+		<where>
+			id LIKE CONCAT('%',#{unitName},'%')
+			OR
+			name LIKE CONCAT('%',#{unitName},'%')
+		</where>
+	</select>
+	
+	<select id="selectIdUnitData" resultType="UnitDataVO">
+		SELECT * FROM unit_data
+		<where>
+			LEFT(id, 1) LIKE #{unitId}
+		</where>
+	</select>
 </mapper>

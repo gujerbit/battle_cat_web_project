@@ -67,4 +67,18 @@ public class UnitDataController {
 		return list;
 	}
 	
+	@GetMapping("/unit_data_name/{unitName}")
+	public @ResponseBody List<UnitDataVO> getNameUnitData(@PathVariable String unitName) {
+		List<UnitDataVO> list = service.selectNameUnitData(unitName);
+		
+		return list;
+	}
+	
+	@GetMapping("/unit_data_id/{unitId}")
+	public @ResponseBody List<UnitDataVO> getIdUnitData(@PathVariable String unitId) {
+		List<UnitDataVO> list = service.selectIdUnitData(unitId);
+		
+		return list;
+	}
+	
 }

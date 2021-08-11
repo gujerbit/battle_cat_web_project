@@ -15,4 +15,8 @@ public interface UnitDataDAO {
 	
 	public List<UnitDataVO> selectSearchUnitData(Map<String, ArrayList<String>> map);
 	
+	public List<UnitDataVO> selectNameUnitData(String unitName);
+	
+	public List<UnitDataVO> selectIdUnitData(String unitId);
+	
 }
