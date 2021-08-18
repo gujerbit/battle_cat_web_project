@@ -146,6 +146,8 @@ export default {
         
         let { data } = await axios.get(`${DOMAIN}/unit_data_id/${unitId}`);
         this.unitData = data;
+
+        // if(this.oneLevel < 1) console.log('일났다!!');
     }
 }
 </script>

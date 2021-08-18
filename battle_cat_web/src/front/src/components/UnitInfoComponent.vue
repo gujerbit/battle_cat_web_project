@@ -262,6 +262,7 @@ article {
   border: 2px solid #000000;
   border-top: none;
   border-bottom: none;
+  padding-top: 1vh;
 }
 
 .rarity {
