@@ -1,10 +1,47 @@
 <template>
   <main>
-      <section>
-          d
+      <section class="elements">
+          <div class="treasure-info">
+              <table class="treasure" border="1">
+                  <tr>
+                      <th colspan="2">보물</th>
+                  </tr>
+                  <tr>
+                      <th>세계편</th>
+                      <td>
+                          <input type="number">
+                      </td>
+                  </tr>
+                  <tr>
+                      <th>미래편</th>
+                      <td>
+                          <input type="number">
+                      </td>
+                  </tr>
+                  <tr>
+                      <th>우주편</th>
+                      <td>
+                          <input type="number">
+                      </td>
+                  </tr>
+              </table>
+              <router-link to="" class="element-toggle">
+                  <div class="toggleBtn isDown" />
+              </router-link>
+          </div>
       </section>
       <section>
           <div class="content" v-for="value in unitData" :key="value">
+            <article class="basic-info">
+                <table class="basic" border="1">
+                    <tr>
+                        <th class="none-left">ID</th>
+                        <td>{{value.id}}</td>
+                        <th>이름</th>
+                        <td class="none-right">{{value.name}}</td>
+                    </tr>
+                </table>
+            </article>
             <article class="images">
                 <div class="unit-img">
                     <img :src="require(`./../assets/res/unit/${value.image_dir}`)" alt="">
@@ -40,71 +77,63 @@
                 </div>
             </article>
             <article class="texts">
-                <div class="level">
-                    <p>레벨</p>
-                    <input type="number" v-model="level">
-                </div>
-                <div class="id">
-                    <p>ID</p>
-                    <p>{{value.id}}</p>
-                </div>
-                <div class="name">
-                    <p>이름</p>
-                    <p>{{value.name}}</p>
-                </div>
-                <div class="description">
-                    <p>인게임 설명</p>
-                    <p>{{value.description}}</p>
-                </div>
-                <div class="rarity">
-                    <p>레어도</p>
-                    <p v-if="value.rarity === 'normal'">기본 캐릭터</p>
-                    <p v-if="value.rarity === 'special'">EX 캐릭터</p>
-                    <p v-if="value.rarity === 'rare'">레어</p>
-                    <p v-if="value.rarity === 'super-rare'">슈퍼 레어</p>
-                    <p v-if="value.rarity === 'uber-rare'">울트라 슈퍼 레어</p>
-                    <p v-if="value.rarity === 'legend-rare'">레전드 레어</p>
-                </div>
-                <div class="hp">
-                    <p>체력 / 히트백</p>
-                    <p>{{value.hp * level}} / {{value.hit_back}}</p>
-                </div>
-                <div class="attack-power">
-                    <p>공격력</p>
-                    <p>{{value.attack_power}}</p>
-                </div>
-                <div class="move-speed">
-                    <p>이동속도</p>
-                    <p>{{value.move_speed}}</p>
-                </div>
-                <div class="produce-speed">
-                    <p>생산속도</p>
-                    <p>{{value.produce_speed}}</p>
-                </div>
-                <div class="attack-speed">
-                    <p>선딜 / 공격 주기</p>
-                    <p>{{value.attack_speed}} / {{value.attack_freq}}</p>
-                </div>
-                <div class="attack-range">
-                    <p>사거리</p>
-                    <p>{{value.attack_range}}</p>
-                </div>
-                <div class="cost">
-                    <p>가격</p>
-                    <p>{{value.cost}}</p>
-                </div>
-                <div class="property">
-                    <p>능력</p>
-                    <div class="property-text">
-                        <p v-for="item in value.property.split('/')" :key="item">{{item.split(',')[1]}}</p>
-                    </div>
-                </div>
-                <div class="instinct" v-if="value.instinct !== ''">
-                    <p>본능</p>
-                    <div class="instinct-text">
-                        <p v-for="item in value.instinct.split('/')" :key="item">{{item.split(',')[1]}}</p>
-                    </div>
-                </div>
+                <table border="1" class="info">
+                    <tr>
+                        <th>레벨</th>
+                        <td class="level">
+                            <input type="number" v-model="level" class="level-input">
+                        </td>
+                        <th>레어도</th>
+                        <td v-if="value.rarity === 'normal'">기본 캐릭터</td>
+                        <td v-if="value.rarity === 'special'">EX 캐릭터</td>
+                        <td v-if="value.rarity === 'rare'">레어</td>
+                        <td v-if="value.rarity === 'super-rare'">슈퍼 레어</td>
+                        <td v-if="value.rarity === 'uber-rare'">울트라 슈퍼 레어</td>
+                        <td v-if="value.rarity === 'legend-rare'">레전드 레어</td>
+                        <th>가격</th>
+                        <td>{{value.cost}}</td>
+                    </tr>
+                    <tr>
+                        <th>체력</th>
+                        <td>{{value.hp}}</td>
+                        <th>히트백</th>
+                        <td>{{value.hit_back}}</td>
+                        <th>공격력</th>
+                        <td>{{value.attack_power}}</td>
+                    </tr>
+                    <tr>
+                        <th>DPS (초당 공격력)</th>
+                        <td>{{Math.round(value.attack_power / (value.attack_freq / 30))}}</td>
+                        <th>공격속도 (선딜)</th>
+                        <td>{{value.attack_speed}}</td>
+                        <th>공격주기</th>
+                        <td>{{value.attack_freq}}</td>
+                    </tr>
+                    <tr>
+                        <th>이동속도</th>
+                        <td>{{value.move_speed}}</td>
+                        <th>생산속도</th>
+                        <td>{{value.produce_speed}}</td>
+                        <th>사거리</th>
+                        <td>{{value.attack_range}}</td>
+                    </tr>
+                    <tr v-if="value.property !== ''">
+                        <th>능력</th>
+                        <td colspan="5">
+                            <p v-for="item in value.property.split('/')" :key="item">{{item.split(',')[1]}}</p>
+                        </td>
+                    </tr>
+                    <tr v-if="value.instinct !== ''">
+                        <th>본능</th>
+                        <td colspan="5">
+                            <p v-for="item in value.instinct.split('/')" :key="item">{{item.split(',')[1]}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>인게임 설명</th>
+                        <td colspan="5">{{value.description}}</td>
+                    </tr>
+                </table>
             </article>
         </div>
       </section>
@@ -120,15 +149,33 @@ export default {
     data() {
         return {
             unitData: [],
-            level: 1,
+            oneLevel: 1,
+            twoLevel: 2,
+            threeLevel: 3,
         }
     },
     async mounted() {
+        let toggleArea = document.querySelector('.element-toggle');
+        let toggleBtn = document.querySelector('.toggleBtn');
+        let elements = document.querySelector('.treasure');
+
+        toggleArea.addEventListener('click', function() {
+            if(toggleBtn.className.includes('isUp')) {
+                toggleBtn.classList.add('isDown');
+                toggleBtn.classList.remove('isUp');
+                elements.style.display = 'none';
+            } else if(toggleBtn.className.includes('isDown')) {
+                toggleBtn.classList.add('isUp');
+                toggleBtn.classList.remove('isDown');
+                elements.style.display = 'block';
+            }
+        });
+        
         let unitId = this.$route.params.unitData.split('-')[0];
         
         let { data } = await axios.get(`${DOMAIN}/unit_data_id/${unitId}`);
         this.unitData = data;
-    },
+    }
 }
 </script>
 
@@ -138,14 +185,14 @@ main {
 }
 
 section {
-    width: 50%;
+    width: 40%;
     margin: 0 auto;
     font-size: 1.5em;
 }
 
 .content {
     display: grid;
-    grid-template-rows: 25% 75%;
+    grid-template-rows: 10% 25% 65%;
     border: 2px solid #000000;
     margin: 0.5vh 0;
     height: 50vh;
@@ -154,11 +201,13 @@ section {
 
 .images {
     width: 100%;
+    height: 100%;
     min-height: 120px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-bottom: 2px solid #000000;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
 }
 
 img {
@@ -179,19 +228,57 @@ img {
     width: 7%;
 }
 
-.texts {
-    display: grid;
+table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border-collapse: collapse;
 }
 
-.level, .id, .name, .description, .rarity, .hp, .attack-power, .move-speed, .produce-speed, .attack-speed, .attack-range, .cost, .property {
-    display: grid;
-    grid-template-columns: 10% 90%;
+th {
+    font-size: 1.2em;
+    width: 15%;
 }
 
-.level input {
-    font-size: 0.7em;
-    width: 5%;
-    height: 80%;
-    min-width: 50px;
+td {
+    width: 15%;
+}
+
+input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-size: 1em;
+}
+
+.element-toggle {
+  height: 4vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #e6ac31; */
+  border: 1px solid #000000;
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+}
+
+.toggleBtn {
+  width: 0;
+  height: 0;
+  border-left: 1vw solid transparent;
+  border-right: 1vw solid transparent;
+}
+
+.isUp {
+  border-bottom: 1vw solid black;
+}
+
+.isDown {
+  border-top: 1vw solid black;
+}
+
+.treasure {
+    display: none;
 }
 </style>

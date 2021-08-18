@@ -81,6 +81,7 @@
         <div class="search-area">
           <input type="text" class="search-form" @input="enterUnitSearch($event)">
           <img src="./../assets/temp/search_icon.png" alt="" class="searchBtn">
+          <input type="checkbox" class="including">
         </div>
       </div>
       <router-link to="" class="element-toggle">
@@ -311,5 +312,9 @@ article {
   width: 3.5%;
   margin-left: 1vw;
   border-radius: 25%;
+}
+
+.including {
+  
 }
 </style>
