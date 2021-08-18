@@ -20,6 +20,10 @@ public class UnitDataService {
 		return dao.selectAllUnitData();
 	}
 	
+	public List<UnitDataVO> selectSearchIncludeUnitData(Map<String, ArrayList<String>> map) {
+		return dao.selectSearchIncludeUnitData(map);
+	}
+	
 	public List<UnitDataVO> selectSearchUnitData(Map<String, ArrayList<String>> map) {
 		return dao.selectSearchUnitData(map);
 	}

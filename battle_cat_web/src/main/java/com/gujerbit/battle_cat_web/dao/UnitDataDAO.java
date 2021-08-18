@@ -13,6 +13,8 @@ public interface UnitDataDAO {
 	
 	public List<UnitDataVO> selectAllUnitData();
 	
+	public List<UnitDataVO> selectSearchIncludeUnitData(Map<String, ArrayList<String>> map);
+	
 	public List<UnitDataVO> selectSearchUnitData(Map<String, ArrayList<String>> map);
 	
 	public List<UnitDataVO> selectNameUnitData(String unitName);

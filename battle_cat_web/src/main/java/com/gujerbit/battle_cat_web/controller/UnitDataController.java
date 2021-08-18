@@ -38,6 +38,35 @@ public class UnitDataController {
 		return list;
 	}
 	
+	@GetMapping("/unit_data_search_include/{searchData}")
+	public @ResponseBody List<UnitDataVO> getSearchIncludeUnitData(@PathVariable String[] searchData) {
+		ArrayList<String> propertys = new ArrayList<>();
+		ArrayList<String> raritys = new ArrayList<>();
+		ArrayList<String> targets = new ArrayList<>();
+		ArrayList<String> attackTypes = new ArrayList<>();
+		
+		for(String value : searchData) {
+			if(value.contains("rarity_")) {
+				raritys.add(value.substring(7));
+			} else if(value.contains("target_") && !value.contains("target_only")) {
+				targets.add(value.substring(7));
+			} else if(value.contains("attack_type_")) {
+				attackTypes.add(value.substring(12));
+			} else {
+				propertys.add(value);
+			}
+		}
+		
+		Map<String, ArrayList<String>> map = new HashMap<>();
+		map.put("propertys", propertys);
+		map.put("raritys", raritys);
+		map.put("targets", targets);
+		map.put("attackTypes", attackTypes);
+		List<UnitDataVO> list = service.selectSearchIncludeUnitData(map);
+		
+		return list;
+	}
+	
 	@GetMapping("/unit_data_search/{searchData}")
 	public @ResponseBody List<UnitDataVO> getSearchUnitData(@PathVariable String[] searchData) {
 		ArrayList<String> propertys = new ArrayList<>();

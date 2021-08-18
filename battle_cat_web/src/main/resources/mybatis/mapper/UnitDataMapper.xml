@@ -7,7 +7,7 @@
 		SELECT * FROM unit_data
 	</select>
 	
-	<select id="selectSearchUnitData" resultType="UnitDataVO">
+	<select id="selectSearchIncludeUnitData" resultType="UnitDataVO">
 		SELECT * FROM unit_data
 		<where>
 			<if test="propertys.size() != 0">
@@ -31,6 +31,36 @@
 			<if test="attackTypes.size() != 0">
 				OR attack_type
 				<foreach collection="attackTypes" item="item" open="LIKE " separator="OR attack_type LIKE ">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectSearchUnitData" resultType="UnitDataVO">
+		SELECT * FROM unit_data
+		<where>
+			<if test="propertys.size() != 0">
+				property
+				<foreach collection="propertys" item="item" open="LIKE " separator="AND property LIKE ">
+					CONCAT('%',#{item},'%')
+				</foreach>
+			</if>
+			<if test="raritys.size() != 0">
+				AND rarity
+				<foreach collection="raritys" item="item" open="LIKE " separator="AND rarity LIKE ">
+					#{item}
+				</foreach>
+			</if>
+			<if test="targets.size() != 0">
+				AND target
+				<foreach collection="targets" item="item" open="LIKE " separator="AND target LIKE ">
+					CONCAT('%',#{item},'%')
+				</foreach>
+			</if>
+			<if test="attackTypes.size() != 0">
+				AND attack_type
+				<foreach collection="attackTypes" item="item" open="LIKE " separator="AND attack_type LIKE ">
 					#{item}
 				</foreach>
 			</if>

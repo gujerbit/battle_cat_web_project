@@ -80,8 +80,10 @@
         </article>
         <div class="search-area">
           <input type="text" class="search-form" @input="enterUnitSearch($event)">
-          <img src="./../assets/temp/search_icon.png" alt="" class="searchBtn">
-          <input type="checkbox" class="including">
+          <div class="include-area">
+            <p class="include-text">포함</p>
+            <img src="./../assets/temp/search_icon.png" alt="" class="includingBtn" @click="menuControl($event)">
+          </div>
         </div>
       </div>
       <router-link to="" class="element-toggle">
@@ -102,7 +104,8 @@ export default {
   data() {
     return {
       searchData: [],
-      unitData: []
+      unitData: [],
+      including: true,
     }
   },
   async mounted() {
@@ -156,19 +159,38 @@ export default {
           }
         }
       } else {
-        if(select) {
-          this.searchData.push(element);
-          event.currentTarget.classList.remove('unselect');
+        if(!event.currentTarget.className.includes('includingBtn')) {
+          if(select) {
+            this.searchData.push(element);
+            event.currentTarget.classList.remove('unselect');
+          } else {
+            let tempList = this.searchData.filter(data => data != element);
+            this.searchData = tempList;
+            event.currentTarget.classList.add('unselect');
+          }
         } else {
-          let tempList = this.searchData.filter(data => data != element);
-          this.searchData = tempList;
-          event.currentTarget.classList.add('unselect');
+          let includeText = event.currentTarget.parentNode.firstChild;
+
+          if(select) {
+            includeText.innerHTML = '포함';
+            event.currentTarget.classList.remove('unselect');
+            this.including = true;
+          } else {
+            includeText.innerHTML = '미포함';
+            event.currentTarget.classList.add('unselect');
+            this.including = false;
+          }
         }
       }
 
       if(this.searchData.length !== 0) {
-        let { data } = await axios.get(`${DOMAIN}/unit_data_search/${this.searchData}`);
-        this.unitData = data;
+        if(this.including) {
+          let { data } = await axios.get(`${DOMAIN}/unit_data_search_include/${this.searchData}`);
+          this.unitData = data;
+        } else {
+          let { data } = await axios.get(`${DOMAIN}/unit_data_search/${this.searchData}`);
+          this.unitData = data;
+        }
       } else {
         let { data } = await axios.get(`${DOMAIN}/unit_data`);
         this.unitData = data;
@@ -188,7 +210,7 @@ export default {
   },
   components: {
     contentComponent,
-  }
+  },
 }
 </script>
 
@@ -291,14 +313,14 @@ article {
 .search-area {
   display: flex;
   align-items: center;
-  padding-bottom: 2vh;
   border: 2px solid #000000;
   border-top: none;
   border-bottom: none;
+  padding-bottom: 0.5vh;
 }
 
 .search-form {
-  height: 100%;
+  height: 90%;
   width: 90%;
   margin-left: 0.5vw;
   border: 2px solid #000000;
@@ -308,13 +330,21 @@ article {
   text-align: center;
 }
 
-.searchBtn {
-  width: 3.5%;
-  margin-left: 1vw;
-  border-radius: 25%;
+.include-area {
+  display: grid;
+  grid-template-rows: 30% 70%;
+  justify-items: center;
 }
 
-.including {
-  
+.includingBtn {
+  width: 40%;
+  border-radius: 25%;
+  margin-top: 0.4vh;
+  cursor: pointer;
+}
+
+.include-text {
+  text-align: center;
+  font-size: 1.5em;
 }
 </style>

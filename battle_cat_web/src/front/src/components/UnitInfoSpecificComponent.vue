@@ -1,35 +1,5 @@
 <template>
   <main>
-      <section class="elements">
-          <div class="treasure-info">
-              <table class="treasure" border="1">
-                  <tr>
-                      <th colspan="2">보물</th>
-                  </tr>
-                  <tr>
-                      <th>세계편</th>
-                      <td>
-                          <input type="number">
-                      </td>
-                  </tr>
-                  <tr>
-                      <th>미래편</th>
-                      <td>
-                          <input type="number">
-                      </td>
-                  </tr>
-                  <tr>
-                      <th>우주편</th>
-                      <td>
-                          <input type="number">
-                      </td>
-                  </tr>
-              </table>
-              <router-link to="" class="element-toggle">
-                  <div class="toggleBtn isDown" />
-              </router-link>
-          </div>
-      </section>
       <section>
           <div class="content" v-for="value in unitData" :key="value">
             <article class="basic-info">
@@ -81,7 +51,9 @@
                     <tr>
                         <th>레벨</th>
                         <td class="level">
-                            <input type="number" v-model="level" class="level-input">
+                            <input type="number" v-model="oneLevel" class="level-input" v-if="value.id.split('-')[1] === '0'">
+                            <input type="number" v-model="twoLevel" class="level-input" v-if="value.id.split('-')[1] === '1'">
+                            <input type="number" v-model="threeLevel" class="level-input" v-if="value.id.split('-')[1] === '2'">
                         </td>
                         <th>레어도</th>
                         <td v-if="value.rarity === 'normal'">기본 캐릭터</td>
@@ -95,25 +67,40 @@
                     </tr>
                     <tr>
                         <th>체력</th>
-                        <td>{{value.hp}}</td>
+                        <td v-if="value.id.split('-')[1] === '0' && oneLevel <= 60">{{(value.hp * (((oneLevel - 1) * 0.2) + 1)).toFixed(0)}}</td>
+                        <td v-if="value.id.split('-')[1] === '0' && oneLevel > 60">{{(value.hp * (((oneLevel - (1 + (oneLevel % 60) / 2)) * 0.2) + 1)).toFixed(0)}}</td>
+                        <td v-if="value.id.split('-')[1] === '1' && twoLevel <= 60">{{(value.hp * (((twoLevel - 1) * 0.2) + 1)).toFixed(0)}}</td>
+                        <td v-if="value.id.split('-')[1] === '1' && twoLevel > 60">{{(value.hp * (((twoLevel - (1 + (twoLevel % 60) / 2)) * 0.2) + 1)).toFixed(0)}}</td>
+                        <td v-if="value.id.split('-')[1] === '2' && threeLevel <= 60">{{(value.hp * (((threeLevel - 1) * 0.2) + 1)).toFixed(0)}}</td>
+                        <td v-if="value.id.split('-')[1] === '2' && threeLevel > 60">{{(value.hp * (((threeLevel - (1 + (threeLevel % 60) / 2)) * 0.2) + 1)).toFixed(0)}}</td>
+                        <th>공격력</th>
+                        <td v-if="value.id.split('-')[1] === '0' && oneLevel <= 60">{{(value.attack_power * (((oneLevel - 1) * 0.2) + 1)).toFixed(0)}}</td>
+                        <td v-if="value.id.split('-')[1] === '0' && oneLevel > 60">{{(value.attack_power * (((oneLevel - (1 + (oneLevel % 60) / 2)) * 0.2) + 1)).toFixed(0)}}</td>
+                        <td v-if="value.id.split('-')[1] === '1' && twoLevel <= 60">{{(value.attack_power * (((twoLevel - 1) * 0.2) + 1)).toFixed(0)}}</td>
+                        <td v-if="value.id.split('-')[1] === '1' && twoLevel > 60">{{(value.attack_power * (((twoLevel - (1 + (twoLevel % 60) / 2)) * 0.2) + 1)).toFixed(0)}}</td>
+                        <td v-if="value.id.split('-')[1] === '2' && threeLevel <= 60">{{(value.attack_power * (((threeLevel - 1) * 0.2) + 1)).toFixed(0)}}</td>
+                        <td v-if="value.id.split('-')[1] === '2' && threeLevel > 60">{{(value.attack_power * (((threeLevel - (1 + (threeLevel % 60) / 2)) * 0.2) + 1)).toFixed(0)}}</td>
+                        <th>DPS (초당 공격력)</th>
+                        <td v-if="value.id.split('-')[1] === '0' && oneLevel <= 60">{{Math.round((value.attack_power * (((oneLevel - 1) * 0.2) + 1)).toFixed(0) / (value.attack_freq / 30))}}</td>
+                        <td v-if="value.id.split('-')[1] === '0' && oneLevel > 60">{{Math.round((value.attack_power * (((oneLevel - (1 + (oneLevel % 60) / 2)) * 0.2) + 1)).toFixed(0) / (value.attack_freq / 30))}}</td>
+                        <td v-if="value.id.split('-')[1] === '1' && twoLevel <= 60">{{Math.round((value.attack_power * (((twoLevel - 1) * 0.2) + 1)).toFixed(0) / (value.attack_freq / 30))}}</td>
+                        <td v-if="value.id.split('-')[1] === '1' && twoLevel > 60">{{Math.round((value.attack_power * (((twoLevel - (1 + (twoLevel % 60) / 2)) * 0.2) + 1)).toFixed(0) / (value.attack_freq / 30))}}</td>
+                        <td v-if="value.id.split('-')[1] === '2' && threeLevel <= 60">{{Math.round((value.attack_power * (((threeLevel - 1) * 0.2) + 1)).toFixed(0) / (value.attack_freq / 30))}}</td>
+                        <td v-if="value.id.split('-')[1] === '2' && threeLevel > 60">{{Math.round((value.attack_power * (((threeLevel - (1 + (threeLevel % 60) / 2)) * 0.2) + 1)).toFixed(0) / (value.attack_freq / 30))}}</td>
+                    </tr>
+                    <tr>
+                        <th>공격속도 (선딜)</th>
+                        <td>{{value.attack_speed}}f ({{(value.attack_speed / 30).toFixed(2)}}초)</td>
+                        <th>공격주기</th>
+                        <td>{{value.attack_freq}}f ({{(value.attack_freq / 30).toFixed(2)}}초)</td>
+                        <th>생산속도</th>
+                        <td>{{value.produce_speed}}f ({{(value.produce_speed / 30).toFixed(2)}}초)</td>
+                    </tr>
+                    <tr>
                         <th>히트백</th>
                         <td>{{value.hit_back}}</td>
-                        <th>공격력</th>
-                        <td>{{value.attack_power}}</td>
-                    </tr>
-                    <tr>
-                        <th>DPS (초당 공격력)</th>
-                        <td>{{Math.round(value.attack_power / (value.attack_freq / 30))}}</td>
-                        <th>공격속도 (선딜)</th>
-                        <td>{{value.attack_speed}}</td>
-                        <th>공격주기</th>
-                        <td>{{value.attack_freq}}</td>
-                    </tr>
-                    <tr>
                         <th>이동속도</th>
                         <td>{{value.move_speed}}</td>
-                        <th>생산속도</th>
-                        <td>{{value.produce_speed}}</td>
                         <th>사거리</th>
                         <td>{{value.attack_range}}</td>
                     </tr>
@@ -150,27 +137,11 @@ export default {
         return {
             unitData: [],
             oneLevel: 1,
-            twoLevel: 2,
-            threeLevel: 3,
+            twoLevel: 10,
+            threeLevel: 30,
         }
     },
     async mounted() {
-        let toggleArea = document.querySelector('.element-toggle');
-        let toggleBtn = document.querySelector('.toggleBtn');
-        let elements = document.querySelector('.treasure');
-
-        toggleArea.addEventListener('click', function() {
-            if(toggleBtn.className.includes('isUp')) {
-                toggleBtn.classList.add('isDown');
-                toggleBtn.classList.remove('isUp');
-                elements.style.display = 'none';
-            } else if(toggleBtn.className.includes('isDown')) {
-                toggleBtn.classList.add('isUp');
-                toggleBtn.classList.remove('isDown');
-                elements.style.display = 'block';
-            }
-        });
-        
         let unitId = this.$route.params.unitData.split('-')[0];
         
         let { data } = await axios.get(`${DOMAIN}/unit_data_id/${unitId}`);
@@ -236,7 +207,7 @@ table {
 }
 
 th {
-    font-size: 1.2em;
+    font-size: 1.15em;
     width: 15%;
 }
 
@@ -250,35 +221,5 @@ input {
     border: none;
     text-align: center;
     font-size: 1em;
-}
-
-.element-toggle {
-  height: 4vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* background-color: #e6ac31; */
-  border: 1px solid #000000;
-  border-top: none;
-  border-radius: 0 0 20px 20px;
-}
-
-.toggleBtn {
-  width: 0;
-  height: 0;
-  border-left: 1vw solid transparent;
-  border-right: 1vw solid transparent;
-}
-
-.isUp {
-  border-bottom: 1vw solid black;
-}
-
-.isDown {
-  border-top: 1vw solid black;
-}
-
-.treasure {
-    display: none;
 }
 </style>
