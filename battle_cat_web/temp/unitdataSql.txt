@@ -1,0 +1,79 @@
+id - 고유 번호
+name - 캐릭터 이름
+explanation - 캐릭터 설명
+rarity - 캐릭터 등급
+image_code - 이미지 경로
+hp - 체력
+hit_back - 히트백
+attack_power - 공격력
+move_speed - 이동 속도
+produce_speed - 생산 속도
+attack_speed - 선딜
+attack_frequency - 후딜
+attack_range - 사거리
+cost - 비용
+attack_type_single - 해당 유닛은 개체 공격을 하는가?
+attack_type_multi - 해당 유닛은 범위 공격을 하는가?
+attack_type_long - 해당 유닛은 원거리 공격을 하는가?
+attack_type_wide - 해당 유닛은 전방위 공격을 하는가?
+start_damage_range - 공격 범위 시작
+end_damage_range - 공격 범위 끝
+target_red - 빨간 적 대항인가?
+target_fly - 떠있는 적 대항인가?
+target_black - 검은 적 대항인가?
+target_metal - 메탈 적 대항인가?
+target_angel - 천사 대항인가?
+target_alien - 에이리언 대항인가?
+target_zombie - 좀비 대항인가?
+target_ancient - 고대종 대항인가?
+target_none - 속성이 없는 적 대항인가?
+attack_power_down - 공격력 다운을 시키는가?
+attack_power_down_prob - 공격력 다운 시킬 확률
+attack_power_down_ratio - 공격력 다운 비율
+attack_power_down_time - 공격력 다운 시간
+stop - 정지를 시키는가?
+stop_prob - 정지 확률
+stop_time - 정지 시간
+slow - 느려지게 하는가?
+slow_prob - 느려지게 하는 확률
+slow_time - 느려지게 하는 시간
+target_only - 해당 타겟만 공격할 수 있는가?
+strength - 엄청 강하다 효과가 있는가?
+hard - 맷집이 좋다 효과가 있는가?
+ultimate_hard - 초맷집이 좋다 효과가 있는가?
+super_damage - 초데미지를 주는가?
+ultimate_damage - 극데미지를 주는가?
+knock_back - 날려버리는가?
+knock_back_prob - 날려버리는 확률
+ancient_curse - 고대의 저주를 거는가?
+ancient_curse_prob - 고대의 저주를 걸 확률
+ancient_curse_time - 고대의 저주 시간
+attack_invalid - 공격 무효를 하는가?
+attack_invalid_prob - 공격 무효를 할 확률
+attack_invalid_time - 공격 무효 시간
+attack_power_up - 체력 저하로 공격력이 증가하는가?
+hp_down_ratio - 공격력이 증가하는 체력 비율
+attack_power_up_ratio - 공격력이 얼마나 오르는지
+survive - 죽었을 때 피 1로 다시 살아나는가?
+survive_prob - 살아남기 확률
+ultimate_base_crash - 성 파괴가 특기인가?
+critical - 크리티컬을 발생시키는가?
+critical_prob - 크리티컬 발생 확률
+zombie_killer - 좀비킬러인가?
+barrier_breaker - 베리어 브레이커인가?
+barrier_breaker_prob - 베리어 브레이크 확률
+soul_attack - 혼신의 일격을 하는가?
+soul_attack_prob - 혼신의 일격 확률
+more_money - 적 처치시 돈을 2배로 얻는가?
+metal - 메탈 속성인가?
+mini_wave - 소파동을 발사하는가?
+mini_wave_prob - 소파동 발사 확률
+mini_wave_level - 소파동 레벨
+wave - 파동을 발사하는가?
+wave_prob - 파동 발사 확률
+wave_level - 파동 레벨
+thermal_wave - 열파를 발사하는가?
+thermal_wave_prob - 열파 발사 확률
+thermal_wave_level - 열파 레벨
+thermal_wave_range_start - 열파 생성 시작 범위
+thermal_wave_range_end - 열파 생성 끝 범위

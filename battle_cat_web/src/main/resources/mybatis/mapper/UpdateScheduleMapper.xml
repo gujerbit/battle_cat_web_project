@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gujerbit.battle_cat_web.dao.UpdateScheduleDAO">
+	<select id="selectUpdateScheduleData" resultType="UpdateScheduleVO">
+		SELECT * FROM update_schedule
+		ORDER BY CONVERT(version, SIGNED INTEGER) DESC
+		LIMIT #{limit}, 5
+	</select>
+	
+	<select id="selectUpdateScheduleSizeData" resultType="int">
+		SELECT COUNT(id) FROM update_schedule
+	</select>
+</mapper>

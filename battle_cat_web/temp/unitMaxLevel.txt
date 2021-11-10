@@ -1,0 +1,7 @@
+normal 110
+ex-drop 40
+ex 50
+rare 130
+super 120
+uber 120
+legend 59

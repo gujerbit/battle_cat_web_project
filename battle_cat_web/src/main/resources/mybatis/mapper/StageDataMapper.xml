@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gujerbit.battle_cat_web.dao.StageDataDAO">
+	<select id="selectAllWorldStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation = '세계편'
+		</where>
+	</select>
+	
+	<select id="selectAllFutureStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation = '미래편'
+		</where>
+	</select>
+	
+	<select id="selectAllSpaceStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation = '우주편'
+		</where>
+	</select>
+	
+	<select id="selectAllLegendStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '레전드 스토리%'
+		</where>
+	</select>
+	
+	<select id="selectAllOriginLegendStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '신레전드 스토리%'
+		</where>
+	</select>
+	
+	<select id="selectEventStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '이벤트 스테이지%'
+		</where>
+	</select>
+	
+	<select id="selectGuerrillaStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '게릴라 스테이지%'
+		</where>
+	</select>
+	
+	<select id="selectWeekStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '요일 스테이지%' AND
+			SUBSTRING_INDEX(SUBSTRING_INDEX(sortation, '/', 1), '.', -1) LIKE #{week}
+		</where>
+	</select>
+	
+	<select id="selectDropStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '드롭 스테이지%'
+		</where>
+	</select>
+	
+	<select id="selectAdventStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '강림 스테이지%'
+		</where>
+	</select>
+	
+	<select id="selectCrazyStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '광란 스테이지%'
+		</where>
+	</select>
+	
+	<select id="selectCycloneStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '사이클론 스테이지%'
+		</where>
+	</select>
+	
+	<select id="selectArousalStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '각성 스테이지%'
+		</where>
+	</select>
+	
+	<select id="selectExcavationStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE '발굴 스테이지%' AND
+			SUBSTRING_INDEX(SUBSTRING_INDEX(sortation, '/', 1), '.', -1) LIKE #{grade}
+		</where>
+	</select>
+	
+	<select id="selectIdStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			SUBSTR(id, 1, 1) = #{sortation} AND
+			IF(CHAR_LENGTH(SUBSTRING_INDEX(id, '-', -1)) = 2 OR CHAR_LENGTH(SUBSTRING_INDEX(id, '-', -1)) = 3,
+			SUBSTR(SUBSTRING_INDEX(id, '-', -1), 1, 1) LIKE #{stage},
+			IF(CHAR_LENGTH(SUBSTRING_INDEX(id, '-', -1)) = 4,
+			SUBSTR(SUBSTRING_INDEX(id, '-', -1), 1, 2) LIKE #{stage},
+			SUBSTR(SUBSTRING_INDEX(id, '-', -1), 1, 3) LIKE #{stage}))
+		</where>
+	</select>
+	
+	<select id="selectNameStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		<where>
+			sortation LIKE CONCAT(#{sortation},'%') AND
+			(name LIKE CONCAT('%',#{name},'%') OR
+			SUBSTRING_INDEX(SUBSTRING_INDEX(sortation, '/', 2), '/', -1) LIKE CONCAT('%',#{name},'%'))
+		</where>
+	</select>
+</mapper>

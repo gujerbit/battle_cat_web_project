@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gujerbit.battle_cat_web.dao.UserDAO">
+
+	<select id="login" resultType="string">
+		SELECT name FROM user_data
+		<where>
+			id = #{id}
+			AND
+			password = #{password}
+		</where>
+	</select>
+	
+	<insert id="register">
+		INSERT INTO user_data VALUES(#{id}, #{password}, #{name}, #{code}, #{grade}, #{salt})
+	</insert>
+	
+	<select id="selectSalt" resultType="string">
+		SELECT salt FROM user_data
+		<where>
+			id = #{id}
+		</where>
+	</select>
+	
+	<select id="selectID" resultType="string">
+		SELECT id FROM user_data
+		<where>
+			id = #{id}
+		</where>
+	</select>
+
+</mapper>

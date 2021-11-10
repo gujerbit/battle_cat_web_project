@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gujerbit.battle_cat_web.dao.EnemyDataDAO">
+	<select id="selectAllEnemyData" resultType="EnemyDataVO">
+		SELECT * FROM enemy_data
+	</select>
+	
+	<select id="selectSearchIncludeEnemyData" resultType="EnemyDataVO">
+		SELECT * FROM enemy_data
+		<where>
+			<foreach collection="propertys" item="item" close="OR" separator="OR">
+				SUBSTRING_INDEX(property, ',', 1) LIKE #{item} OR property LIKE CONCAT('%/',#{item},',%')
+			</foreach>
+			target
+			<foreach collection="targets" item="item" open="LIKE " separator="OR target LIKE ">
+				CONCAT('%',#{item},'%')
+			</foreach>
+			OR attack_type
+			<foreach collection="attackTypes" item="item" open="LIKE " separator="OR attack_type LIKE ">
+				#{item}
+			</foreach>
+		</where>
+	</select>
+	
+	<select id="selectSearchEnemyData" resultType="EnemyDataVO">
+		SELECT * FROM enemy_data
+		<where>
+			<if test="propertys.size() != 0">
+				<foreach collection="propertys" item="item" separator="AND">
+					IF(SUBSTRING_INDEX(property, ',', 1) LIKE #{item} OR property LIKE CONCAT('%/',#{item},',%'),
+					SUBSTRING_INDEX(property, ',', 1) LIKE #{item} OR property LIKE CONCAT('%/',#{item},',%'),
+					'')
+				</foreach>
+			</if>
+			<if test="targets.size() != 0">
+				AND target
+				<foreach collection="targets" item="item" open="LIKE " separator="AND target LIKE ">
+					CONCAT('%',#{item},'%')
+				</foreach>
+			</if>
+			<if test="attackTypes.size() != 0">
+				AND attack_type
+				<foreach collection="attackTypes" item="item" open="LIKE " separator="AND attack_type LIKE ">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectNameSearchIncludeEnemyData" resultType="EnemyDataVO">
+		SELECT * FROM enemy_data
+		<where>
+			(<foreach collection="propertys" item="item" close="OR" separator="OR">
+				SUBSTRING_INDEX(property, ',', 1) LIKE #{item} OR property LIKE CONCAT('%/',#{item},',%')
+			</foreach>
+			target
+			<foreach collection="targets" item="item" open="LIKE " separator="OR target LIKE ">
+				CONCAT('%',#{item},'%')
+			</foreach>
+			OR attack_type
+			<foreach collection="attackTypes" item="item" open="LIKE " separator="OR attack_type LIKE ">
+				#{item}
+			</foreach>)
+			AND (id
+			<foreach collection="unitName" item="item" open="LIKE ">
+				CONCAT('%',#{item},'%')
+			</foreach>
+			OR name
+			<foreach collection="unitName" item="item" open="LIKE ">
+				CONCAT('%',#{item},'%')
+			</foreach>)
+		</where>
+	</select>
+	
+	<select id="selectNameSearchEnemyData" resultType="EnemyDataVO">
+		SELECT * FROM enemy_data
+		<where>
+			<if test="propertys.size() != 0">
+				<foreach collection="propertys" item="item" separator="AND">
+					IF(SUBSTRING_INDEX(property, ',', 1) LIKE #{item} OR property LIKE CONCAT('%/',#{item},',%'),
+					SUBSTRING_INDEX(property, ',', 1) LIKE #{item} OR property LIKE CONCAT('%/',#{item},',%'),
+					'')
+				</foreach>
+			</if>
+			<if test="targets.size() != 0">
+				AND target
+				<foreach collection="targets" item="item" open="LIKE " separator="AND target LIKE ">
+					CONCAT('%',#{item},'%')
+				</foreach>
+			</if>
+			<if test="attackTypes.size() != 0">
+				AND attack_type
+				<foreach collection="attackTypes" item="item" open="LIKE " separator="AND attack_type LIKE ">
+					#{item}
+				</foreach>
+			</if>
+			AND (id
+			<foreach collection="unitName" item="item" open="LIKE ">
+				CONCAT('%',#{item},'%')
+			</foreach>
+			OR name
+			<foreach collection="unitName" item="item" open="LIKE ">
+				CONCAT('%',#{item},'%')
+			</foreach>)
+		</where>
+	</select>
+	
+	<select id="selectNameEnemyData" resultType="EnemyDataVO">
+		SELECT * FROM enemy_data
+		<where>
+			id LIKE CONCAT('%',#{unitName},'%')
+			OR
+			name LIKE CONCAT('%',#{unitName},'%')
+		</where>
+	</select>
+	
+	<select id="selectIdEnemyData" resultType="EnemyDataVO">
+		SELECT * FROM enemy_data
+		<where>
+			id = #{unitId}
+		</where>
+	</select>
+</mapper>

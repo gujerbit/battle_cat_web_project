@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gujerbit.battle_cat_web.dao.ScheduleDAO">
+	
+	<select id="selectDailySchedule" resultType="DailyScheduleVO">
+		SELECT * FROM daily_schedule
+	</select>
+	
+	<select id="selectEventSchedule" resultType="EventScheduleVO">
+		SELECT * FROM event_schedule
+	</select>
+	
+	<select id="selectGachaSchedule" resultType="GachaScheduleVO">
+		SELECT * FROM gacha_schedule	
+	</select>
+	
+	<select id="selectUpdateSchedule" resultType="UpdateScheduleVO">
+		SELECT * FROM update_schedule
+	</select>
+	
+	<select id="selectPatchNote" resultType="PatchNoteVO">
+		SELECT * FROM patch_note
+	</select>
+	
+</mapper>
