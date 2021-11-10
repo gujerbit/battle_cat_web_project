@@ -9,16 +9,17 @@
 
 <script>
 import { onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
+    const router = useRouter();
+
     onBeforeMount(() => {
-      alert('준비중입니다');
-      location.href = '/';
-      // if(window.sessionStorage.getItem('jwt-auth-token') === null) {
-      //   alert('로그인 후 이용하실 수 있는 시스템입니다');
-      //   location.href = '/login';
-      // }
+      if(window.sessionStorage.getItem('jwt-auth-token') === null) {
+        alert('로그인 후 이용하실 수 있는 시스템입니다');
+        router.push('/login');
+      }
     });
   }
 }

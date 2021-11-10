@@ -18,10 +18,40 @@ function setSearchUnitInfo(value, store) {
   if(value.property.length > 0 || value.rarity.length > 0 || value.target.length > 0 || value.attackType.length > 0) {
     if(value.include) {
       unitInfo.forEach(res => {
-        let resData = ['property', 'instinct', 'target', 'attack_type'];
-        let valueData = ['property', 'property', 'target', 'attackType'];
+        let resData = ['property', 'target', 'attack_type'];
+        let valueData = ['property', 'target', 'attackType'];
 
         for(let i = 0; i < resData.length; i++) includeSetting(res[resData[i]], value[valueData[i]], res, result);
+
+        res.instinct.split('/').forEach(item => {
+          if(item.split(',')[0].split('|').length > 1) {
+            item.split(',')[0].split('|').forEach(content => {
+              if(value.property !== undefined && value.property.length > 0) {
+                value.property.forEach(data => {
+                  if(content === data) result.push(res);
+                });
+              }
+
+              if(value.target !== undefined && value.target.length > 0) {
+                value.target.forEach(data => {
+                  if(content === data) result.push(res);
+                });
+              }
+            });
+          } else {
+            if(value.property !== undefined && value.property.length > 0) {
+              value.property.forEach(content => {
+                if(item.split(',')[0] === content) result.push(res);
+              });
+            }
+
+            if(value.target !== undefined && value.target.length > 0) {
+              value.target.forEach(content => {
+                if(item.split(',')[0] === content) result.push(res);
+              });
+            }
+          }
+        });
 
         value.rarity.forEach(item => {
           if(item === res.rarity) result.push(res);
@@ -42,12 +72,11 @@ function setSearchUnitInfo(value, store) {
         let instinctArr = unitInfo[i].instinct.split('/');
         let combinePropertyArr = [];
 
-        for(let j = 0; j < propertyArr.length; j++) {
-          combinePropertyArr.push(propertyArr[j]);
-        }
+        for(let j = 0; j < propertyArr.length; j++) combinePropertyArr.push(propertyArr[j].split(',')[0]);
 
         for(let j = 0; j < instinctArr.length; j++) {
-          combinePropertyArr.push(instinctArr[j]);
+          if(instinctArr[j].split(',')[0].split('|').length > 1) for(let k = 0; k < instinctArr[j].split(',')[0].split('|').length; k++) combinePropertyArr.push(instinctArr[j].split(',')[0].split('|')[k]);
+          else combinePropertyArr.push(instinctArr[j].split(',')[0]);
         }
 
         if(excludeSetting(combinePropertyArr, value.property).length === 0) result.push(unitInfo[i]);
@@ -68,9 +97,18 @@ function setSearchUnitInfo(value, store) {
       if(value.target.length > 0) {
         unitInfo = result;
         result = [];
-
         for(let i = 0; i < unitInfo.length; i++) {
-          if(excludeSetting(unitInfo[i].target.split('/'), value.target).length === 0) result.push(unitInfo[i]);
+          let instinctArr = unitInfo[i].instinct.split('/');
+          let combinePropertyArr = [];
+
+          for(let j = 0; j < unitInfo[i].target.split('/').length; j++) combinePropertyArr.push(unitInfo[i].target.split('/')[j]);
+
+          for(let j = 0; j < instinctArr.length; j++) {
+            if(instinctArr[j].split(',')[0].split('|').length > 1) for(let k = 0; k < instinctArr[j].split(',')[0].split('|').length; k++) combinePropertyArr.push(instinctArr[j].split(',')[0].split('|')[k]);
+            else combinePropertyArr.push(instinctArr[j].split(',')[0]);
+          }
+
+          if(excludeSetting(combinePropertyArr, value.target).length === 0) result.push(unitInfo[i]);
         }
       }
 
@@ -107,10 +145,12 @@ function includeSetting(data, value, res, result) {
 }
 
 function excludeSetting(arr, value) {
+  console.log(value);
   for(let i = 0; i < arr.length; i++) {
-    let temp = arr[i].split(',').length > 1 ? arr[i].split(',')[0] : arr[i];
+    console.log(arr[i]);
+    // let temp = arr[i].split(',').length > 1 ? arr[i].split(',')[0] : arr[i];
 
-    for(let j = 0; j < value.length; j++) if(temp === value[j]) value = value.filter(res => res !== temp);
+    for(let j = 0; j < value.length; j++) if(arr[i] === value[j]) value = value.filter(res => res !== arr[i]);
   }
 
   return value;

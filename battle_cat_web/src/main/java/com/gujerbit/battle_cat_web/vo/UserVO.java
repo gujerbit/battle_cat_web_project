@@ -11,7 +11,7 @@ import lombok.Data;
 public class UserVO {
 
 	@JsonProperty
-	private String id;
+	private String email;
 	
 	@JsonProperty
 	private String password;

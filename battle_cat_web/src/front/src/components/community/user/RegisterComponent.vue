@@ -16,11 +16,10 @@
           </div>
           <div class="btn-field">
               <button @click="register()" :disabled="tip.id.length + tip.password.length + tip.checkPassword.length + tip.name.length + tip.code.length > 0 || registerInfo.id.length <= 0 || registerInfo.password.length <= 0 || registerInfo.checkPassword.length <= 0 || registerInfo.name.length <= 0 || registerInfo.code.length <= 0 || !registerInfo.idCheck">회원가입</button>
-              <button>
-                  <router-link to="/login">취소</router-link>
-              </button>
+              <router-link to="/login">취소</router-link>
           </div>
       </div>
+      <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
   </main>
 </template>
 
@@ -124,8 +123,6 @@ export default {
         }
 
         onBeforeMount(() => {
-            alert('개편중입니다');
-            location.href = '/';
             // if(window.sessionStorage.getItem('jwt-auth-token') !== null) location.href = '/';
         })
 
@@ -136,96 +133,31 @@ export default {
 
 <style scoped>
 main {
-    width: 100vw;
-    height: 100vh;
-    background-color: #ffffff;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#register {
-    width: 50%;
-    height: 70%;
-    border: 2px solid #000000;
-    border-radius: 10px;
-    display: grid;
-    grid-template-rows: 3fr 1fr;
-}
-
-.input-field {
-    display: grid;
-    grid-template-rows: 1fr 2fr 1fr 2fr 1fr 2fr 1fr 2fr 1fr 2fr;
-    justify-items: center;
-    position: relative;
-}
-
-.input-field input {
-    width: 50%;
-    height: 95%;
-    border: 1px solid #000000;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 2rem;
-    outline: 0;
-    transition: all 1s;
-}
-
-.input-field > input:hover, .btn-field > button:hover, .id-check:hover {
-    transform: scale(105%);
-}
-
-.btn-field {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.btn-field > button {
-    width: 20%;
-    height: 30%;
-    border: 1px solid #000000;
-    border-radius: 10px;
-    outline: 0;
-    transition: all 1s;
-    background-color: #ffffff;
-    margin: 0 5%;
-    cursor: pointer;
-}
-
-button > a {
-    display: flex;
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
 }
 
-button:disabled {
-    opacity: 0.5;
-    cursor:no-drop;
+.main-page {
+  width: 4.5%;
+  height: 100%;
+  border: 2px solid #ffc038;
+  border-left: none;
+  border-radius: 0 15px 15px 0;
+  color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  writing-mode: vertical-lr;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: all 1.5s;
+  font-size: 3rem;
 }
-
-.input-field > p {
-    color: #f11212;
-    font-size: 1.8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.id-check {
-    position: absolute;
-    top: 8%;
-    right: 5%;
-    border: 1px solid #000000;
-    border-radius: 10px;
-    background-color: #ffffff;
-    width: 15%;
-    height: 10%;
-    font-size: 1.8rem;
-    transition: all 1s;
+    
+.main-page:hover {
+  opacity: 1;
 }
 </style>

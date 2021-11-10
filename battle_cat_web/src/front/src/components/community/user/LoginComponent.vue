@@ -12,6 +12,7 @@
                 <router-link to="" @click="preventLocation()">ID/비밀번호를 잊어버리셨나요?</router-link>
             </div>
       </div>
+      <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
   </main>
 </template>
 
@@ -53,14 +54,12 @@ export default {
         };
 
         onBeforeMount(() => {
-            alert('개편중입니다');
-            location.href = '/';
             // if(window.sessionStorage.getItem('jwt-auth-token') !== null) location.href = '/';
             // else window.localStorage.clear();
         });
 
         onMounted(() => {
-            document.querySelector('.id').focus();
+            // document.querySelector('.id').focus();
         });
 
         return { loginInfo, login, preventLocation };
@@ -68,4 +67,4 @@ export default {
 }
 </script>
 
-<style scoped src="../../css/user/loginComponent.css" />
+<style scoped src="../../../css/community/user/loginComponent.css" />
