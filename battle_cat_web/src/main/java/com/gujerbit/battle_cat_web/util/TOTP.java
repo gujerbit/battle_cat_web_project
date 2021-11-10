@@ -2,6 +2,7 @@ package com.gujerbit.battle_cat_web.util;
 
 import java.lang.reflect.UndeclaredThrowableException;
 import java.math.BigInteger;
+import java.util.Random;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TOTP {
 	
-	private final String KEY = "DFO9JdfcZuC3IscpLfhj3XWlXwn0eI9F1iPkPyMzBEQzr0rmwlTcFYlpyXs457MV";
+	private final String KEY = "5a3513700ff8999d0bf64bfcb37d0119c911b4a799ab420ccb852a5706d741d9";
 	private final int[] DIGITS = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000 };
 	
 	public String setOTP(long time, String length) {

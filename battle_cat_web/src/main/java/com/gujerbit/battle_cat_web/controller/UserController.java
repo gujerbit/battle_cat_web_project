@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gujerbit.battle_cat_web.service.MailServiceImpl;
 import com.gujerbit.battle_cat_web.service.SessionServiceImpl;
 import com.gujerbit.battle_cat_web.service.UserServiceImpl;
 import com.gujerbit.battle_cat_web.util.Hashing;
@@ -29,6 +30,9 @@ public class UserController {
 	
 	@Autowired
 	private SessionServiceImpl sessionService;
+	
+	@Autowired
+	private MailServiceImpl mailService;
 	
 	@Autowired
 	private Hashing hashing;
@@ -91,6 +95,11 @@ public class UserController {
 		vo.setSalt(salt);
 		
 		return userService.register(vo);
+	}
+	
+	@PostMapping("/register_code")
+	public @ResponseBody String sendRegisterCode(@RequestBody UserVO vo) {
+		return mailService.mailSend(vo.getEmail());
 	}
 	
 	@PostMapping("/check_id")

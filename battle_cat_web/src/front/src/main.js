@@ -6,8 +6,8 @@ import axios from 'axios';
 import jquery from 'jquery';
 
 const app = createApp(App);
-// axios.defaults.baseURL = 'https://localhost';
-axios.defaults.baseURL = 'https://nyanko-db.shop';
+axios.defaults.baseURL = 'https://localhost';
+// axios.defaults.baseURL = 'https://nyanko-db.shop';
 app.config.globalProperties.axios = axios;
 app.config.globalProperties.store = store;
 app.config.globalProperties.$ = jquery;
