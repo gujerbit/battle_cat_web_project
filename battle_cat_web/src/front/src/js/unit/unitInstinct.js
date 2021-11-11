@@ -6,6 +6,8 @@ function applyInstinct(level, unitData, settingUnitData) {
     if(unitData.value.instinct.instinct.img[i] === 'hp_increase') hpIncrease(i, unitData, settingUnitData);
     if(unitData.value.instinct.instinct.img[i] === 'cost_decrease') costDecrease(i, unitData, settingUnitData);
     if(unitData.value.instinct.instinct.img[i] === 'attack_power_up') attackPowerUp(i, unitData, settingUnitData);
+    if(unitData.value.instinct.instinct.img[i] === 'move_speed_increase') moveSpeedIncrease(i, unitData, settingUnitData);
+    if(unitData.value.instinct.instinct.img[i] === 'produce_speed_increase') produceSpeedIncrease(i, unitData, settingUnitData);
   }
 }
 
@@ -78,5 +80,31 @@ function attackPowerUp(idx, unitData, settingUnitData) {
 
       unitData.value.combineAttackPower[2] = Math.round(combineAttackPower);
     }
+  }
+}
+
+function moveSpeedIncrease(idx, unitData, settingUnitData) {
+  if(unitData.value.instinctApply[idx]) {
+    let increaseValue = settingUnitData.value.instinct.instinct.increase[idx];
+    let moveSpeed = unitData.value.moveSpeed[2];
+
+    if(increaseValue != 0) moveSpeed += increaseValue;
+
+    settingUnitData.value.moveSpeed = moveSpeed;
+  } else {
+    settingUnitData.value.moveSpeed = 0;
+  }
+}
+
+function produceSpeedIncrease(idx, unitData, settingUnitData) {
+  if(unitData.value.instinctApply[idx]) {
+    let decreaseValue = settingUnitData.value.instinct.instinct.increase[idx];
+    let produceSpeed = unitData.value.produceSpeed[2];
+
+    if(decreaseValue != 0) produceSpeed -= decreaseValue;
+
+    settingUnitData.value.produceSpeed = produceSpeed;
+  } else {
+    settingUnitData.value.produceSpeed = 0;
   }
 }

@@ -16,7 +16,7 @@
 
 <script>
 import { ref, onBeforeMount } from 'vue';
-import $ from 'jquery';
+// import $ from 'jquery';
 // import headerComponent from './components/main/HeaderComponent.vue';
 import footerComponent from './components/main/FooterComponent.vue';
 
@@ -36,14 +36,14 @@ export default {
       };
 
       onBeforeMount(() => {
-        $(document).ready(() => {
-          $(document).bind('keydown', e => {
-            if(e.ctrlKey || e.keyCode == 123) {
-              e.preventDefault();
-              e.returnValue = false;
-            }
-          });
-        });
+        // $(document).ready(() => {
+        //   $(document).bind('keydown', e => {
+        //     if(e.ctrlKey || e.keyCode == 123) {
+        //       e.preventDefault();
+        //       e.returnValue = false;
+        //     }
+        //   });
+        // });
 
         if(window.sessionStorage.getItem('init') == null) {
           window.sessionStorage.setItem('init', 'success');

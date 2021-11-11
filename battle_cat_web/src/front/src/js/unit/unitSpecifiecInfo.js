@@ -42,11 +42,11 @@ function instinctSetting(value) {
 }
 
 function levelSetting(level, unitData, settingUnitData) {
-  for(let i = 0; i < level.length; i++) {
+  for(let i = 0; i < unitData.value.data.length; i++) {
     let attackPowerArr = unitData.value.attackPower[i];
     let attackPowers = [];
     let hpArr = unitData.value.hp[i];
-    
+
     for(let j = 0; j < attackPowerArr.length; j++) {
       let attackPower = attackPowerArr[j] *= 1;
       let origin = attackPower;

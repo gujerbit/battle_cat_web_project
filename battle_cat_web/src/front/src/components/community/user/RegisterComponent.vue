@@ -98,7 +98,10 @@ export default {
         window.sessionStorage.setItem('registerInfo', JSON.stringify(registerTemp));
         registerInfo.value.registerCode = registerCode;
         registerInfo.value.expireTime = registerTemp.expireTime;
-      } else alert('해당 이메일은 이미 사용중입니다!');
+      } else {
+        alert('해당 이메일은 이미 사용중입니다!');
+        document.querySelector('.loading').style.display = 'none';
+      }
     };
 
     const checkRegisterCode = () => {
@@ -195,6 +198,9 @@ export default {
     };
 
     onBeforeMount(() => {
+      alert('준비중입니다');
+      location.href = '/login';
+
       // if(window.sessionStorage.getItem('jwt-auth-token') !== null) location.href = '/';
       if(window.sessionStorage.getItem('registerInfo') != null) {
         registerInfo.value.email = JSON.parse(window.sessionStorage.getItem('registerInfo')).email;

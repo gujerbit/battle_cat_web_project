@@ -1,7 +1,6 @@
 package com.gujerbit.battle_cat_web.controller;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

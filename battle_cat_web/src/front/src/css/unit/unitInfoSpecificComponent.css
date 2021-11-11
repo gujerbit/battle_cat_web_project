@@ -250,7 +250,7 @@ section p {
   border-left: 2px solid #ffc038;
 }
   
-.attack-power, .attack-speed, .attack-cycle, .cost, .attack-end-speed, .produce-speed, .attack-freq {
+.attack-power, .attack-speed, .attack-cycle, .cost, .attack-end-speed, .produce-speed, .attack-freq, .move-speed {
   width: 100%;
   height: 100%;
   font-size: 2.8rem;
@@ -265,13 +265,13 @@ section p {
   align-items: center;
 }
   
-.content-division-forward, .content-division-backend, .cost {
+.content-division-forward, .content-division-backend, .cost, .move-speed {
   display: flex;
   justify-content: center;
   align-items: center;
 }
   
-.attack-power p, .attack-speed p, .attack-cycle p, .cost p, .attack-end-speed p, .produce-speed p, .attack-freq p {
+.attack-power p, .attack-speed p, .attack-cycle p, .cost p, .attack-end-speed p, .produce-speed p, .attack-freq p, .move-speed p {
   width: 100%;
   height: 100%;
   color: #ffc038;

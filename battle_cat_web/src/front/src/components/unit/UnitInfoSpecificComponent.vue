@@ -33,7 +33,7 @@
                   <img v-else :src="require(`../../assets/res/elements/property/untarget/${item}.png`)" alt="">
                 </template>
                 <template v-else-if="settingUnitData.instinct.instinct.img.join().split('|').join().split(',').length <= 5 && settingUnitData.instinct.instinct.img.includes(item)">
-                  <img v-if="unitData.instinctLevel[settingUnitData.instinct.instinct.img.indexOf(item) - 1] > 0" :src="require(`../../assets/res/elements/property/target/${item}.png`)" alt="">
+                  <img v-if="unitData.instinctLevel[settingUnitData.instinct.instinct.img.indexOf(item)] > 0" :src="require(`../../assets/res/elements/property/target/${item}.png`)" alt="">
                   <img v-else :src="require(`../../assets/res/elements/property/untarget/${item}.png`)" alt="">
                 </template>
                 <img v-else-if="value.target.includes(item)" :src="require(`../../assets/res/elements/property/target/${item}.png`)" alt="">
@@ -47,8 +47,8 @@
               <template v-if="value.instinct.length > 0">
                 <template v-for="item in settingUnitData.instinct" :key="item">
                   <template v-for="(content, idx) in item.img" :key="content">
-                    <img v-if="!elements.target.includes(content.split('|')[0])" :class="unitData.instinctLevel[idx] > 0 ? '' : 'unselect'" :src="require(`../../assets/res/elements/property_search/${content.split('|')[0]}.png`)" alt="">
-                    <img v-else-if="!elements.target.includes(content.split('|')[1])" :class="unitData.instinctLevel[idx] > 0 ? '' : 'unselect'" :src="require(`../../assets/res/elements/property_search/${content.split('|')[1]}.png`)" alt="">
+                    <img v-if="content.split('|')[0] !== undefined && !elements.target.includes(content.split('|')[0])" :class="unitData.instinctLevel[idx] > 0 ? '' : 'unselect'" :src="require(`../../assets/res/elements/property_search/${content.split('|')[0]}.png`)" alt="">
+                    <img v-else-if="content.split('|')[1] !== undefined && !elements.target.includes(content.split('|')[1])" :class="unitData.instinctLevel[idx] > 0 ? '' : 'unselect'" :src="require(`../../assets/res/elements/property_search/${content.split('|')[1]}.png`)" alt="">
                   </template>
                 </template>
               </template>
@@ -132,10 +132,19 @@
                 <p>{{(unitData.attackEndSpeed[index] / 30).toFixed(1)}}초</p>
                 <p>{{unitData.attackEndSpeed[index]}}F</p>
               </div>
-              <p>{{unitData.moveSpeed[index]}}</p>
+              <div class="move-speed">
+                <p v-if="index === 2 && settingUnitData.moveSpeed !== 0">{{settingUnitData.moveSpeed}}</p>
+                <p v-else>{{unitData.moveSpeed[index]}}</p>
+              </div>
               <div class="produce-speed">
-                <p>{{(unitData.produceSpeed[index] / 30).toFixed(1)}}초</p>
-                <p>{{unitData.produceSpeed[index]}}F</p>
+                <template v-if="index === 2 && settingUnitData.produceSpeed !== 0">
+                  <p>{{(settingUnitData.produceSpeed / 30).toFixed(1)}}초</p>
+                  <p>{{settingUnitData.produceSpeed}}F</p>
+                </template>
+                <template v-else>
+                  <p>{{(unitData.produceSpeed[index] / 30).toFixed(1)}}초</p>
+                  <p>{{unitData.produceSpeed[index]}}F</p>
+                </template>
               </div>
             </div>
           </section>
@@ -225,6 +234,8 @@ export default {
       hp: [],
       instinct: [],
       cost: 0,
+      moveSpeed: 0,
+      produceSpeed: 0
     });
 
     const watching = ref({
@@ -284,7 +295,7 @@ export default {
           if(unitData.value.instinctLevel[i] > unitData.value.instinct.instinct.maxLevel[i] * 1) unitData.value.instinctLevel[i] = unitData.value.instinct.instinct.maxLevel[i] * 1;
           if(unitData.value.instinctLevel[i] < 0) unitData.value.instinctLevel[i] = 0;
         }
-
+        
         levelSetting(unitData.value.level, unitData, settingUnitData);
         instinctLevelSetting(unitData.value.instinctLevel);
         dpsSetting(unitData.value);
