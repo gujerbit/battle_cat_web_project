@@ -1,26 +1,40 @@
 <template>
   <main>
-    <div class="wrap">
+    <div class="wrap" v-if="init.check">
       this system 1.2 version available
+      <button @click="logout()">logout</button>
     </div>
     <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
   </main>
 </template>
 
 <script>
-import { onBeforeMount } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default {
   setup() {
     const router = useRouter();
 
+    const init = ref({
+      check: false,
+    });
+
+    const logout = () => {
+      alert('로그아웃 완료');
+      window.sessionStorage.removeItem('jwt-auth-token');
+      window.sessionStorage.removeItem('user-info');
+      location.href = '/login';
+    }
+
     onBeforeMount(() => {
       if(window.sessionStorage.getItem('jwt-auth-token') === null) {
         alert('로그인 후 이용하실 수 있는 시스템입니다');
         router.push('/login');
-      }
+      } else init.value.check = true;
     });
+
+    return { init, logout };
   }
 }
 </script>

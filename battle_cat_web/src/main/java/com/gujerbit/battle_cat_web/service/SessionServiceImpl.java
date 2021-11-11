@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -20,8 +21,11 @@ public class SessionServiceImpl implements SessionService {
 	@Override
 	public String createToken(UserVO vo) {
 		JwtBuilder builder = Jwts.builder();
-		builder.setHeaderParam("typ", "JWT");
-		builder.setSubject("token").claim("user", vo);
+		builder.setHeaderParam(Header.TYPE, Header.JWT_TYPE); //jwt_type
+		builder.setIssuer("nyanko-db.shop"); //발급자
+		builder.setAudience(vo.getName()); //대상자
+		builder.setSubject("token"); //token title
+		builder.claim("user", vo); //none-registration claim
 		builder.signWith(SignatureAlgorithm.HS256, salt.getBytes());
 		
 		return builder.compact();

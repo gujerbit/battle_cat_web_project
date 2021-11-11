@@ -1,17 +1,21 @@
 package com.gujerbit.battle_cat_web.service;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
 public interface UserService {
 	
-	String login(Map<String, String> map);
+	UserVO login(UserVO vo);
 	
 	int register(UserVO vo);
 	
 	String selectSalt(String id);
 	
-	String selectID(String id);
+	String selectEmail(String id);
+	
+	String selectName(String name);
+	
+	ArrayList<String> selectCode();
 
 }

@@ -3,35 +3,31 @@ package com.gujerbit.battle_cat_web.util;
 import java.security.MessageDigest;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Hashing {
+	
+	@Autowired
+	private Converter converter;
 	
 	public String hashing(byte[] value) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			
 			for(int i = 0; i < 77; i++) {
-				 String temp = byteToString(value);
+				 String temp = converter.byteToString(value);
 				 md.update(temp.getBytes());
 				 value = md.digest();
 			}
 			
-			return byteToString(value);
+			return converter.byteToString(value);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return null;
-	}
-	
-	public String byteToString(byte[] value) {
-		StringBuffer buffer = new StringBuffer();
-		
-		for(byte item : value) buffer.append(String.format("%02x", item));
-		
-		return buffer.toString();
 	}
 	
 	public String createSalt() {

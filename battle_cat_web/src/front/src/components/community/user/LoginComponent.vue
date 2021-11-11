@@ -3,7 +3,7 @@
       <div id="login">
             <p class="title">LOGIN PAGE</p>
             <div class="input-field">
-                <input @keyup.enter="login()" v-model="loginInfo.id" type="text" class="id" placeholder="ID를 입력해주세요" onfocus="this.select()">
+                <input @keyup.enter="login()" v-model="loginInfo.email" type="text" class="id" placeholder="ID를 입력해주세요" onfocus="this.select()">
                 <input @keyup.enter="login()" v-model="loginInfo.password" type="password" class="password" placeholder="비밀번호를 입력해주세요" onfocus="this.select()">
                 <button @click="login()">로그인</button>
             </div>
@@ -23,20 +23,20 @@ export default {
     setup() {
         const { proxy } = getCurrentInstance();
         const loginInfo = ref({
-            id: '',
+            email: '',
             password: '',
         });
 
         const login = async () => {
-            if(loginInfo.value.id.length > 0 && loginInfo.value.password.length > 0) {
+            if(loginInfo.value.email.length > 0 && loginInfo.value.password.length > 0) {
                 let { data, headers } = await proxy.axios.post('/login_process', {
-                    id: loginInfo.value.id,
+                    email: loginInfo.value.email,
                     password: loginInfo.value.password,
                 });
 
                 if(data.status) {
                     window.sessionStorage.setItem('jwt-auth-token', headers['jwt-auth-token']);
-                    window.sessionStorage.setItem('name', data.data.name);
+                    window.sessionStorage.setItem('user-info', JSON.stringify(data.data));
 
                     alert('로그인 성공!');
                     location.href = '/';

@@ -2,31 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gujerbit.battle_cat_web.dao.UserDAO">
 
-	<select id="login" resultType="string">
-		SELECT name FROM user_data
+	<select id="login" resultType="UserVO">
+		SELECT email, name, code, grade, reg_date, profile_img, description, report_count, reject_end_date, forever_reject, reputation FROM user_data
 		<where>
-			id = #{id}
+			email = #{email}
 			AND
 			password = #{password}
 		</where>
 	</select>
 	
 	<insert id="register">
-		INSERT INTO user_data VALUES(#{id}, #{password}, #{name}, #{code}, #{grade}, #{salt})
+		INSERT INTO user_data(email, password, name, code, grade, salt, reg_date, profile_img, description, report_count, reject_end_date, forever_reject, reputation)
+		VALUES(#{email}, #{password}, #{name}, #{code}, #{grade}, #{salt}, #{reg_date}, #{profile_img}, #{description}, #{report_count}, #{reject_end_date}, #{forever_reject}, #{reputation})
 	</insert>
 	
 	<select id="selectSalt" resultType="string">
 		SELECT salt FROM user_data
 		<where>
-			id = #{id}
+			email = #{email}
 		</where>
 	</select>
 	
-	<select id="selectID" resultType="string">
-		SELECT id FROM user_data
+	<select id="selectEmail" resultType="string">
+		SELECT email FROM user_data
 		<where>
-			id = #{id}
+			email = #{email}
 		</where>
+	</select>
+	
+	<select id="selectName" resultType="string">
+		SELECT name FROM user_data
+		<where>
+			name = #{name}
+		</where>	
+	</select>
+	
+	<select id="selectCode" resultType="string">
+		SELECT code FROM user_data
 	</select>
 
 </mapper>

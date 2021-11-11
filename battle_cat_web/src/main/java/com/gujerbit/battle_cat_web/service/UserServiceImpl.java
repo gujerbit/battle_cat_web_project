@@ -1,6 +1,6 @@
 package com.gujerbit.battle_cat_web.service;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ public class UserServiceImpl implements UserService {
 	private UserDAO dao;
 	
 	@Override
-	public String login(Map<String, String> map) {
-		return dao.login(map);
+	public UserVO login(UserVO vo) {
+		return dao.login(vo);
 	}
 	
 	@Override
@@ -30,8 +30,18 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public String selectID(String id) {
-		return dao.selectID(id);
+	public String selectEmail(String id) {
+		return dao.selectEmail(id);
+	}
+	
+	@Override
+	public String selectName(String name) {
+		return dao.selectName(name);
+	}
+	
+	@Override
+	public ArrayList<String> selectCode() {
+		return dao.selectCode();
 	}
 	
 }

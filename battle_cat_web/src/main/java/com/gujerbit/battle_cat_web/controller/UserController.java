@@ -1,5 +1,8 @@
 package com.gujerbit.battle_cat_web.controller;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +22,7 @@ import com.gujerbit.battle_cat_web.service.MailServiceImpl;
 import com.gujerbit.battle_cat_web.service.SessionServiceImpl;
 import com.gujerbit.battle_cat_web.service.UserServiceImpl;
 import com.gujerbit.battle_cat_web.util.Hashing;
+import com.gujerbit.battle_cat_web.util.RSA;
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @CrossOrigin("*")
@@ -37,6 +41,9 @@ public class UserController {
 	@Autowired
 	private Hashing hashing;
 	
+	@Autowired
+	private RSA rsa;
+	
 	@GetMapping("/login")
 	public String init() {
 		return "";
@@ -44,28 +51,24 @@ public class UserController {
 	
 	@PostMapping("/login_process")
 	public @ResponseBody ResponseEntity<Map<String, Object>> loginProcess(@RequestBody UserVO vo, HttpServletResponse res) {
-		String id = vo.getEmail();
 		String password = vo.getPassword();
 		String digestPassword = hashing.hashing(password.getBytes());
-		String salt = userService.selectSalt(id);
-		Map<String, String> map = new HashMap<>();
+		String salt = userService.selectSalt(vo.getEmail());
 		String saltingPassword = hashing.hashing((digestPassword + salt).getBytes());
-		map.put("id", id);
-		map.put("password", saltingPassword);
-		String name = "";
-		name = userService.login(map);
+		
+		vo.setPassword(saltingPassword);
+		
+		UserVO user = userService.login(vo);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
-		if(name != null) {
+		if(user != null) {
 			try {
-				vo.setEmail(id);
-				vo.setPassword(saltingPassword);
-				vo.setName(name);
-				String token = sessionService.createToken(vo);
+				user.setCode(rsa.decryptRSA(user.getCode()));
+				String token = sessionService.createToken(user);
 				res.setHeader("jwt-auth-token", token);
 				resultMap.put("status", true);
-				resultMap.put("data", vo);
+				resultMap.put("data", user);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
 				resultMap.put("message", e.getMessage());
@@ -84,15 +87,20 @@ public class UserController {
 	public @ResponseBody int registerProcess(@RequestBody UserVO vo) {
 		String password = vo.getPassword();
 		String digestPassword = hashing.hashing(password.getBytes());
-		String code = vo.getCode();
-		String grade = "user";
 		String salt = hashing.createSalt();
 		String saltingPassword = hashing.hashing((digestPassword + salt).getBytes());
 		
 		vo.setPassword(saltingPassword);
-		vo.setCode(hashing.hashing(code.getBytes()));
-		vo.setGrade(grade);
+		vo.setCode(rsa.encryptRSA(vo.getCode()));
+		vo.setGrade("user");
 		vo.setSalt(salt);
+		vo.setReg_date(new Date(System.currentTimeMillis()));
+		vo.setProfile_img("normal/cat/cat.png");
+		vo.setDescription("");
+		vo.setReport_count(0);
+		vo.setReject_end_date(new Date(System.currentTimeMillis()));
+		vo.setForever_reject(false);
+		vo.setReputation(50);
 		
 		return userService.register(vo);
 	}
@@ -102,9 +110,26 @@ public class UserController {
 		return mailService.mailSend(vo.getEmail());
 	}
 	
-	@PostMapping("/check_id")
-	public @ResponseBody boolean checkID(@RequestBody UserVO vo) {
-		return userService.selectID(vo.getEmail()) != null ? false : true;
+	@PostMapping("/check_email")
+	public @ResponseBody boolean checkEmail(@RequestBody UserVO vo) {
+		return userService.selectEmail(vo.getEmail()) == null ? true : false;
+	}
+	
+	@PostMapping("/check_name")
+	public @ResponseBody boolean checkName(@RequestBody UserVO vo) {
+		return userService.selectName(vo.getName()) == null ? true : false;
+	}
+	
+	@PostMapping("/check_code")
+	public @ResponseBody boolean checkCode(@RequestBody UserVO vo) {
+		ArrayList<String> list = userService.selectCode();
+		boolean check = true;
+		
+		for(int i = 0; i < list.size(); i++) {
+			if(rsa.decryptRSA(list.get(i)).equals(vo.getCode())) check = false;
+		}
+		
+		return check;
 	}
 	
 }
