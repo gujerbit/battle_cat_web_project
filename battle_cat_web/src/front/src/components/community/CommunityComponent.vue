@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="wrap" v-if="init.check">
+    <div class="wrap">
       this system 1.2 version available
       <button @click="logout()">logout</button>
     </div>
@@ -9,17 +9,10 @@
 </template>
 
 <script>
-import { ref, onBeforeMount } from 'vue';
-import { useRouter } from 'vue-router';
+import { onBeforeMount } from 'vue';
 
 export default {
   setup() {
-    const router = useRouter();
-
-    const init = ref({
-      check: false,
-    });
-
     const logout = () => {
       alert('로그아웃 완료');
       window.sessionStorage.removeItem('jwt-auth-token');
@@ -29,12 +22,12 @@ export default {
 
     onBeforeMount(() => {
       if(window.sessionStorage.getItem('jwt-auth-token') === null) {
-        alert('로그인 후 이용하실 수 있는 시스템입니다');
-        router.push('/login');
-      } else init.value.check = true;
+        alert('로그인 후 이용가능한 시스템입니다');
+        location.href = '/login';
+      }
     });
 
-    return { init, logout };
+    return { logout };
   }
 }
 </script>

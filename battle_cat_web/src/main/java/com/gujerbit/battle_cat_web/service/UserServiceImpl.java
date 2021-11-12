@@ -44,4 +44,14 @@ public class UserServiceImpl implements UserService {
 		return dao.selectCode();
 	}
 	
+	@Override
+	public ArrayList<UserVO> findEmail() {
+		return dao.findEmail();
+	}
+	
+	@Override
+	public int changePassword(UserVO vo) {
+		return dao.changePassword(vo);
+	}
+	
 }

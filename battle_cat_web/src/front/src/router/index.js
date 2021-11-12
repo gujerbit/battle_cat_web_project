@@ -10,6 +10,7 @@ import etcInfoComponent from '../components/etc/EtcInfoComponent.vue';
 import communityComponent from '../components/community/CommunityComponent.vue';
 import loginComponent from '../components/community/user/LoginComponent.vue';
 import registerComponent from '../components/community/user/RegisterComponent.vue';
+import findAccountComponent from '../components/community/user/FindAccountComponent.vue';
 import scheduleComponent from '../components/etc/schedule/ScheduleComponent.vue';
 import updateScheduleSpecificComponent from '../components/etc/schedule/UpdateScheduleSpecificComponent.vue';
 import patchNoteSpecificComponent from '../components/etc/schedule/PatchNoteSpecificComponent.vue';
@@ -62,6 +63,10 @@ const routes = [
     {
         path: '/register',
         component: registerComponent
+    },
+    {
+        path: '/find_account',
+        component: findAccountComponent,
     },
     {
         path: '/schedule',

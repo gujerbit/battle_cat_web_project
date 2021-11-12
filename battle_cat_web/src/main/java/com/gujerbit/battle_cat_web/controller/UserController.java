@@ -106,7 +106,7 @@ public class UserController {
 	
 	@PostMapping("/register_code")
 	public @ResponseBody String sendRegisterCode(@RequestBody UserVO vo) {
-		return mailService.mailSend(vo.getEmail());
+		return mailService.mailSend(vo.getEmail(), "회원가입 코드", "냥코대전쟁 정보 & 커뮤니티 사이트 회원가입 코드");
 	}
 	
 	@PostMapping("/check_email")
@@ -124,11 +124,47 @@ public class UserController {
 		ArrayList<String> list = userService.selectCode();
 		boolean check = true;
 		
-		for(int i = 0; i < list.size(); i++) {
-			if(rsa.decryptRSA(list.get(i)).equals(vo.getCode())) check = false;
-		}
+		for(int i = 0; i < list.size(); i++) if(rsa.decryptRSA(list.get(i)).equals(vo.getCode())) check = false;
 		
 		return check;
+	}
+	
+	@PostMapping("/find_email")
+	public @ResponseBody String findEmail(@RequestBody UserVO vo) {
+		ArrayList<UserVO> list = userService.findEmail();
+		String email = "";
+		
+		for(int i = 0; i < list.size(); i++) if(rsa.decryptRSA(list.get(i).getCode()).equals(vo.getCode())) email = list.get(i).getEmail();
+		
+		return email;
+	}
+	
+	@PostMapping("/get_password_change_code")
+	public @ResponseBody Object getPasswordChangeCode(@RequestBody UserVO vo) {
+		if(userService.selectEmail(vo.getEmail()) != null) {
+			ArrayList<String> list = userService.selectCode();
+			boolean check = false;
+			
+			for(int i = 0; i < list.size(); i++) if(rsa.decryptRSA(list.get(i)).equals(vo.getCode())) check = true;
+			
+			if(check) {
+				return mailService.mailSend(vo.getEmail(), "비밀번호 변경 코드", "냥코대전쟁 정보 & 커뮤니티 사이트 비밀번호 변경 코드");
+			} else return false;
+		} else return false;
+	}
+	
+	@PostMapping("/change_password")
+	public @ResponseBody int changePassword(@RequestBody UserVO vo) {
+		String password = vo.getPassword();
+		String digestPassword = hashing.hashing(password.getBytes());
+		String salt = hashing.createSalt();
+		String saltingPassword = hashing.hashing((digestPassword + salt).getBytes());
+		UserVO user = new UserVO();
+		user.setEmail(vo.getEmail());
+		user.setPassword(saltingPassword);
+		user.setSalt(salt);
+		
+		return userService.changePassword(user);
 	}
 	
 }

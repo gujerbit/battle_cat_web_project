@@ -40,7 +40,8 @@ main {
   transition: all 1s;
   outline: 0;
   color: #ffc038;
-  font-size: 2rem;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  font-size: 2.5rem;
 }
 
 .input-field input::placeholder {
@@ -55,20 +56,23 @@ main {
   border: 2px solid #ffc038;
   border-radius: 15px;
   color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
   transition: all 1s;
   cursor: pointer;
+  font-size: 2.3rem;
 }
 
 .advice {
   display: grid;
   grid-template-rows: repeat(2, 1fr);
   justify-items: center;
-  font-size: 2rem;
   margin-top: 3%;
 }
 
 .advice a {
   color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  font-size: 2.5rem;
   transition: all 1s;
 }
 

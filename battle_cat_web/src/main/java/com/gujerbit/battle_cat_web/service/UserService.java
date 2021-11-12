@@ -17,5 +17,9 @@ public interface UserService {
 	String selectName(String name);
 	
 	ArrayList<String> selectCode();
+	
+	ArrayList<UserVO> findEmail();
+	
+	int changePassword(UserVO vo);
 
 }

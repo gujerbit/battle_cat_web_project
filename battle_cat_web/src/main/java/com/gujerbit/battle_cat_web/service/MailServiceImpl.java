@@ -18,15 +18,15 @@ public class MailServiceImpl implements MailService {
 	private JavaMailSender mailSender;
 	
 	@Override
-	public String mailSend(String email) {
+	public String mailSend(String email, String text, String title) {
 		String registerCode = createRandomCode();
 		
 		try {
 			MailHandler mailHandler = new MailHandler(mailSender);
-			String htmlContent = "<p>회원가입 코드: <span style=\"color: #ffc038\">" + registerCode + "</span></p> <p>해당 코드를 10분 안에 코드 입력 부분에 입력하세요</p>";
+			String htmlContent = "<p>" + text + ": <span style=\"color: #ffc038\">" + registerCode + "</span></p> <p>해당 코드를 10분 안에 코드 입력 부분에 입력하세요</p>";
 			mailHandler.setTo(email);
 			mailHandler.setFrom("nyanko.db@gmail.com");
-			mailHandler.setSubject("냥코대전쟁 정보 & 커뮤니티 사이트 회원가입 코드");
+			mailHandler.setSubject(title);
 			mailHandler.setText(htmlContent);
 			mailHandler.send();
 		} catch (Exception e) {

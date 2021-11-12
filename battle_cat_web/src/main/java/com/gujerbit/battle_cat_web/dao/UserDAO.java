@@ -21,4 +21,8 @@ public interface UserDAO {
 	
 	public ArrayList<String> selectCode();
 	
+	public ArrayList<UserVO> findEmail();
+	
+	public int changePassword(UserVO vo);
+	
 }

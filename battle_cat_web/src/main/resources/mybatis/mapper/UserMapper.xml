@@ -40,5 +40,16 @@
 	<select id="selectCode" resultType="string">
 		SELECT code FROM user_data
 	</select>
+	
+	<select id="findEmail" resultType="UserVO">
+		SELECT email, code FROM user_data
+	</select>
+	
+	<update id="changePassword">
+		UPDATE user_data SET password = #{password}, salt = #{salt}
+		<where>
+			email = #{email}
+		</where>
+	</update>
 
 </mapper>

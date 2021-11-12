@@ -35,7 +35,8 @@
         </button>
       </div>
     </div>
-    <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
+    <router-link @click="registerInfoClear()" to="/" class="main-page">메인 화면으로 돌아가기</router-link>
+    <router-link @click="registerInfoClear()" to="/login" class="login-page">로그인 화면으로 돌아가기</router-link>
     <div class="loading">
       <div class="loading-content">
         <h1>LOADING</h1>
@@ -111,6 +112,7 @@ export default {
         if(registerInfo.value.expireTime - today.getTime() <= 0) {
           alert('만료된 회원가입 코드입니다');
           window.sessionStorage.removeItem('registerInfo');
+          location.href = '/register';
         } else {
           alert('회원가입 코드 확인 완료');
           registerInfo.value.registerCodeCheck = true;
@@ -155,7 +157,7 @@ export default {
 
       if(!emailPattern.test(registerInfo.value.email) && registerInfo.value.email.length > 0) tip.value.email = '올바른 이메일을 입력해주세요';
       else tip.value.email = '';
-    }
+    };
 
     const checkValue = () => {
       const specialPattern = /[!@#$%^&*()_+={}:;<>?/|.,`~'"[\]\\-]/gi;
@@ -198,10 +200,11 @@ export default {
     };
 
     onBeforeMount(() => {
-      alert('준비중입니다');
-      location.href = '/login';
+      if(window.sessionStorage.getItem('jwt-auth-token') !== null) {
+        alert('로그인 상태에서는 이용하실 수 없습니다');
+        location.href = '/';
+      }
 
-      // if(window.sessionStorage.getItem('jwt-auth-token') !== null) location.href = '/';
       if(window.sessionStorage.getItem('registerInfo') != null) {
         registerInfo.value.email = JSON.parse(window.sessionStorage.getItem('registerInfo')).email;
         registerInfo.value.registerCode = JSON.parse(window.sessionStorage.getItem('registerInfo')).registerCode;
@@ -216,190 +219,4 @@ export default {
 }
 </script>
 
-<style scoped>
-main {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#register-code {
-  width: 35%;
-  height: 30%;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
-}
-
-#register {
-  width: 40%;
-  height: 70%;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
-}
-
-.content {
-  width: 100%;
-  height: 60%;
-  display: grid;
-  grid-template-rows: auto;
-  justify-items: center;
-  align-items: center;
-}
-
-.content input {
-  height: 90%;
-}
-
-.register-field {
-  width: 100%;
-  height: 20%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.register-field button {
-  width: 30%;
-  height: 35%;
-  background-color: #ffffff;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
-  color: #ffc038;
-  margin: 0 5%;
-  cursor: pointer;
-  transition: all 1s;
-}
-
-.register-field button a {
-  color: #ffc038;
-}
-
-.register-field button:hover {
-  transform: scale(105%);
-}
-
-.title {
-  width: 100%;
-  height: 20%;
-  font-size: 4rem;
-  color: #ffc038;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: default;
-}
-
-.email {
-  width: 100%;
-  height: 40%;
-  display: grid;
-  grid-template-rows: 1fr 2fr;
-  justify-items: center;
-  align-items: center;
-}
-
-input {
-  width: 75%;
-  height: 90%;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
-  text-align: center;
-  font-size: 2rem;
-  outline: 0;
-  transition: all 1s;
-  color: #ffc038;
-}
-
-input::placeholder {
-  color: #ffc038;
-}
-
-input:hover, .btn-field > button:hover {
-  transform: scale(105%);
-}
-
-.btn-field {
-  width: 100%;
-  height: 40%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.btn-field > button {
-  width: 25%;
-  height: 40%;
-  border: 2px solid #ffc038;
-  border-radius: 10px;
-  outline: 0;
-  transition: all 1s;
-  background-color: #ffffff;
-  cursor: pointer;
-  margin: 0 5%;
-}
-
-button > a {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-button:disabled {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.tip {
-  color: #f11212;
-  font-size: 1.8rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.main-page {
-  width: 4.5%;
-  height: 100%;
-  border: 2px solid #ffc038;
-  border-left: none;
-  border-radius: 0 15px 15px 0;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  position: absolute;
-  top: 0;
-  left: 0;
-  writing-mode: vertical-lr;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: all 1.5s;
-  font-size: 3rem;
-}
-    
-.main-page:hover {
-  opacity: 1;
-}
-
-.loading {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-size: 4rem;
-  background-color: #ffffff;
-  opacity: 0.8;
-  display: none;
-}
-
-h1 {
-  font-size: 10rem;
-}
-</style>
+<style scoped src="../../../css/community/user/registerComponent.css" />
