@@ -99,9 +99,11 @@ function moveSpeedIncrease(idx, unitData, settingUnitData) {
 function produceSpeedIncrease(idx, unitData, settingUnitData) {
   if(unitData.value.instinctApply[idx]) {
     let decreaseValue = settingUnitData.value.instinct.instinct.increase[idx];
+    let decreaseInit = settingUnitData.value.instinct.instinct.init[idx];
     let produceSpeed = unitData.value.produceSpeed[2];
 
     if(decreaseValue != 0) produceSpeed -= decreaseValue;
+    if(decreaseInit != 0 && unitData.value.instinctLevel[idx] > 0) produceSpeed -= decreaseInit;
 
     settingUnitData.value.produceSpeed = produceSpeed;
   } else {
