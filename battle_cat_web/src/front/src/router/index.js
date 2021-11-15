@@ -14,7 +14,9 @@ import findAccountComponent from '../components/community/user/FindAccountCompon
 import scheduleComponent from '../components/etc/schedule/ScheduleComponent.vue';
 import updateScheduleSpecificComponent from '../components/etc/schedule/UpdateScheduleSpecificComponent.vue';
 import patchNoteSpecificComponent from '../components/etc/schedule/PatchNoteSpecificComponent.vue';
-
+import boardComponent from '../components/community/board/BoardComponent.vue';
+import adminComponent from '../components/community/admin/AdminComponent.vue';
+import userInfoComponent from '../components/community/user/UserInfoComponent.vue';
 
 const routes = [
     {
@@ -81,6 +83,19 @@ const routes = [
         path: '/patch_note_specific/:version',
         component: patchNoteSpecificComponent,
         props: true
+    },
+    {
+        path: '/board',
+        component: boardComponent,
+    },
+    {
+        path: '/admin',
+        component: adminComponent,
+    },
+    {
+        path: '/userInfo/:userName',
+        component: userInfoComponent,
+        props: true,
     },
     {
         path: '/:pathMatch(.*)*',

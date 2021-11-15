@@ -36,7 +36,7 @@ main > a > p {
   pointer-events: none;
 }
 
- main > a:nth-child(2n - 1):hover {
+main > a:nth-child(2n - 1):hover {
   transform: translateY(-20%);
 }
 

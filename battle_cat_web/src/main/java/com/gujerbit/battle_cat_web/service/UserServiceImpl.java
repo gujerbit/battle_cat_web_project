@@ -54,4 +54,14 @@ public class UserServiceImpl implements UserService {
 		return dao.changePassword(vo);
 	}
 	
+	@Override
+	public UserVO selectUserInfo(String name) {
+		return dao.selectUserInfo(name);
+	}
+	
+	@Override
+	public int descriptionChange(UserVO vo) {
+		return dao.descriptionChange(vo);
+	}
+	
 }

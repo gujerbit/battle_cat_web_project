@@ -1,11 +1,13 @@
 <template>
   <div id="container">
     <!-- <header-component /> -->
-    <router-view v-slot="{ Component }">
-      <transition name="slide">
-        <component :is="Component" />
-      </transition>
-    </router-view>
+    <div id="wrapper">
+      <router-view v-slot="{ Component }">
+        <transition name="slide">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </div>
     <!-- <div id="user-temp" v-if="user.name !== null">
       <p>{{user.name.length > 16 ? user.name.substring(0, 13) + '...' : user.name}}님 접속중</p>
       <button @click="logout()">로그아웃</button>
@@ -65,6 +67,11 @@ export default {
 @import "./../public/css/app.css";
 
 #container {
+  width: 100%;
+  height: 100%;
+}
+
+#wrapper {
   width: 100%;
   height: 100%;
 }

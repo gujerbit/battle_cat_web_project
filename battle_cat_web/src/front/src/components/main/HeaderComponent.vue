@@ -41,11 +41,12 @@ export default {
 <style scoped>
 header {
   width: 100%;
-  height: 7vh;
+  height: 6%;
   display: flex;
   justify-content: center;
-  box-shadow: 0px 3px 4px 0px #3d3d3d;
-  margin-bottom: 1%;
+  z-index: 100;
+  background-color: #ffffff;
+  /* box-shadow: 0px 3px 4px 0px #3d3d3d; */
 }
   
 #header-container {

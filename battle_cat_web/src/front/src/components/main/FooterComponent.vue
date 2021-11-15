@@ -19,7 +19,7 @@ footer {
     height: 4%;
     background-color: #ffc038;
     position: fixed;
-    bottom: -3.5%;
+    bottom: -3%;
     left: 0;
     opacity: 0;
     transition: all 2s;

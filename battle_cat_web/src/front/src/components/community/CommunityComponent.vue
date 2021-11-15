@@ -1,45 +1,46 @@
 <template>
   <main>
-    <div class="wrap">
-      <button @click="logout()">logout</button>
-    </div>
-    <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
+    <router-link :to="elements.path[index]" v-for="(value, index) in elements.content" :key="value">
+      <p>{{elements.title[index]}}</p>
+      <img :src="require(`../../assets/res/main/${value}.png`)" alt="">
+    </router-link>
+    <!-- <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link> -->
   </main>
 </template>
 
 <script>
-import { onBeforeMount, getCurrentInstance } from 'vue';
-import { useRouter } from 'vue-router';
+import { onBeforeMount } from 'vue';
 
 export default {
   setup() {
-    const { proxy } = getCurrentInstance();
-    const router = useRouter();
-
-    const logout = () => {
-      alert('로그아웃 완료');
-      window.sessionStorage.removeItem('jwt-auth-token');
-      window.sessionStorage.removeItem('user-info');
-      location.href = '/login';
+    const elements = {
+      content: ['board', 'admin', 'user'],
+      title: ['게시판', '관리자 페이지', '유저 정보'],
+      path: ['/board', '/admin'],
     };
 
     onBeforeMount(() => {
       if(window.sessionStorage.getItem('jwt-auth-token') === null) {
-        proxy.Swal.fire({
-          icon: 'warning',
-          titleText: '잘못된 접근',
-          text: '로그인 후 이용가능한 시스템입니다',
-          heightAuto: false,
-          willOpen: () => {
-            window.stop();
-          }
-        }).then(res => {
-          if(res) router.push('/login');
-        });
+        alert('로그인 후 이용가능한 시스템입니다');
+        location.href = '/login';
+      } else {
+        const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
+
+        if(temp.forever_reject) {
+          alert('해당 계정은 영구차단 되었습니다!');
+          window.sessionStorage.removeItem('jwt-auth-token');
+          window.sessionStorage.removeItem('user-info');
+          location.href = '/login';
+        } else if(new Date(temp.reject_end_date).getTime() - new Date().getTime() > 0) {
+          alert(`해당 계정은 차단된 계정입니다! 남은 차단 일수: ${new Date(new Date(temp.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}일`);
+          window.sessionStorage.removeItem('jwt-auth-token');
+          window.sessionStorage.removeItem('user-info');
+          location.href = '/login';
+        } else elements.path.push(`/userInfo/${temp.name}`);
       }
     });
 
-    return { logout };
+    return { elements };
   }
 }
 </script>
@@ -48,16 +49,57 @@ export default {
 main {
   width: 100%;
   height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+  
+main > a {
+  width: 100%;
+  height: 130%;
+  transform: translateY(-10%);
+  transition: all 1s;
+  position: relative;
+}
+  
+main > a > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+  filter: grayscale(0.5);
+  transition: all 1s;
+}
+  
+main > a > p {
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4.5rem;
+  text-align: center;
+  color: #ffc038;
+  text-shadow: -2px 0 #000000, 0 2px #000000, 2px 0 #000000, 0 -2px #000000;
+  z-index: 10;
+  pointer-events: none;
 }
 
-.wrap {
-  width: 90%;
-  height: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 5rem;
+main > a:nth-child(2n - 1):hover {
+  transform: translateY(-20%);
+}
+
+main > a:nth-child(2n):hover {
+  transform: translateY(0);
+}
+  
+main > a:hover {
+  transition: all 3s;
+}
+  
+main > a > img:hover {
+  transition: all 3s;
+  opacity: 0.9;
+  filter: grayscale(0.1);
 }
 
 .main-page {

@@ -25,4 +25,8 @@ public interface UserDAO {
 	
 	public int changePassword(UserVO vo);
 	
+	public UserVO selectUserInfo(String name);
+	
+	public int descriptionChange(UserVO vo);
+	
 }

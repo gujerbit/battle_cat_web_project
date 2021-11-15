@@ -121,6 +121,7 @@ export default {
       if(data.length > 0) {
         show.value.emailResult = true;
         result.value.email = data;
+        clear();
       } else alert('이메일 찾기 실패. 문의코드를 다시 한 번 확인해주세요');
     };
 
@@ -175,6 +176,8 @@ export default {
       });
 
       if(data > 0) {
+        passwordChangeInfoClear();
+        clear();
         alert('성공적으로 비밀번호를 변경하였습니다');
         location.href = '/login';
       } else alert('비밀번호를 변경 중 문제가 발생했습니다');

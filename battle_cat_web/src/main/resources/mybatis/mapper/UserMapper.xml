@@ -34,7 +34,7 @@
 		SELECT name FROM user_data
 		<where>
 			name = #{name}
-		</where>	
+		</where>
 	</select>
 	
 	<select id="selectCode" resultType="string">
@@ -47,6 +47,20 @@
 	
 	<update id="changePassword">
 		UPDATE user_data SET password = #{password}, salt = #{salt}
+		<where>
+			email = #{email}
+		</where>
+	</update>
+	
+	<select id="selectUserInfo" resultType="UserVO">
+		SELECT name, grade, reg_date, profile_img, description, reject_end_date, forever_reject, reputation from user_data
+		<where>
+			name = #{name}
+		</where>
+	</select>
+	
+	<update id="descriptionChange">
+		UPDATE user_data SET description = #{description}
 		<where>
 			email = #{email}
 		</where>

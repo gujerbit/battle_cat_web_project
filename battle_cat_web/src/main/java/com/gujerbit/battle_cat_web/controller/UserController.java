@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -165,6 +166,16 @@ public class UserController {
 		user.setSalt(salt);
 		
 		return userService.changePassword(user);
+	}
+	
+	@GetMapping("/user_info/{name}")
+	public @ResponseBody UserVO getUserInfo(@PathVariable String name) {
+		return userService.selectUserInfo(name);
+	}
+	
+	@PostMapping("/user_description_change")
+	public @ResponseBody int descriptionChange(@RequestBody UserVO vo) {
+		return userService.descriptionChange(vo);
 	}
 	
 }

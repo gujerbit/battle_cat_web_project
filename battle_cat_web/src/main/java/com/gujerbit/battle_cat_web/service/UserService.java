@@ -21,5 +21,9 @@ public interface UserService {
 	ArrayList<UserVO> findEmail();
 	
 	int changePassword(UserVO vo);
+	
+	UserVO selectUserInfo(String name);
+	
+	int descriptionChange(UserVO vo);
 
 }
