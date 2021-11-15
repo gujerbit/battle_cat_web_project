@@ -16,8 +16,9 @@
             <p v-if="value.code !== undefined">문의 코드: {{value.code}}</p>
             <p>가입날짜: {{value.regDate}}</p>
           </div>
-          <div class="update">
-            <button>정보 수정</button>
+          <div class="update" v-if="value.email !== undefined">
+            <button @click="logout()">로그아웃</button>
+            <button @click="update.info = true">정보 수정</button>
           </div>
         </div>
         <div class="description">
@@ -29,7 +30,27 @@
           <textarea v-model="userInfo.description" :disabled="!update.description" />
         </div>
       </div>
-      <button @click="logout()">logout</button>
+      <div class="user-info-update" v-if="update.info">
+        <div class="update-popup">
+          <p>유저 정보 변경</p>
+          <div class="user-name">
+            <p>닉네임 변경</p>
+            <div class="input-field">
+              <input type="text" v-model="userInfo.name">
+              <button>{{update.name ? '완료' : '수정'}}</button>
+            </div>
+          </div>
+          <div class="code">
+            <p>문의 코드 변경</p>
+            <div class="input-field">
+              <input type="text" v-model="userInfo.code">
+              <button>{{update.code ? '완료' : '수정'}}</button>
+            </div>
+          </div>
+          <button @click="update.info = false">취소</button>
+        </div>
+        <div class="background" />
+      </div>
       <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
       <router-link to="/community" class="community-page">커뮤니티 화면으로 돌아가기</router-link>
   </main>
@@ -48,11 +69,17 @@ export default {
       data: [],
       description: '',
       beforeDescription: '',
+      name: '',
+      beforeName: '',
+      code: '',
+      beforeCode: '',
     });
 
     const update = ref({
       info: false,
       description: false,
+      name: false,
+      code: false,
     });
 
     const descriptionChange = async (email) => {
@@ -78,6 +105,14 @@ export default {
           }
         }
       } else userInfo.value.beforeDescription = userInfo.value.description;
+    };
+
+    const nameChange = async () => {
+      //여기에 닉네임 변경 코드 추가
+    };
+
+    const codeChange = async () => {
+      //여기에 문의 코드 변경 코드 추가
     };
 
     const logout = () => {
@@ -125,11 +160,13 @@ export default {
 
         userInfo.value.data.push(info);
         userInfo.value.description = temp.description;
+        userInfo.value.name = temp.name;
+        userInfo.value.code = temp.code;
         
       } else getUserInfo(userName);
     });
 
-    return { userInfo, update, logout, descriptionChange };
+    return { userInfo, update, logout, descriptionChange, nameChange, codeChange };
   }
 }
 </script>
@@ -199,9 +236,6 @@ main {
 .update {
   width: 10%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
 }
 
 .update button {
@@ -273,13 +307,120 @@ main {
   text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
 }
 
-button {
+.user-info button {
   transition: all 1s;
   cursor: pointer;
 }
 
-button:hover {
+.user-info button:hover {
   transform: scale(95%);
+}
+
+.user-info-update {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.update-popup {
+  width: 30%;
+  height: 50%;
+  background-color: #ffffff;
+  border: 2px solid #ffc038;
+  border-radius: 15px;
+}
+
+.update-popup > p {
+  height: 15%;
+  font-size: 4rem;
+  color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  text-align: center;
+}
+
+.user-name, .code {
+  width: 100%;
+  height: 35%;
+}
+
+.user-name p, .code p {
+  height: 20%;
+  font-size: 2.5rem;
+  color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  text-align: center;
+}
+
+.input-field {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-field input {
+  width: 60%;
+  height: 70%;
+  border: 2px solid #ffc038;
+  border-radius: 15px 0 0 15px;
+  color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  font-size: 2.5rem;
+  text-align: center;
+  transition: all 1s;
+}
+
+.input-field button {
+  width: 20%;
+  height: 70%;
+  border: 2px solid #ffc038;
+  border-left: none;
+  border-radius: 0 15px 15px 0;
+  background-color: #ffffff;
+  color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  font-size: 2.3rem;
+  cursor: pointer;
+  transition: all 1s;
+}
+
+.update-popup > button {
+  width: 20%;
+  height: 10%;
+  border: 2px solid #ffc038;
+  border-radius: 15px;
+  background-color: #ffffff;
+  color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  font-size: 2.3rem;
+  margin-left: 70%;
+  cursor: pointer;
+  transition: all 1s;
+}
+
+.update-popup > button:hover {
+  transform: scale(95%);
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  z-index: -10;
+  opacity: 0.5;
+}
+
+input, textarea {
+  outline: 0;
 }
 
 .main-page, .community-page {
