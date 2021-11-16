@@ -1,6 +1,7 @@
 package com.gujerbit.battle_cat_web.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
@@ -31,5 +32,7 @@ public interface UserService {
 	int codeChange(UserVO vo);
 	
 	int profileImgChange(UserVO vo);
+	
+	List<UserVO> selectAllUserData();
 
 }

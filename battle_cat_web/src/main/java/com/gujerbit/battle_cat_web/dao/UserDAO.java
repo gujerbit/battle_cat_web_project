@@ -1,6 +1,7 @@
 package com.gujerbit.battle_cat_web.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -34,5 +35,7 @@ public interface UserDAO {
 	public int codeChange(UserVO vo);
 	
 	public int profileImgChange(UserVO vo);
+	
+	public List<UserVO> selectAllUserData();
 	
 }

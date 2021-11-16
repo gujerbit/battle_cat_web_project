@@ -1,6 +1,7 @@
 package com.gujerbit.battle_cat_web.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,6 +78,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int profileImgChange(UserVO vo) {
 		return dao.profileImgChange(vo);
+	}
+	
+	@Override
+	public List<UserVO> selectAllUserData() {
+		return dao.selectAllUserData();
 	}
 	
 }

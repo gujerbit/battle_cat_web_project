@@ -3,6 +3,7 @@ package com.gujerbit.battle_cat_web.controller;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -193,6 +194,11 @@ public class UserController {
 	@PostMapping("/change_profile_img")
 	public @ResponseBody int profileImgChange(@RequestBody UserVO vo) {
 		return userService.profileImgChange(vo);
+	}
+	
+	@GetMapping("/user_data")
+	public @ResponseBody List<UserVO> getAllUserData() {
+		return userService.selectAllUserData();
 	}
 	
 }

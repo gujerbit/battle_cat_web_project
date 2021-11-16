@@ -29,14 +29,6 @@ export default {
         name: window.sessionStorage.getItem('name'),
       });
 
-      const logout = () => {
-        window.sessionStorage.removeItem('jwt-auth-token');
-        window.sessionStorage.removeItem('name');
-
-        alert('로그아웃 하셨습니다.');
-        location.href = '/login';
-      };
-
       onBeforeMount(() => {
         // $(document).ready(() => {
         //   $(document).bind('keydown', e => {
@@ -50,11 +42,11 @@ export default {
         if(window.sessionStorage.getItem('init') == null) {
           window.sessionStorage.setItem('init', 'success');
           window.localStorage.clear();
-          location.href = '/';
+          location.reload();
         }
       });
 
-      return { user, logout };
+      return { user };
     },
     components: {
       // headerComponent,

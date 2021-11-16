@@ -4,7 +4,6 @@
       <p>{{elements.title[index]}}</p>
       <img :src="require(`../../assets/res/main/${value}.png`)" alt="">
     </router-link>
-    <!-- <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link> -->
   </main>
 </template>
 
