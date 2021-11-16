@@ -29,4 +29,10 @@ public interface UserDAO {
 	
 	public int descriptionChange(UserVO vo);
 	
+	public int nameChange(UserVO vo);
+	
+	public int codeChange(UserVO vo);
+	
+	public int profileImgChange(UserVO vo);
+	
 }

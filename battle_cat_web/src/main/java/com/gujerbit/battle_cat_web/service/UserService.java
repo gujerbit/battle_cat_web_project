@@ -25,5 +25,11 @@ public interface UserService {
 	UserVO selectUserInfo(String name);
 	
 	int descriptionChange(UserVO vo);
+	
+	int nameChange(UserVO vo);
+	
+	int codeChange(UserVO vo);
+	
+	int profileImgChange(UserVO vo);
 
 }

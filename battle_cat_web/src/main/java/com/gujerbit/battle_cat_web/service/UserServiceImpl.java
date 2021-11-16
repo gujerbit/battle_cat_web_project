@@ -64,4 +64,19 @@ public class UserServiceImpl implements UserService {
 		return dao.descriptionChange(vo);
 	}
 	
+	@Override
+	public int nameChange(UserVO vo) {
+		return dao.nameChange(vo);
+	}
+	
+	@Override
+	public int codeChange(UserVO vo) {
+		return dao.codeChange(vo);
+	}
+	
+	@Override
+	public int profileImgChange(UserVO vo) {
+		return dao.profileImgChange(vo);
+	}
+	
 }

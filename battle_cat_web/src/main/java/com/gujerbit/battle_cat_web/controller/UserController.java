@@ -173,9 +173,26 @@ public class UserController {
 		return userService.selectUserInfo(name);
 	}
 	
-	@PostMapping("/user_description_change")
+	@PostMapping("/change_description")
 	public @ResponseBody int descriptionChange(@RequestBody UserVO vo) {
 		return userService.descriptionChange(vo);
+	}
+	
+	@PostMapping("/change_name")
+	public @ResponseBody int nameChange(@RequestBody UserVO vo) {
+		return userService.nameChange(vo);
+	}
+	
+	@PostMapping("/change_code")
+	public @ResponseBody int codeChange(@RequestBody UserVO vo) {
+		vo.setCode(rsa.encryptRSA(vo.getCode()));
+		
+		return userService.codeChange(vo);
+	}
+	
+	@PostMapping("/change_profile_img")
+	public @ResponseBody int profileImgChange(@RequestBody UserVO vo) {
+		return userService.profileImgChange(vo);
 	}
 	
 }

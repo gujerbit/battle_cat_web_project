@@ -11,10 +11,10 @@
     <div class="email" v-if="show.email">
       <div v-if="!show.emailResult" class="content">
         <p class="title">이메일 찾기</p>
-        <p class="tip">{{tip.codeEmail}}</p>
-        <input @input="checkValue()" v-model="find.codeEmail" type="text" placeholder="문의코드를 입력해주세요" onfocus="this.select()">
+        <p class="tip">{{tip.code}}</p>
+        <input @input="checkValue()" v-model="find.code" type="text" placeholder="문의코드를 입력해주세요" onfocus="this.select()">
         <div class="btn-field">
-          <button @click="findEmail()" :disabled="tip.codeEmail.length > 0 || find.codeEmail.length <= 0">이메일 찾기</button>
+          <button @click="findEmail()" :disabled="tip.code.length > 0 || find.code.length <= 0">이메일 찾기</button>
           <button @click="show.email = false; clear()">취소</button>
         </div>
       </div>
@@ -23,7 +23,7 @@
           <p class="title">이메일을 찾았습니다</p>
           <p class="find">{{result.email}}</p>
           <div class="result-field">
-            <router-link to="/login">로그인하러 가기</router-link>
+            <router-link to="/login" @click="clear()">로그인하러 가기</router-link>
             <button @click="clear(); show.password = true;">비밀번호 찾기</button>
           </div>
         </div>
@@ -33,11 +33,11 @@
       <div class="content">
         <p class="title">비밀번호 찾기</p>
         <p class="tip">{{tip.email}}</p>
-        <input @input="emailCheck()" v-model="find.email" type="text" placeholder="이메일을 입력해주세요" onfocus="this.select()">
-        <p class="tip">{{tip.codePassword}}</p>
-        <input @input="checkValue()" v-model="find.codePassword" type="text" placeholder="문의코드를 입력해주세요" onfocus="this.select()">
+        <input @input="checkValue()" v-model="find.email" type="text" placeholder="이메일을 입력해주세요" onfocus="this.select()">
+        <p class="tip">{{tip.code}}</p>
+        <input @input="checkValue()" v-model="find.code" type="text" placeholder="문의코드를 입력해주세요" onfocus="this.select()">
         <div class="btn-field">
-          <button @click="getPasswordChangeCode()" :disabled="tip.codePassword.length + tip.email.length > 0 || find.email.length <= 0 || find.codePassword.length <= 0">비밀번호 찾기</button>
+          <button @click="getPasswordChangeCode()" :disabled="tip.code.length + tip.email.length > 0 || find.email.length <= 0 || find.code.length <= 0">비밀번호 찾기</button>
           <button @click="show.password = false; passwordChangeInfoClear(); clear()">취소</button>
         </div>
       </div>
@@ -78,6 +78,7 @@
 
 <script>
 import { ref, getCurrentInstance, onBeforeMount } from 'vue';
+import { checkCode, checkEmail, checkPassword, checkCheckPassword } from '../../../js/util/validation.js';
 
 export default {
   setup() {
@@ -85,8 +86,7 @@ export default {
 
     const find = ref({
       email: '',
-      codeEmail: '',
-      codePassword: '',
+      code: '',
       passwordChangeCode: '',
       password: '',
       checkPassword: '',
@@ -101,8 +101,7 @@ export default {
 
     const tip = ref({
       email: '',
-      codeEmail: '',
-      codePassword: '',
+      code: '',
       password: '',
       checkPassword: '',
     });
@@ -115,13 +114,12 @@ export default {
 
     const findEmail = async () => {
       let { data } = await proxy.axios.post('/find_email', {
-        code: find.value.codeEmail
+        code: find.value.code
       });
 
       if(data.length > 0) {
         show.value.emailResult = true;
         result.value.email = data;
-        clear();
       } else alert('이메일 찾기 실패. 문의코드를 다시 한 번 확인해주세요');
     };
 
@@ -130,7 +128,7 @@ export default {
 
       let { data } = await proxy.axios.post('/get_password_change_code', {
         email: find.value.email,
-        code: find.value.codePassword
+        code: find.value.code
       });
 
       if(!data) {
@@ -183,52 +181,16 @@ export default {
       } else alert('비밀번호를 변경 중 문제가 발생했습니다');
     }
 
-    const emailCheck = () => {
-      const emailPattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-
-      if(!emailPattern.test(find.value.email) && find.value.email.length > 0) tip.value.email = '올바른 이메일을 입력해주세요';
-      else tip.value.email = '';
-    };
-
     const checkValue = () => {
-      const specialPattern = /[!@#$%^&*()_+={}:;<>?/|.,`~'"[\]\\-]/gi;
-      const includePattern = /[!@#$%^&*?.]/gi;
-      const decludePattern = /[()_+={}:;<>/|,`~'"[\]\\-]/gi;
-      const numberPattern = /[0-9]/;
-
-      if(find.value.password.length !== 0) {
-        if(find.value.password.length < 8 || find.value.password.length > 20) tip.value.password = '비밀번호는 8자리 이상, 20자리 이하여야 합니다.';
-        else if(find.value.password.search(/\s/) != -1) tip.value.password = '공백은 포함하실 수 없습니다.';
-        else if(decludePattern.test(find.value.password)) tip.value.password = '해당 특수문자는 포함하실 수 없습니다.';
-        else if(!includePattern.test(find.value.password)) tip.value.password = '!,@,#,$,%,^,&,*,?,.중 하나가 포함되어야 합니다.';
-        else if(numberPattern.test(find.value.password.split('')[0])) tip.value.password = '처음은 문자로 시작하셔야 합니다.';
-        else tip.value.password = '';
-      } else tip.value.password = '';
-
-      if(find.value.checkPassword.length !== 0) {
-        if(find.value.checkPassword !== find.value.password) tip.value.checkPassword = '비밀번호가 맞지 않습니다.';
-        else tip.value.checkPassword = '';
-      } else tip.value.checkPassword = '';
-
-      if(find.value.codeEmail.length !== 0) {
-        if(find.value.codeEmail.length !== 9) tip.value.codeEmail = '문의코드는 9자리입니다.';
-        else if(find.value.codeEmail.search(/\s/) != -1) tip.value.codeEmail = '공백은 포함하실 수 없습니다.';
-        else if(specialPattern.test(find.value.codeEmail)) tip.value.codeEmail = '해당 특수문자는 포함하실 수 없습니다.';
-        else tip.value.codeEmail = '';
-      } else tip.value.codeEmail = '';
-
-      if(find.value.codePassword.length !== 0) {
-        if(find.value.codePassword.length !== 9) tip.value.codePassword = '문의코드는 9자리입니다.';
-        else if(find.value.codePassword.search(/\s/) != -1) tip.value.codePassword = '공백은 포함하실 수 없습니다.';
-        else if(specialPattern.test(find.value.codePassword)) tip.value.codePassword = '해당 특수문자는 포함하실 수 없습니다.';
-        else tip.value.codePassword = '';
-      } else tip.value.codePassword = '';
+      checkPassword(find.value, tip.value);
+      checkCheckPassword(find.value, tip.value);
+      checkCode(find.value, tip.value);
+      checkEmail(find.value, tip.value);
     };
 
     const clear = () => {
       find.value.email = '';
-      find.value.codeEmail = '';
-      find.value.codePassword = '';
+      find.value.code = '';
       find.value.findCode = '';
       find.value.password = '';
       find.value.checkPassword = '';
@@ -238,8 +200,7 @@ export default {
       show.value.passwordChangeCodeCheck = false;
       result.value.email = '';
       tip.value.email = '';
-      tip.value.codeEmail = '';
-      tip.value.codePassword = '';
+      tip.value.code = '';
       tip.value.password = '';
       tip.value.checkPassword = '';
     };
@@ -257,7 +218,7 @@ export default {
       }
     });
 
-    return { find, show, tip, result, findEmail, getPasswordChangeCode, emailCheck, checkValue, clear, passwordChangeInfoClear, checkPasswordChangeCode, changePassword };
+    return { find, show, tip, result, findEmail, getPasswordChangeCode, checkValue, clear, passwordChangeInfoClear, checkPasswordChangeCode, changePassword };
   }
 }
 </script>

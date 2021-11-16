@@ -3,7 +3,7 @@
       <div class="user-info" v-for="value in userInfo.data" :key="value">
         <div class="summary">
           <div class="profile-img">
-            <img v-if="value.email !== undefined" :src="require(`../../../assets/res/unit/${value.profileImg}`)" alt="">
+            <img v-if="value.email !== undefined" @click="update.profileImg = true" class="change-image" :src="require(`../../../assets/res/unit/${value.profileImg}`)" alt="">
             <img v-else :src="require(`../../../assets/res/unit/${value.profileImg}`)" alt="">
           </div>
           <div class="account">
@@ -16,9 +16,9 @@
             <p v-if="value.code !== undefined">문의 코드: {{value.code}}</p>
             <p>가입날짜: {{value.regDate}}</p>
           </div>
-          <div class="update" v-if="value.email !== undefined">
-            <button @click="logout()">로그아웃</button>
-            <button @click="update.info = true">정보 수정</button>
+          <div class="update">
+            <button v-if="value.email !== undefined" @click="logout()">로그아웃</button>
+            <button v-if="value.email !== undefined" @click="update.info = true">정보 수정</button>
           </div>
         </div>
         <div class="description">
@@ -34,20 +34,32 @@
         <div class="update-popup">
           <p>유저 정보 변경</p>
           <div class="user-name">
-            <p>닉네임 변경</p>
+            <p class="popup-title">닉네임 변경</p>
+            <p class="tip">{{tip.name}}</p>
             <div class="input-field">
-              <input type="text" v-model="userInfo.name">
-              <button>{{update.name ? '완료' : '수정'}}</button>
+              <input @input="checkValue()" type="text" v-model="userInfo.name" :disabled="!update.name">
+              <button @click="nameChange()" :disabled="update.name && tip.name.length > 0">{{update.name ? '완료' : '수정'}}</button>
             </div>
           </div>
           <div class="code">
-            <p>문의 코드 변경</p>
+            <p class="popup-title">문의 코드 변경</p>
+            <p class="tip">{{tip.code}}</p>
             <div class="input-field">
-              <input type="text" v-model="userInfo.code">
-              <button>{{update.code ? '완료' : '수정'}}</button>
+              <input @input="checkValue()" type="text" v-model="userInfo.code" :disabled="!update.code">
+              <button @click="codeChange()" :disabled="update.code && tip.code.length > 0">{{update.code ? '완료' : '수정'}}</button>
             </div>
           </div>
-          <button @click="update.info = false">취소</button>
+          <button @click="update.info = false; clear()">취소</button>
+        </div>
+        <div class="background" />
+      </div>
+      <div class="user-profile" v-if="update.profileImg">
+        <div class="profile-popup">
+          <p class="popup-title">프로필 이미지 변경</p>
+          <div class="img-field">
+            <img @click="profileImgChange(value.image_dir)" v-for="value in unit.all" :key="value" :src="require(`../../../assets/res/unit/${value.image_dir}`)" alt="">
+          </div>
+          <button @click="update.profileImg = false">취소</button>
         </div>
         <div class="background" />
       </div>
@@ -59,6 +71,8 @@
 <script>
 import { ref, onBeforeMount, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
+import { checkName, checkCode } from '../../../js/util/validation.js';
+import { getUnitInfo } from '../../../js/unit/unitInfo.js';
 
 export default {
   setup() {
@@ -73,6 +87,7 @@ export default {
       beforeName: '',
       code: '',
       beforeCode: '',
+      email: '',
     });
 
     const update = ref({
@@ -80,6 +95,16 @@ export default {
       description: false,
       name: false,
       code: false,
+      profileImg: false,
+    });
+
+    const tip = ref({
+      name: '',
+      code: '',
+    });
+
+    const unit = ref({
+      all: {},
     });
 
     const descriptionChange = async (email) => {
@@ -88,7 +113,7 @@ export default {
       if(!update.value.description) {
         if(userInfo.value.beforeDescription !== userInfo.value.description) {
           if(userInfo.value.description.length <= 100) {
-            let { data } = await proxy.axios.post('/user_description_change', {
+            let { data } = await proxy.axios.post('/change_description', {
               email: email,
               description: userInfo.value.description
             });
@@ -108,11 +133,85 @@ export default {
     };
 
     const nameChange = async () => {
-      //여기에 닉네임 변경 코드 추가
+      update.value.name = !update.value.name;
+
+      if(!update.value.name) {
+        if(userInfo.value.beforeName !== userInfo.value.name) {
+          let { data:check } = await proxy.axios.post('/check_name', {
+            name: userInfo.value.name
+          });
+
+          if(check) {
+            let { data } = await proxy.axios.post('/change_name', {
+              email: userInfo.value.email,
+              name: userInfo.value.name
+            });
+
+            if(data > 0) {
+              const info = JSON.parse(window.sessionStorage.getItem('user-info'));
+              info.name = userInfo.value.name;
+              window.sessionStorage.setItem('user-info', JSON.stringify(info));
+              alert('닉네임이 성공적으로 변경되었습니다!');
+              location.href = `/userInfo/${userInfo.value.name}`;
+            }
+            else alert('닉네임 변경 실패');
+          } else {
+            alert('중복된 닉네임입니다');
+            update.value.name = true;
+          }
+        }
+      } else userInfo.value.beforeName = userInfo.value.name;
     };
 
     const codeChange = async () => {
-      //여기에 문의 코드 변경 코드 추가
+      update.value.code = !update.value.code;
+
+      if(!update.value.code) {
+        if(userInfo.value.beforeCode !== userInfo.value.code) {
+          let { data:check } = await proxy.axios.post('/check_code', {
+            code: userInfo.value.code
+          });
+
+          if(check) {
+            let { data } = await proxy.axios.post('/change_code', {
+              email: userInfo.value.email,
+              code: userInfo.value.code
+            });
+
+            if(data > 0) {
+              const info = JSON.parse(window.sessionStorage.getItem('user-info'));
+              info.code = userInfo.value.code;
+              window.sessionStorage.setItem('user-info', JSON.stringify(info));
+              alert('문의 코드가 성공적으로 변경되었습니다!');
+              location.reload();
+            }
+            else alert('문의 코드 변경 실패');
+          } else {
+            alert('중복된 문의 코드입니다! 이미 가입된 계정이 있는지 다시 한 번 확인해주세요!');
+            update.value.code = true;
+          }
+        }
+      } else userInfo.value.beforeCode = userInfo.value.code;
+    };
+
+    const profileImgChange = async (value) => {
+      let { data } = await proxy.axios.post('/change_profile_img', {
+        email: userInfo.value.email,
+        profile_img: value
+      });
+
+      if(data > 0) {
+        const info = JSON.parse(window.sessionStorage.getItem('user-info'));
+        info.profile_img = value;
+        window.sessionStorage.setItem('user-info', JSON.stringify(info));
+        alert('프로필 이미지가 성공적으로 변경되었습니다!');
+        location.reload();
+      } else alert('프로필 이미지 변경 실패');
+    };
+
+    const checkValue = () => {
+      checkName(userInfo.value, tip.value);
+      checkCode(userInfo.value, tip.value);
     };
 
     const logout = () => {
@@ -139,6 +238,15 @@ export default {
       userInfo.value.description = data.description;
     };
 
+    const clear = () => {
+      if(userInfo.value.beforeName.length > 0) userInfo.value.name = userInfo.value.beforeName;
+      if(userInfo.value.beforeCode.length > 0) userInfo.value.code = userInfo.value.beforeCode;
+      update.value.name = false;
+      update.value.code = false;
+      tip.value.name = '';
+      tip.value.code = '';
+    };
+
     onBeforeMount(() => {
       const userName = route.params.userName;
       const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
@@ -162,11 +270,18 @@ export default {
         userInfo.value.description = temp.description;
         userInfo.value.name = temp.name;
         userInfo.value.code = temp.code;
-        
+        userInfo.value.email = temp.email;
+
+        const loadData = setInterval(() => {
+          if(getUnitInfo(proxy.store) !== undefined) {
+            unit.value.all = getUnitInfo(proxy.store);
+            clearInterval(loadData);
+          }
+        }, 100);
       } else getUserInfo(userName);
     });
 
-    return { userInfo, update, logout, descriptionChange, nameChange, codeChange };
+    return { userInfo, update, tip, unit, logout, descriptionChange, nameChange, codeChange, profileImgChange, checkValue, clear };
   }
 }
 </script>
@@ -316,7 +431,7 @@ main {
   transform: scale(95%);
 }
 
-.user-info-update {
+.user-info-update, .user-profile {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -348,7 +463,7 @@ main {
   height: 35%;
 }
 
-.user-name p, .code p {
+.user-name .popup-title, .code .popup-title {
   height: 20%;
   font-size: 2.5rem;
   color: #ffc038;
@@ -390,6 +505,11 @@ main {
   transition: all 1s;
 }
 
+.input-field button:hover {
+  background-color: #ffc038;
+  color: #ffffff;
+}
+
 .update-popup > button {
   width: 20%;
   height: 10%;
@@ -421,6 +541,94 @@ main {
 
 input, textarea {
   outline: 0;
+}
+
+button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.tip {
+  height: 15%;
+  color: #f11212;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  font-size: 2.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.change-image {
+  transition: all 1s;
+  cursor: pointer;
+}
+
+.change-image:hover {
+  transform: scale(95%);
+}
+
+.profile-popup {
+  width: 50%;
+  height: 70%;
+  border: 2px solid #ffc038;
+  border-radius: 15px;
+  background-color: #ffffff;
+}
+
+.img-field {
+  width: 100%;
+  height: 80%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-items: center;
+  align-items: center;
+  padding: 0.5%;
+  overflow: auto;
+}
+
+.img-field::-webkit-scrollbar {
+  display: none;
+}
+
+.profile-popup img {
+  width: 95%;
+  height: 95%;
+  transition: all 1s;
+  cursor: pointer;
+}
+
+.profile-popup img:hover {
+  transform: scale(95%);
+}
+
+.profile-popup .popup-title {
+  width: 100%;
+  height: 10%;
+  font-size: 4rem;
+  color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-popup button {
+  width: 15%;
+  height: 7%;
+  color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  font-size: 2.3rem;
+  background-color: #ffffff;
+  border: 2px solid #ffc038;
+  border-radius: 15px;
+  margin-left: 83%;
+  margin-top: 1%;
+  cursor: pointer;
+  transition: all 1s;
+}
+
+.profile-popup button:hover {
+  transform: scale(95%);
 }
 
 .main-page, .community-page {

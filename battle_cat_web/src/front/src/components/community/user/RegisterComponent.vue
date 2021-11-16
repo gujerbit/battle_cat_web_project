@@ -4,7 +4,7 @@
       <p class="title">REGISTER PAGE</p>
       <div class="email">
         <p class="tip">{{tip.email}}</p>
-        <input v-if="registerInfo.registerCode.length <= 0" @input="emailCheck()" v-model="registerInfo.email" type="text" placeholder="이메일을 입력하세요" onfocus="this.select()">
+        <input v-if="registerInfo.registerCode.length <= 0" @input="checkValue()" v-model="registerInfo.email" type="text" placeholder="이메일을 입력하세요" onfocus="this.select()">
         <input v-else v-model="registerInfo.inputCode" type="text" placeholder="이메일로 발송된 회원가입 코드를 입력해주세요" onfocus="this.select()">
       </div>
       <div class="btn-field">
@@ -49,6 +49,7 @@
 <script>
 import { ref, getCurrentInstance, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
+import { checkPassword, checkCheckPassword, checkName, checkCode, checkEmail } from '../../../js/util/validation.js';
 
 export default {
   setup() {
@@ -152,52 +153,18 @@ export default {
       } else alert('중복된 닉네임입니다');
     };
 
-    const emailCheck = () => {
-      const emailPattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-
-      if(!emailPattern.test(registerInfo.value.email) && registerInfo.value.email.length > 0) tip.value.email = '올바른 이메일을 입력해주세요';
-      else tip.value.email = '';
-    };
-
-    const checkValue = () => {
-      const specialPattern = /[!@#$%^&*()_+={}:;<>?/|.,`~'"[\]\\-]/gi;
-      const includePattern = /[!@#$%^&*?.]/gi;
-      const decludePattern = /[()_+={}:;<>/|,`~'"[\]\\-]/gi;
-      const numberPattern = /[0-9]/;
-
-      if(registerInfo.value.password.length !== 0) {
-        if(registerInfo.value.password.length < 8 || registerInfo.value.password.length > 20) tip.value.password = '비밀번호는 8자리 이상, 20자리 이하여야 합니다.';
-        else if(registerInfo.value.password.search(/\s/) != -1) tip.value.password = '공백은 포함하실 수 없습니다.';
-        else if(decludePattern.test(registerInfo.value.password)) tip.value.password = '해당 특수문자는 포함하실 수 없습니다.';
-        else if(!includePattern.test(registerInfo.value.password)) tip.value.password = '!,@,#,$,%,^,&,*,?,.중 하나가 포함되어야 합니다.';
-        else if(numberPattern.test(registerInfo.value.password.split('')[0])) tip.value.password = '처음은 문자로 시작하셔야 합니다.';
-        else tip.value.password = '';
-      } else tip.value.password = '';
-
-      if(registerInfo.value.checkPassword.length !== 0) {
-        if(registerInfo.value.checkPassword !== registerInfo.value.password) tip.value.checkPassword = '비밀번호가 맞지 않습니다.';
-        else tip.value.checkPassword = '';
-      } else tip.value.checkPassword = '';
-
-      if(registerInfo.value.name.length !== 0) {
-        if(registerInfo.value.name.length > 20) tip.value.name = '닉네임은 20자리 이하여야 합니다.';
-        else if(registerInfo.value.name.search(/\s/) != -1) tip.value.name = '공백은 포함하실 수 없습니다.';
-        else if(decludePattern.test(registerInfo.value.name)) tip.value.name = '해당 특수문자는 포함하실 수 없습니다.';
-        else tip.value.name = '';
-      } else tip.value.name = '';
-
-      if(registerInfo.value.code.length !== 0) {
-        if(registerInfo.value.code.length !== 9) tip.value.code = '문의코드는 9자리입니다.';
-        else if(registerInfo.value.code.search(/\s/) != -1) tip.value.code = '공백은 포함하실 수 없습니다.';
-        else if(specialPattern.test(registerInfo.value.code)) tip.value.code = '해당 특수문자는 포함하실 수 없습니다.';
-        else tip.value.code = '';
-      } else tip.value.code = '';
-    };
-
     const registerInfoClear = () => {
       window.sessionStorage.removeItem('registerInfo');
       window.sessionStorage.removeItem('registerCodeCheck');
     };
+
+    const checkValue = () => {
+      checkPassword(registerInfo.value, tip.value);
+      checkCheckPassword(registerInfo.value, tip.value);
+      checkName(registerInfo.value, tip.value);
+      checkCode(registerInfo.value, tip.value);
+      checkEmail(registerInfo.value, tip.value);
+    }
 
     onBeforeMount(() => {
       if(window.sessionStorage.getItem('jwt-auth-token') !== null) {
@@ -214,7 +181,7 @@ export default {
       if(window.sessionStorage.getItem('registerCodeCheck') != null) registerInfo.value.registerCodeCheck = window.sessionStorage.getItem('registerCodeCheck');
     });
 
-    return { registerInfo, tip, window, getRegisterCode, emailCheck, checkRegisterCode, checkValue, register, registerInfoClear };
+    return { registerInfo, tip, getRegisterCode, checkRegisterCode, register, registerInfoClear, checkValue };
   }
 }
 </script>

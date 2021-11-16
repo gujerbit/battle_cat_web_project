@@ -22,7 +22,7 @@
 
 <script>
 import { ref, getCurrentInstance, onBeforeMount, watchEffect } from 'vue';
-import { setUnitInfo, getUnitInfo, getSearchUnitInfo } from '../../js/unit/unitInfo.js';
+import { getUnitInfo, getSearchUnitInfo } from '../../js/unit/unitInfo.js';
 import { pagination, pageDivision } from '../../js/util/pagination.js';
 import elementComponent from './UnitInfoElementComponent.vue'
 
@@ -69,8 +69,6 @@ export default {
     };
 
     onBeforeMount(() => { //dom 부착 전
-      setUnitInfo(proxy.axios, proxy.store); //store에 데이터 담기
-
       const loadData = setInterval(() => {
         if(getUnitInfo(proxy.store) !== undefined) {
           info.value.all = getUnitInfo(proxy.store);

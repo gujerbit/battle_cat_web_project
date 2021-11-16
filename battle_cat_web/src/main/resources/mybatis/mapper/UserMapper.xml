@@ -65,5 +65,26 @@
 			email = #{email}
 		</where>
 	</update>
+	
+	<update id="nameChange">
+		UPDATE user_data SET name = #{name}
+		<where>
+			email = #{email}
+		</where>
+	</update>
+	
+	<update id="codeChange">
+		UPDATE user_data SET code = #{code}
+		<where>
+			email = #{email}
+		</where>
+	</update>
+	
+	<update id="profileImgChange">
+		UPDATE user_data SET profile_img = #{profile_img}
+		<where>
+			email = #{email}
+		</where>
+	</update>
 
 </mapper>
