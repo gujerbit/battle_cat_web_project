@@ -1,21 +1,42 @@
 <template>
   <main>
+    <div id="admin">
+      {{userInfo.data}}
+    </div>
     <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
     <router-link to="/community" class="community-page">커뮤니티 화면으로 돌아가기</router-link>
   </main>
 </template>
 
 <script>
-import { onBeforeMount } from 'vue';
+import { ref, onBeforeMount, getCurrentInstance } from 'vue';
 
 export default {
   setup() {
+    const { proxy } = getCurrentInstance();
+
+    const userInfo = ref({
+      data: [],
+    });
+
     onBeforeMount(async () => {
       if(window.sessionStorage.getItem('jwt-auth-token') === null) {
         alert('로그인 후 이용가능한 시스템입니다');
         location.href = '/login';
+      } else {
+        const info = JSON.parse(window.sessionStorage.getItem('user-info'));
+
+        if(info.grade === 'admin' || info.grade === 'developer') {
+          let { data } = await proxy.axios.get('/user_data');
+          userInfo.value.data = data;
+        } else {
+          alert('관리자만 접근 가능합니다!');
+          location.href = '/community'
+        }
       }
     });
+
+    return { userInfo };
   }
 }
 </script>
@@ -24,6 +45,12 @@ export default {
 main {
   width: 100%;
   height: 100%;
+}
+
+#admin {
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
 }
 
 .main-page, .community-page {
