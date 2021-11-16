@@ -201,4 +201,16 @@ public class UserController {
 		return userService.selectAllUserData();
 	}
 	
+	@PostMapping("/user_remove")
+	public @ResponseBody int userRemove(@RequestBody UserVO vo) {
+		String password = vo.getPassword();
+		String digestPassword = hashing.hashing(password.getBytes());
+		String salt = userService.selectSalt(vo.getEmail());
+		String saltingPassword = hashing.hashing((digestPassword + salt).getBytes());
+		vo.setPassword(saltingPassword);
+		
+		if(userService.login(vo) != null) return userService.userRemove(vo);
+		else return 0;
+	}
+	
 }

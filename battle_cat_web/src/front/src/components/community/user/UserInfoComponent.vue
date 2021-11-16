@@ -19,6 +19,7 @@
           <div class="update">
             <button v-if="value.email !== undefined" @click="logout()">로그아웃</button>
             <button v-if="value.email !== undefined" @click="update.info = true">정보 수정</button>
+            <button v-if="value.email !== undefined" @click="update.remove = true">회원 탈퇴</button>
           </div>
         </div>
         <div class="description">
@@ -63,6 +64,17 @@
         </div>
         <div class="background" />
       </div>
+      <div class="user-remove" v-if="update.remove">
+        <div class="remove-popup">
+          <p class="popup-title">회원 탈퇴</p>
+          <input v-model="userInfo.password" type="password" placeholder="비밀번호를 입력해주세요">
+          <div class="btn-field">
+            <button @click="userRemove(userInfo, proxy.axios)">완료</button>
+            <button @click="update.remove = false; userInfo.password = ''">취소</button>
+          </div>
+        </div>
+        <div class="background" />
+      </div>
       <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
       <router-link to="/community" class="community-page">커뮤니티 화면으로 돌아가기</router-link>
   </main>
@@ -74,7 +86,7 @@ import { useRoute } from 'vue-router';
 import { checkName, checkCode } from '../../../js/util/validation.js';
 import { getUnitInfo } from '../../../js/unit/unitInfo.js';
 import { logout } from '../../../js/community/user/user.js';
-import { descriptionChange, nameChange, codeChange, profileImgChange } from '../../../js/community/user/userInfo.js';
+import { descriptionChange, nameChange, codeChange, profileImgChange, userRemove } from '../../../js/community/user/userInfo.js';
 
 export default {
   setup() {
@@ -90,6 +102,7 @@ export default {
       code: '',
       beforeCode: '',
       email: '',
+      password: '',
     });
 
     const update = ref({
@@ -98,6 +111,7 @@ export default {
       name: false,
       code: false,
       profileImg: false,
+      remove: false,
     });
 
     const tip = ref({
@@ -111,13 +125,19 @@ export default {
 
     const getUserInfo = async (name) => {
       let { data } = await proxy.axios.get(`/user_info/${name}`);
-      const key = Object.keys(data);
-      const info = {};
-
-      for(let i = 0; i < key.length; i++) if(data[`${key[i]}`] !== null) info[`${key[i]}`] = data[`${key[i]}`];
       
-      userInfo.value.data.push(info);
-      userInfo.value.description = data.description;
+      if(data.length === 0) {
+        alert('존재하지 않는 유저입니다!');
+        history.go(-1);
+      } else {
+        const key = Object.keys(data);
+        const info = {};
+
+        for(let i = 0; i < key.length; i++) if(data[`${key[i]}`] !== null) info[`${key[i]}`] = data[`${key[i]}`];
+        
+        userInfo.value.data.push(info);
+        userInfo.value.description = data.description;
+      }
     };
 
     const clear = () => {
@@ -130,31 +150,36 @@ export default {
     };
 
     onBeforeMount(() => {
-      const userName = route.params.userName;
-      const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
+      if(window.sessionStorage.getItem('jwt-auth-token') === null) {
+        alert('로그인 후 이용가능한 시스템입니다');
+        location.href = '/login';
+      } else {
+        const userName = route.params.userName;
+        const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
 
-      if(userName === temp.name) {
-        const key = Object.keys(temp);
-        const info = {};
+        if(temp !== null && userName === temp.name) {
+          const key = Object.keys(temp);
+          const info = {};
 
-        for(let i = 0; i < key.length; i++) if(temp[`${key[i]}`] !== null) info[`${key[i]}`] = temp[`${key[i]}`];
+          for(let i = 0; i < key.length; i++) if(temp[`${key[i]}`] !== null) info[`${key[i]}`] = temp[`${key[i]}`];
 
-        userInfo.value.data.push(info);
-        userInfo.value.description = temp.description;
-        userInfo.value.name = temp.name;
-        userInfo.value.code = temp.code;
-        userInfo.value.email = temp.email;
+          userInfo.value.data.push(info);
+          userInfo.value.description = temp.description;
+          userInfo.value.name = temp.name;
+          userInfo.value.code = temp.code;
+          userInfo.value.email = temp.email;
 
-        const loadData = setInterval(() => {
-          if(getUnitInfo(proxy.store) !== undefined) {
-            unit.value.all = getUnitInfo(proxy.store);
-            clearInterval(loadData);
-          }
-        }, 100);
-      } else getUserInfo(userName);
+          const loadData = setInterval(() => {
+            if(getUnitInfo(proxy.store) !== undefined) {
+              unit.value.all = getUnitInfo(proxy.store);
+              clearInterval(loadData);
+            }
+          }, 100);
+        } else getUserInfo(userName);
+      }
     });
 
-    return { userInfo, update, tip, unit, proxy, logout, descriptionChange, nameChange, codeChange, profileImgChange, clear, checkName, checkCode };
+    return { userInfo, update, tip, unit, proxy, logout, descriptionChange, nameChange, codeChange, profileImgChange, clear, checkName, checkCode, userRemove };
   }
 }
 </script>

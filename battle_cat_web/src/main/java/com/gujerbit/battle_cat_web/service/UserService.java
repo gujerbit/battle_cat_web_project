@@ -34,5 +34,7 @@ public interface UserService {
 	int profileImgChange(UserVO vo);
 	
 	List<UserVO> selectAllUserData();
+	
+	int userRemove(UserVO vo);
 
 }

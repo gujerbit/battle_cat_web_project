@@ -37,7 +37,6 @@ main {
   border: 2px solid #ffc038;
   border-radius: 15px;
   text-align: center;
-  transition: all 1s;
   outline: 0;
   color: #ffc038;
   text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
@@ -76,7 +75,7 @@ main {
   transition: all 1s;
 }
 
-.input-field input:hover, .input-field button:hover, .advice a:hover {
+.input-field button:hover, .advice a:hover {
   transform: scale(105%);
 }
 

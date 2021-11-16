@@ -38,4 +38,6 @@ public interface UserDAO {
 	
 	public List<UserVO> selectAllUserData();
 	
+	public int userRemove(UserVO vo);
+	
 }

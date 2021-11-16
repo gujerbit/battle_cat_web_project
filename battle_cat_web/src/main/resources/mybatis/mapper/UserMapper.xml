@@ -90,5 +90,14 @@
 	<select id="selectAllUserData" resultType="UserVO">
 		SELECT name, grade, reg_date, profile_img, description, reject_end_date, forever_reject, reputation FROM user_data
 	</select>
-
+	
+	<delete id="userRemove">
+		DELETE FROM user_data
+		<where>
+			email = #{email}
+			AND
+			password = #{password}
+		</where>
+	</delete>
+	
 </mapper>

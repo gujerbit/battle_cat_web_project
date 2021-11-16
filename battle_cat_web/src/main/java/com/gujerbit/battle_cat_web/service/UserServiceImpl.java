@@ -85,4 +85,9 @@ public class UserServiceImpl implements UserService {
 		return dao.selectAllUserData();
 	}
 	
+	@Override
+	public int userRemove(UserVO vo) {
+		return dao.userRemove(vo);
+	}
+	
 }

@@ -1,4 +1,6 @@
-export { descriptionChange, nameChange, codeChange, profileImgChange };
+import { removeSessionStorage } from '../../util/value.js';
+
+export { descriptionChange, nameChange, codeChange, profileImgChange, userRemove };
 
 async function descriptionChange(userInfo, update, axios) {
   update.description = !update.description;
@@ -100,4 +102,19 @@ async function profileImgChange(userInfo, value, axios) {
     alert('프로필 이미지가 성공적으로 변경되었습니다!');
     location.reload();
   } else alert('프로필 이미지 변경 실패');
+}
+
+async function userRemove(userInfo, axios) {
+  if(confirm('정말로 회원 탈퇴를 진행하시겠습니까??')) {
+    let { data } = await axios.post('user_remove', {
+      email: userInfo.email,
+      password: userInfo.password,
+    });
+
+    if(data > 0) {
+      removeSessionStorage(['jwt-auth-token', 'user-info']);
+      alert('회원 탈퇴 성공!');
+      location.href = '/login';
+    } else alert('비밀번호가 맞지 않습니다! 다시 한 번 비밀번호를 확인해주세요');
+  } else alert('회원 탈퇴가 취소되었습니다!');
 }
