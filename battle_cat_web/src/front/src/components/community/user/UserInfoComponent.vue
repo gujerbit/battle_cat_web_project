@@ -8,18 +8,23 @@
           </div>
           <div class="account">
             <p class="name">{{value.name}}
-              <span class="grade">[{{value.grade === 'user' ? '유저' : '관리자'}}]</span>
-              <span class="reject" v-if="value.foreverReject">[영구 차단됨]</span>
-              <span class="reject" v-else-if="new Date(value.rejectEndDate).getTime() - new Date().getTime() > 0">[차단됨 {{new Date(new Date(value.rejectEndDate).getTime() - new Date().getTime()).getDate() - 1}}일 남음]</span>
+              <span class="grade">[{{value.grade === 'user' ? '유저' : value.grade === 'admin' ? '관리자' : value.grade === 'operator' ? '운영자' : '개발자'}}]</span>
+              <span class="reject" v-if="value.forever_reject">[영구 차단됨]</span>
+              <span class="reject" v-else-if="new Date(value.reject_end_date).getTime() - new Date().getTime() > 0">[{{new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}}일 후 차단해제]</span>
             </p>
             <p v-if="value.email !== undefined">이메일: {{value.email}}</p>
             <p v-if="value.code !== undefined">문의 코드: {{value.code}}</p>
             <p>가입날짜: {{value.reg_date}}</p>
           </div>
           <div class="update">
-            <button v-if="value.email !== undefined" @click="logout()">로그아웃</button>
-            <button v-if="value.email !== undefined" @click="update.info = true">정보 수정</button>
-            <button v-if="value.email !== undefined" @click="update.remove = true">회원 탈퇴</button>
+            <template v-if="value.email !== undefined">
+              <button @click="logout()">로그아웃</button>
+              <button @click="update.info = true">정보 수정</button>
+              <button @click="update.remove = true">회원 탈퇴</button>
+            </template>
+            <template v-else>
+              <button>신고하기</button>
+            </template>
           </div>
         </div>
         <div class="description">

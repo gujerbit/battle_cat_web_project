@@ -1,6 +1,6 @@
 import { removeSessionStorage } from '../../util/value.js';
 
-export { descriptionChange, nameChange, codeChange, profileImgChange, userRemove };
+export { descriptionChange, nameChange, codeChange, profileImgChange, userRemove, searchUser };
 
 async function descriptionChange(userInfo, update, axios) {
   update.description = !update.description;
@@ -117,4 +117,22 @@ async function userRemove(userInfo, axios) {
       location.href = '/login';
     } else alert('비밀번호가 맞지 않습니다! 다시 한 번 비밀번호를 확인해주세요');
   } else alert('회원 탈퇴가 취소되었습니다!');
+}
+
+function searchUser(data, value, grade) {
+  let result = [];
+
+  data.forEach(res => {
+    if(value.length > 0) {
+      if(res.name.includes(value)) {
+        if(grade === res.grade || grade === '모두') result.push(res);
+      }
+    } else {
+      if(grade === res.grade || grade === '모두') result.push(res);
+    }
+  });
+
+  if(result.length <= 0) return false;
+
+  return result;
 }

@@ -69,13 +69,14 @@ export default {
     };
 
     onBeforeMount(() => { //dom 부착 전
-      const loadData = setInterval(() => {
-        if(getUnitInfo(proxy.store) !== undefined) {
-          info.value.all = getUnitInfo(proxy.store);
-          contentUpdate();
-          clearInterval(loadData);
-        }
-      }, 100);
+      // const loadData = setInterval(() => {
+      //   if(getUnitInfo(proxy.store) !== undefined) {
+          
+      //     clearInterval(loadData);
+      //   }
+      // }, 100);
+      info.value.all = getUnitInfo(proxy.store);
+      contentUpdate();
     });
 
     watchEffect(() => {
@@ -87,9 +88,7 @@ export default {
           info.value.current = [];
           pageInfo.value.totalPage = [1];
         }
-      } else if(info.value.all.length > 0) {
-        contentUpdate();
-      }
+      } else if(info.value.all.length > 0) contentUpdate();
     });
 
     return { pageInfo, info, nextPage, prevPage, selectPage };
