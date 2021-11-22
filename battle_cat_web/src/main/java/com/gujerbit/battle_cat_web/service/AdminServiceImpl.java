@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gujerbit.battle_cat_web.dao.AdminDAO;
+import com.gujerbit.battle_cat_web.vo.AdminLogVO;
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @Service
@@ -25,6 +26,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int userRejectRelease(UserVO vo) {
 		return dao.userRejectRelease(vo);
+	}
+	
+	@Override
+	public int setAdminLog(AdminLogVO vo) {
+		return dao.setAdminLog(vo);
 	}
 	
 }

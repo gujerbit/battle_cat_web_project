@@ -6,7 +6,7 @@
         <p>신고 현황</p>
         <p>감사 로그</p>
       </nav>
-      <div class="user-list">
+      <div class="user-list" v-if="view.select === 'userList'">
         <div class="header">
           <div class="title">
             <p>{{userInfo.user.name + ': ' + (userInfo.user.grade === 'user' ? '유저' : userInfo.user.grade === 'admin' ? '관리자' : userInfo.user.grade === 'operator' ? '운영자' : '개발자')}}</p>
@@ -99,6 +99,10 @@ export default {
       length: [1, 1, 1, 1, 1],
     });
 
+    const view = ref({
+      select: 'userList',
+    });
+
     const pageInfo = ref({
       totalPage: [], //전체 페이지
       divisionPage: 5, //한 번호에 몇 개씩 데이터를 보여줄 것인지 정하는 변수
@@ -170,7 +174,7 @@ export default {
       }
     });
 
-    return { userInfo, pageInfo, searchInfo, reject, proxy, nextPage, prevPage, selectPage, search, userReject, userForeverReject, userRejectRelease };
+    return { userInfo, pageInfo, searchInfo, reject, proxy, view, nextPage, prevPage, selectPage, search, userReject, userForeverReject, userRejectRelease };
   }
 }
 </script>

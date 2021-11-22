@@ -22,5 +22,9 @@
 			name = #{name}
 		</where>
 	</update>
+	
+	<insert id="setAdminLog">
+		INSERT INTO admin_log(email, name, content, log_date) VALUES(#{email}, #{name}, #{content}, #{log_date})
+	</insert>
 
 </mapper>

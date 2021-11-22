@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gujerbit.battle_cat_web.service.AdminServiceImpl;
+import com.gujerbit.battle_cat_web.vo.AdminLogVO;
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @CrossOrigin("*")
@@ -30,6 +31,11 @@ public class AdminController {
 	@PostMapping("/user_reject_release")
 	public @ResponseBody int userRejectRelease(@RequestBody UserVO vo) {
 		return adminService.userRejectRelease(vo);
+	}
+	
+	@PostMapping("/set_admin_log")
+	public @ResponseBody int setAdminLog(@RequestBody AdminLogVO vo) {
+		return adminService.setAdminLog(vo);
 	}
 	
 }
