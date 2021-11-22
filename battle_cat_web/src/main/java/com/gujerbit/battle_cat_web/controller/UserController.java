@@ -213,4 +213,9 @@ public class UserController {
 		else return 0;
 	}
 	
+	@PostMapping("/check_reject")
+	public @ResponseBody UserVO checkReject(@RequestBody UserVO vo) {
+		return userService.checkReject(vo);
+	}
+	
 }

@@ -77,6 +77,7 @@ import { ref, onBeforeMount, getCurrentInstance, watchEffect } from 'vue';
 import { pagination, pageDivision } from '../../../js/util/pagination.js';
 import { searchUser } from '../../../js/community/user/userInfo.js';
 import { userReject, userForeverReject, userRejectRelease } from '../../../js/community/admin/admin.js';
+import { checkReject } from '../../../js/community/user/user.js';
 
 export default {
   setup() {
@@ -141,6 +142,8 @@ export default {
         alert('로그인 후 이용가능한 시스템입니다');
         location.href = '/login';
       } else {
+        checkReject(proxy.axios);
+
         const info = JSON.parse(window.sessionStorage.getItem('user-info'));
         userInfo.value.user = info;
 

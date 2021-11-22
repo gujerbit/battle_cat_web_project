@@ -90,7 +90,7 @@ import { ref, onBeforeMount, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
 import { checkName, checkCode } from '../../../js/util/validation.js';
 import { getUnitInfo } from '../../../js/unit/unitInfo.js';
-import { logout } from '../../../js/community/user/user.js';
+import { logout, checkReject } from '../../../js/community/user/user.js';
 import { descriptionChange, nameChange, codeChange, profileImgChange, userRemove } from '../../../js/community/user/userInfo.js';
 
 export default {
@@ -159,6 +159,8 @@ export default {
         alert('로그인 후 이용가능한 시스템입니다');
         location.href = '/login';
       } else {
+        checkReject(proxy.axios);
+
         const userName = route.params.userName;
         const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
 

@@ -40,4 +40,6 @@ public interface UserDAO {
 	
 	public int userRemove(UserVO vo);
 	
+	public UserVO checkReject(UserVO vo);
+	
 }

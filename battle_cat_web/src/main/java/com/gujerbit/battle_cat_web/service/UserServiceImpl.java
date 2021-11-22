@@ -90,4 +90,9 @@ public class UserServiceImpl implements UserService {
 		return dao.userRemove(vo);
 	}
 	
+	@Override
+	public UserVO checkReject(UserVO vo) {
+		return dao.checkReject(vo);
+	}
+	
 }

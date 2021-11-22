@@ -5,13 +5,15 @@
 </template>
 
 <script>
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, getCurrentInstance } from 'vue';
+import { checkReject } from '../../../js/community/user/user.js';
 
 export default {
   setup() {
+    const { proxy } = getCurrentInstance();
+
     onBeforeMount(() => {
-      alert('준비중입니다');
-      location.href = '/community';
+      checkReject(proxy.axios);
     });
   }
 }

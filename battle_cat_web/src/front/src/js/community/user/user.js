@@ -1,6 +1,6 @@
 import { removeSessionStorage } from "../../util/value.js";
 
-export { login, getRegisterCode, checkRegisterCode, register, logout };
+export { login, getRegisterCode, checkRegisterCode, register, logout, checkReject };
 
 async function login(loginInfo, axios) {
   if(loginInfo.email.length > 0 && loginInfo.password.length > 0) {
@@ -104,4 +104,26 @@ function logout() {
   removeSessionStorage(['jwt-auth-token', 'user-info']);
   alert('로그아웃 완료');
   location.href = '/login';
+}
+
+async function checkReject(axios) {
+  if(window.sessionStorage.getItem('user-info') !== null) {
+    const user = JSON.parse(window.sessionStorage.getItem('user-info'));
+
+    let { data } = await axios.post('check_reject', {
+      name: user.name,
+    });
+
+    if(data.forever_reject) {
+      alert('해당 계정은 영구차단 되었습니다!');
+      window.sessionStorage.removeItem('jwt-auth-token');
+      window.sessionStorage.removeItem('user-info');
+      location.href = '/login';
+    } else if(new Date(data.reject_end_date).getTime() - new Date().getTime() > 0) {
+      alert(`해당 계정은 차단된 계정입니다! 남은 차단 일수: ${new Date(new Date(data.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}일`);
+      window.sessionStorage.removeItem('jwt-auth-token');
+      window.sessionStorage.removeItem('user-info');
+      location.href = '/login';
+    }
+  }
 }

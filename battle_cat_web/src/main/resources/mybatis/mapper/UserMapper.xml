@@ -100,4 +100,11 @@
 		</where>
 	</delete>
 	
+	<select id="checkReject" resultType="UserVO">
+		SELECT reject_end_date, forever_reject FROM user_data
+		<where>
+			name = #{name}
+		</where>
+	</select>
+	
 </mapper>

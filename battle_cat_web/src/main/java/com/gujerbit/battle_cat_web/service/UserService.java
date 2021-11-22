@@ -36,5 +36,7 @@ public interface UserService {
 	List<UserVO> selectAllUserData();
 	
 	int userRemove(UserVO vo);
+	
+	UserVO checkReject(UserVO vo);
 
 }
