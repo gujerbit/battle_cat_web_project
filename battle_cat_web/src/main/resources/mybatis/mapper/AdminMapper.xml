@@ -26,5 +26,9 @@
 	<insert id="setAdminLog">
 		INSERT INTO admin_log(email, name, content, log_date) VALUES(#{email}, #{name}, #{content}, #{log_date})
 	</insert>
+	
+	<select id="getAdminLog" resultType="AdminLogVO">
+		SELECT * FROM admin_log
+	</select>
 
 </mapper>

@@ -1,5 +1,7 @@
 package com.gujerbit.battle_cat_web.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gujerbit.battle_cat_web.vo.AdminLogVO;
@@ -15,5 +17,7 @@ public interface AdminDAO {
 	public int userRejectRelease(UserVO vo);
 	
 	public int setAdminLog(AdminLogVO vo);
+	
+	public List<AdminLogVO> getAdminLog();
 	
 }

@@ -1,5 +1,7 @@
 package com.gujerbit.battle_cat_web.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int setAdminLog(AdminLogVO vo) {
 		return dao.setAdminLog(vo);
+	}
+	
+	@Override
+	public List<AdminLogVO> getAdminLog() {
+		return dao.getAdminLog();
 	}
 	
 }
