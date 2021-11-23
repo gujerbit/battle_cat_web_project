@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gujerbit.battle_cat_web.dao.BoardDAO">
+
+	<insert id="writing">
+		INSERT INTO board_data(name, title, content, writing_date) VALUES(#{name}, #{title}, #{content}, #{writing_date})
+	</insert>
+	
+	<select id="getAllBoardData" resultType="BoardVO">
+		SELECT * FROM board_data
+	</select>
+	
+	<select id="getBoardDate" resultType="BoardVO">
+		SELECT * FROM board_data
+		<where>
+			idx = #{idx}
+		</where>
+	</select>
+
+</mapper>

@@ -10,5 +10,6 @@
 		<mapper resource="ScheduleMapper.xml" />
 		<mapper resource="UserMapper.xml" />
 		<mapper resource="AdminMapper.xml" />
+		<mapper resource="BoardMapper.xml" />
 	</mappers>
 </configuration>
