@@ -133,7 +133,7 @@ export default {
       
       if(data.length === 0) {
         alert('존재하지 않는 유저입니다!');
-        history.go(-1);
+        location.href = '/admin';
       } else {
         const key = Object.keys(data);
         const info = {};
@@ -155,35 +155,31 @@ export default {
     };
 
     onBeforeMount(() => {
-      if(window.sessionStorage.getItem('jwt-auth-token') === null) {
-        alert('로그인 후 이용가능한 시스템입니다');
-        location.href = '/login';
-      } else {
-        checkReject(proxy.axios);
+      checkReject(proxy.axios);
 
-        const userName = route.params.userName;
-        const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
+      const userName = route.params.userName;
+      const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
 
-        if(temp !== null && userName === temp.name) {
-          const key = Object.keys(temp);
-          const info = {};
+      if(temp !== null && userName === temp.name) {
+        const key = Object.keys(temp);
+        const info = {};
 
-          for(let i = 0; i < key.length; i++) if(temp[`${key[i]}`] !== null) info[`${key[i]}`] = temp[`${key[i]}`];
+        for(let i = 0; i < key.length; i++) if(temp[`${key[i]}`] !== null) info[`${key[i]}`] = temp[`${key[i]}`];
 
-          userInfo.value.data.push(info);
-          userInfo.value.description = temp.description;
-          userInfo.value.name = temp.name;
-          userInfo.value.code = temp.code;
-          userInfo.value.email = temp.email;
+        userInfo.value.data.push(info);
+        userInfo.value.description = temp.description;
+        userInfo.value.name = temp.name;
+        userInfo.value.code = temp.code;
+        userInfo.value.email = temp.email;
 
-          const loadData = setInterval(() => {
-            if(getUnitInfo(proxy.store) !== undefined) {
-              unit.value.all = getUnitInfo(proxy.store);
-              clearInterval(loadData);
-            }
-          }, 100);
-        } else getUserInfo(userName);
-      }
+        // const loadData = setInterval(() => {
+        //   if(getUnitInfo(proxy.store) !== undefined) {
+            
+        //     clearInterval(loadData);
+        //   }
+        // }, 100);
+        unit.value.all = getUnitInfo(proxy.store);
+      } else getUserInfo(userName);
     });
 
     return { userInfo, update, tip, unit, proxy, logout, descriptionChange, nameChange, codeChange, profileImgChange, clear, checkName, checkCode, userRemove };

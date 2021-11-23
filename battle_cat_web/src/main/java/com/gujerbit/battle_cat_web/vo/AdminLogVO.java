@@ -11,12 +11,12 @@ import lombok.Data;
 @Data
 @Component
 public class AdminLogVO {
-
-	@JsonProperty
-	private String email;
 	
 	@JsonProperty
 	private String name;
+	
+	@JsonProperty
+	private String target;
 	
 	@JsonProperty
 	private String content;

@@ -8,10 +8,14 @@
 </template>
 
 <script>
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, getCurrentInstance } from 'vue';
+import { checkReject } from '../../js/community/user/user.js';
+import { getAccountInfo } from '../../js/community/admin/admin.js';
 
 export default {
   setup() {
+    const { proxy } = getCurrentInstance();
+    
     const elements = {
       content: ['board', 'admin', 'user'],
       title: ['게시판', '관리자 페이지', '유저 정보'],
@@ -19,24 +23,8 @@ export default {
     };
 
     onBeforeMount(() => {
-      if(window.sessionStorage.getItem('jwt-auth-token') === null) {
-        alert('로그인 후 이용가능한 시스템입니다');
-        location.href = '/login';
-      } else {
-        const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
-
-        if(temp.forever_reject) {
-          alert('해당 계정은 영구차단 되었습니다!');
-          window.sessionStorage.removeItem('jwt-auth-token');
-          window.sessionStorage.removeItem('user-info');
-          location.href = '/login';
-        } else if(new Date(temp.reject_end_date).getTime() - new Date().getTime() > 0) {
-          alert(`해당 계정은 차단된 계정입니다! 남은 차단 일수: ${new Date(new Date(temp.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}일`);
-          window.sessionStorage.removeItem('jwt-auth-token');
-          window.sessionStorage.removeItem('user-info');
-          location.href = '/login';
-        } else elements.path.push(`/userInfo/${temp.name}`);
-      }
+      checkReject(proxy.axios);
+      elements.path.push(`/userInfo/${getAccountInfo().name}`);
     });
 
     return { elements };

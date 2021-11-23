@@ -30,12 +30,7 @@ export default {
     });
 
     onBeforeMount(() => {
-      if(window.sessionStorage.getItem('jwt-auth-token') === null) {
-        alert('로그인 후 이용가능한 시스템입니다');
-        location.href = '/login';
-      } else {
-        checkReject(proxy.axios);
-      }
+      checkReject(proxy.axios);
     });
 
     return { view };

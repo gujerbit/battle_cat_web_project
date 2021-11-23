@@ -107,7 +107,7 @@ function logout() {
 }
 
 async function checkReject(axios) {
-  if(window.sessionStorage.getItem('user-info') !== null) {
+  if(window.sessionStorage.getItem('user-info') !== null && window.sessionStorage.getItem('jwt-auth-token') !== null) {
     const user = JSON.parse(window.sessionStorage.getItem('user-info'));
 
     let { data } = await axios.post('check_reject', {
@@ -125,5 +125,8 @@ async function checkReject(axios) {
       window.sessionStorage.removeItem('user-info');
       location.href = '/login';
     }
+  } else {
+    alert('로그인 후 이용하실 수 있는 시스템입니다.');
+    location.href = '/login';
   }
 }

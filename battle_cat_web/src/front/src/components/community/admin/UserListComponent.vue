@@ -38,9 +38,9 @@
         <div class="setting" v-if="value.name !== userInfo.user.name">
           <div class="reject" v-if="userInfo.user.grade === 'developer' || userInfo.user.grade !== value.grade && (value.grade === 'user' || value.grade === 'admin')">
             <input v-model="reject.length[idx]" type="number" placeholder="차단 기간">
-            <button @click="userReject(value.name, reject.length[idx], proxy.axios)">차단</button>
-            <button @click="userForeverReject(value.name, proxy.axios)">영구 차단</button>
-            <button @click="userRejectRelease(value.name, proxy.axios)">차단 해제</button>
+            <button :disabled="value.forever_reject" @click="userReject(value.name, reject.length[idx], proxy.axios)">차단</button>
+            <button :disabled="value.forever_reject" @click="userForeverReject(value.name, proxy.axios)">영구 차단</button>
+            <button :disabled="!value.forever_reject && new Date(value.reject_end_date).getTime() - new Date().getTime() <= 0" @click="userRejectRelease(value.name, proxy.axios)">차단 해제</button>
           </div>
           <div class="grade" v-if="userInfo.user.grade !== 'admin' && value.grade !== 'developer' && userInfo.user.grade !== value.grade">
             <select @change="userGradeSetting(value.name, userInfo.grade, proxy.axios)" v-model="userInfo.grade">
@@ -376,6 +376,11 @@ span {
   text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
   font-size: 2.3rem;
   outline: 0;
+}
+
+button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .pages {

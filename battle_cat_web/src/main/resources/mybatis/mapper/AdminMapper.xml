@@ -24,7 +24,7 @@
 	</update>
 	
 	<insert id="setAdminLog">
-		INSERT INTO admin_log(email, name, content, log_date) VALUES(#{email}, #{name}, #{content}, #{log_date})
+		INSERT INTO admin_log(name, target, content, log_date) VALUES(#{name}, #{target}, #{content}, #{log_date})
 	</insert>
 	
 	<select id="getAdminLog" resultType="AdminLogVO">
