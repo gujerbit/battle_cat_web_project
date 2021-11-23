@@ -1,4 +1,4 @@
-export { userReject, userForeverReject, userRejectRelease };
+export { userReject, userForeverReject, userRejectRelease, userGradeSetting };
 
 async function userReject(name, value, axios) {
   if(confirm(`정말 해당 사용자를 ${value}일 차단하시겠습니까?`)) {
@@ -56,6 +56,25 @@ async function userRejectRelease(name, axios) {
     else {
       alert('차단 해제 실패');
       setAdminLog(getAccountInfo().email, getAccountInfo().name, `${getAccountInfo().name}(${emailSetting(getAccountInfo().email)})님이 ${name}님을 차단 해체하는데 실패하였습니다`, axios);
+    }
+
+    location.reload();
+  }
+}
+
+async function userGradeSetting(name, grade, axios) {
+  if(confirm(`정말 해당 사용자를 ${grade} 등급으로 전환하시겠습니까?`)) {
+    let { data } = await axios.post('/user_grade_setting', {
+      name: name,
+      grade: grade === '유저' ? 'user' : grade === '관리자' ? 'admin' : 'operator',
+    });
+
+    if(data > 0) {
+      alert(`해당 사용자의 등급을 ${grade}로 전환하였습니다`);
+      setAdminLog(getAccountInfo().email, getAccountInfo().name, `${getAccountInfo().name}(${emailSetting(getAccountInfo().email)})님이 ${name}님의 등급을 ${grade}로 전환하였습니다`, axios);
+    } else {
+      alert('등급 전환 실패');
+      setAdminLog(getAccountInfo().email, getAccountInfo().name, `${getAccountInfo().name}(${emailSetting(getAccountInfo().email)})님이 ${name}님의 등급을 ${grade}로 전환하는데 실패하였습니다`, axios);
     }
 
     location.reload();

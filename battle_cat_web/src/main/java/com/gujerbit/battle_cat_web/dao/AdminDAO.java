@@ -20,4 +20,6 @@ public interface AdminDAO {
 	
 	public List<AdminLogVO> getAdminLog();
 	
+	public int userGradeSetting(UserVO vo);
+	
 }

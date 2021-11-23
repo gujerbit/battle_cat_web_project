@@ -40,4 +40,9 @@ public class AdminServiceImpl implements AdminService {
 		return dao.getAdminLog();
 	}
 	
+	@Override
+	public int userGradeSetting(UserVO vo) {
+		return dao.userGradeSetting(vo);
+	}
+	
 }

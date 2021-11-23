@@ -43,11 +43,11 @@
             <button @click="userRejectRelease(value.name, proxy.axios)">차단 해제</button>
           </div>
           <div class="grade" v-if="userInfo.user.grade !== 'admin' && value.grade !== 'developer' && userInfo.user.grade !== value.grade">
-            <select>
+            <select @change="userGradeSetting(value.name, userInfo.grade, proxy.axios)" v-model="userInfo.grade">
               <option disabled selected>등급 설정</option>
-              <option>유저</option>
-              <option>관리자</option>
-              <option v-if="userInfo.user.grade === 'developer'">운영자</option>
+              <option :disabled="value.grade === 'user'">유저</option>
+              <option :disabled="value.grade === 'admin'">관리자</option>
+              <option v-if="userInfo.user.grade === 'developer'" :disabled="value.grade === 'operator'">운영자</option>
             </select>
           </div>
         </div>
@@ -65,7 +65,7 @@
 import { ref, onBeforeMount, getCurrentInstance, watchEffect } from 'vue';
 import { pagination, pageDivision } from '../../../js/util/pagination.js';
 import { searchUser } from '../../../js/community/user/userInfo.js';
-import { userReject, userForeverReject, userRejectRelease } from '../../../js/community/admin/admin.js';
+import { userReject, userForeverReject, userRejectRelease, userGradeSetting } from '../../../js/community/admin/admin.js';
 
 export default {
   setup() {
@@ -76,6 +76,7 @@ export default {
       current: [],
       user: {},
       searchData: [],
+      grade: '등급 설정',
     });
 
     const searchInfo = ref({
@@ -151,7 +152,7 @@ export default {
       }
     });
 
-    return { userInfo, pageInfo, searchInfo, reject, proxy, nextPage, prevPage, selectPage, search, userReject, userForeverReject, userRejectRelease };
+    return { userInfo, pageInfo, searchInfo, reject, proxy, nextPage, prevPage, selectPage, search, userReject, userForeverReject, userRejectRelease, userGradeSetting };
   }
 }
 </script>

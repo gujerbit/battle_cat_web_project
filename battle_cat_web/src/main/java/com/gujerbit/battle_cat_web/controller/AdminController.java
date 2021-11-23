@@ -46,4 +46,9 @@ public class AdminController {
 		return adminService.getAdminLog();
 	}
 	
+	@PostMapping("/user_grade_setting")
+	public @ResponseBody int userGradeSetting(@RequestBody UserVO vo) {
+		return adminService.userGradeSetting(vo);
+	}
+	
 }

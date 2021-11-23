@@ -16,5 +16,7 @@ public interface AdminService {
 	int setAdminLog(AdminLogVO vo);
 	
 	List<AdminLogVO> getAdminLog();
+	
+	int userGradeSetting(UserVO vo);
 
 }

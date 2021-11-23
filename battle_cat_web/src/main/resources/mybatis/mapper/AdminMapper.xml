@@ -30,5 +30,12 @@
 	<select id="getAdminLog" resultType="AdminLogVO">
 		SELECT * FROM admin_log
 	</select>
+	
+	<update id="userGradeSetting">
+		UPDATE user_data SET grade = #{grade}
+		<where>
+			name = #{name}
+		</where>
+	</update>
 
 </mapper>
