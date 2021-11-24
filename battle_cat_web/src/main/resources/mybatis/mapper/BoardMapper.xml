@@ -3,7 +3,7 @@
 <mapper namespace="com.gujerbit.battle_cat_web.dao.BoardDAO">
 
 	<insert id="writing">
-		INSERT INTO board_data(name, title, content, writing_date) VALUES(#{name}, #{title}, #{content}, #{writing_date})
+		INSERT INTO board_data(email, name, title, content, writing_date) VALUES(#{name}, #{title}, #{content}, #{writing_date})
 	</insert>
 	
 	<select id="getAllBoardData" resultType="BoardVO">

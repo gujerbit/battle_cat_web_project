@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gujerbit.battle_cat_web.service.BoardServiceImpl;
+import com.gujerbit.battle_cat_web.util.RSA;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
 
 @CrossOrigin("*")
@@ -21,9 +22,15 @@ public class BoardController {
 	@Autowired
 	private BoardServiceImpl boardService;
 	
+	@Autowired
+	private RSA rsa;
+	
 	@PostMapping("/board_writing")
 	public @ResponseBody int writing(@RequestBody BoardVO vo) {
-		return boardService.writing(vo);
+//		return boardService.writing(vo);
+		System.out.println(vo.getContent());
+		
+		return 0;
 	}
 	
 	@GetMapping("/get_board_list")

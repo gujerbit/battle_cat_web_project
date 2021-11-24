@@ -8,10 +8,6 @@
         </transition>
       </router-view>
     </div>
-    <!-- <div id="user-temp" v-if="user.name !== null">
-      <p>{{user.name.length > 16 ? user.name.substring(0, 13) + '...' : user.name}}님 접속중</p>
-      <button @click="logout()">로그아웃</button>
-    </div> -->
     <footer-component />
   </div>
 </template>
@@ -66,33 +62,6 @@ export default {
 #wrapper {
   width: 100%;
   height: 100%;
-}
-
-#user-temp {
-  position: absolute;
-  top: 9%;
-  left: 2.5%;
-  border: 1px solid #000000;
-  width: 13%;
-  height: 10%;
-  font-size: 2rem;
-  display: grid;
-  justify-items: center;
-  background-color: #ffffff;
-}
-
-#user-temp button {
-  width: 50%;
-  height: 80%;
-  border: 1px solid #000000;
-  border-radius: 10px;
-  background-color: #ffffff;
-  transition: all 1s;
-  font-size: 1.5rem;
-}
-
-#user-temp button:hover {
-  transform: scale(105%);
 }
 
 .slide-enter-active, .slide-leave-active {

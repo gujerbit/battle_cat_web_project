@@ -13,17 +13,14 @@
           <option value="feedback">문의/피드백/제보</option>
         </select>
       </div>
-      <div class="option">
-        <p>bold</p>
-        <p>italic</p>
-      </div>
       <div class="content">
-        <div class="editor">
-          <textarea v-model="writeInfo.content"></textarea>
-          <div class="view" v-html="writeInfo.content"></div>
+        <div id="editor">
         </div>
+        <input type="file" id="getFile" @change="upload($event)" hidden>
+        <img src="color-text.png" alt="">
       </div>
-      <button class="writing" @click="writing(writeInfo.title, writeInfo.content, proxy.axios)">글 작성</button>
+      <button class="writing" @click="upload()">글 작성</button>
+      <!-- <button @click="check()">확인</button> -->
       <router-link to="/board">취소</router-link>
     </div>
     <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
@@ -32,8 +29,15 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance } from 'vue';
+import { ref, getCurrentInstance, onMounted } from 'vue';
 import { writing } from '../../../js/community/board/board.js';
+import { Quill } from '@vueup/vue-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import { ImageDrop } from 'quill-image-drop-module';
+import BlotFormatter from 'quill-blot-formatter';
+
+Quill.register('modules/imageDrop', ImageDrop);
+Quill.register('modules/blotFormatter', BlotFormatter);
 
 export default {
   setup() {
@@ -43,10 +47,65 @@ export default {
       title: '',
       content: '',
       type: 'all',
+      load: false,
     });
 
-    return { writeInfo, proxy, writing };
+    let quill;
+    const toolbarOptions = [
+      ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block' , 'link'],
+      [
+        {list: 'ordered'},
+        {list: 'bullet'},
+      ],
+      [
+        {script: 'sub'},
+        {script: 'super'},
+      ],
+      [
+        {indent: '-1'},
+        {indent: '+1'},
+        {direction: 'rtl'}
+      ],
+      [
+        {size: ['small', false, 'large', 'huge']},
+        {color: []},
+        {background: []},
+        {font: []},
+        {align: []},
+      ],
+      ['image', 'video'],
+      ['clean'],
+    ];
+
+    const upload = async () => {
+      // writeInfo.value.content = quill.root.innerHTML;
+      // const files = event.currentTarget.files;
+
+      // let { data } = await axios;
+    };
+
+    onMounted(() => {
+      quill = new Quill('#editor', {
+        modules: {
+          imageDrop: true,
+          blotFormatter: {},
+          toolbar: {
+            container: toolbarOptions,
+            handlers: {
+              image: () => {
+                document.getElementById('getFile').click();
+              }
+            }
+          }
+        },
+        theme: 'snow'
+      });
+    });
+
+    return { writeInfo, proxy, quill, writing, upload };
   },
+  components: {
+  }
 }
 </script>
 
@@ -74,59 +133,37 @@ main {
 .title input {
   width: 90%;
   height: 95%;
-  border: 2px solid #ffc038;
-  border-radius: 15px 0 0 15px;
+  border: 1px solid #ffc038;
   padding-left: 1%;
+  outline: 0;
 }
 
 .title select {
   width: 10%;
   height: 95%;
-  border: 2px solid #ffc038;
+  border: 1px solid #ffc038;
   border-left: none;
-  border-radius: 0 15px 15px 0;
+  outline: 0;
 }
 
 .option {
   width: 100%;
   height: 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1% 0;
+}
+
+.option img {
+  width: 2.5%;
+  height: 95%;
+  cursor: pointer;
 }
 
 .content {
   width: 100%;
   height: 80%;
-}
-
-.editor {
-  width: 100%;
-  height: 100%;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
-  position: relative;
-}
-
-.editor textarea {
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
-  resize: none;
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-}
-
-.editor .view {
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: pre;
-  padding-left: 0.5%;
-  font-size: 3rem;
 }
 
 .main-page, .board-page {
