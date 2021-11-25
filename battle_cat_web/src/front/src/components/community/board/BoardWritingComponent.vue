@@ -2,9 +2,8 @@
   <main>
     <div id="board-writing">
       <div class="title">
-        <input v-model="writeInfo.title" type="text" placeholder="글 제목 입력">
+        <input v-model="writeInfo.title" type="text" placeholder="제목을 입력하세요">
         <select v-model="writeInfo.type">
-          <option value="all">전체</option>
           <option value="normal">일반</option>
           <option value="notice">공지</option>
           <option value="info">정보/공략</option>
@@ -14,14 +13,13 @@
         </select>
       </div>
       <div class="content">
-        <div id="editor">
-        </div>
-        <input type="file" id="getFile" @change="upload($event)" hidden>
-        <img src="color-text.png" alt="">
+        <div id="editor" />
+        <p>{{writeInfo.htmlContent.length}}</p>
       </div>
-      <button class="writing" @click="upload()">글 작성</button>
-      <!-- <button @click="check()">확인</button> -->
-      <router-link to="/board">취소</router-link>
+      <div class="btn-field">
+        <button class="writing" @click="quillSetting()">글 작성</button>
+        <router-link to="/board">취소</router-link>
+      </div>
     </div>
     <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
     <router-link to="/board" class="board-page">게시판 목록으로 돌아가기</router-link>
@@ -33,11 +31,11 @@ import { ref, getCurrentInstance, onMounted } from 'vue';
 import { writing } from '../../../js/community/board/board.js';
 import { Quill } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import { ImageDrop } from 'quill-image-drop-module';
 import BlotFormatter from 'quill-blot-formatter';
+import ImageUploader from 'quill-image-uploader';
 
-Quill.register('modules/imageDrop', ImageDrop);
 Quill.register('modules/blotFormatter', BlotFormatter);
+Quill.register('modules/imageUploader', ImageUploader);
 
 export default {
   setup() {
@@ -45,9 +43,8 @@ export default {
 
     const writeInfo = ref({
       title: '',
-      content: '',
-      type: 'all',
-      load: false,
+      type: 'normal',
+      htmlContent: ''
     });
 
     let quill;
@@ -77,32 +74,43 @@ export default {
       ['clean'],
     ];
 
-    const upload = async () => {
-      // writeInfo.value.content = quill.root.innerHTML;
-      // const files = event.currentTarget.files;
-
-      // let { data } = await axios;
+    const quillSetting = () => {
+      writing(writeInfo.value.title, quill.root.innerHTML, quill.getText(), writeInfo.value.type, proxy.axios);
     };
 
     onMounted(() => {
       quill = new Quill('#editor', {
         modules: {
-          imageDrop: true,
           blotFormatter: {},
+          imageUploader: {
+            upload: file => {
+              return new Promise((resolve, reject) => {
+                const formData = new FormData();
+                formData.append('image', file);
+
+                proxy.axios.post('https://api.imgbb.com/1/upload?key=2c1f21d106572ee9bf1999c3b56a21a7', formData).then(response => JSON.parse(JSON.stringify(response))).then(result => {
+                  resolve(result.data.data.url);
+                }).catch(error => {
+                  reject('upload failed');
+                  console.error('Error: ', error);
+                });
+              });
+            }
+          },
           toolbar: {
             container: toolbarOptions,
-            handlers: {
-              image: () => {
-                document.getElementById('getFile').click();
-              }
-            }
-          }
+          },
         },
+        placeholder: '내용을 입력하세요',
         theme: 'snow'
       });
+
+      setInterval(() => {
+        writeInfo.value.htmlContent = quill.root.innerHTML;
+      }, 1000);
     });
 
-    return { writeInfo, proxy, quill, writing, upload };
+    return { writeInfo, proxy, quill, quillSetting };
   },
   components: {
   }
@@ -133,37 +141,50 @@ main {
 .title input {
   width: 90%;
   height: 95%;
-  border: 1px solid #ffc038;
+  border: 2px solid #ffc038;
   padding-left: 1%;
   outline: 0;
+  font-size: 3rem;
 }
 
 .title select {
   width: 10%;
   height: 95%;
-  border: 1px solid #ffc038;
+  border: 2px solid #ffc038;
   border-left: none;
   outline: 0;
-}
-
-.option {
-  width: 100%;
-  height: 5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1% 0;
-}
-
-.option img {
-  width: 2.5%;
-  height: 95%;
-  cursor: pointer;
+  color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  font-size: 2rem;
+  text-align: center;
 }
 
 .content {
   width: 100%;
-  height: 80%;
+  height: 85%;
+}
+
+.btn-field {
+  width: 100%;
+  height: 5%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.btn-field * {
+  width: 10%;
+  height: 95%;
+  margin-left: 1%;
+  border: 2px solid #ffc038;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.3rem;
+  text-decoration: none;
+  color: #ffc038;
+  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
 }
 
 .main-page, .board-page {
@@ -181,6 +202,7 @@ main {
   opacity: 0;
   transition: all 1.5s;
   font-size: 3rem;
+  text-decoration: none;
 }
 
 .main-page {

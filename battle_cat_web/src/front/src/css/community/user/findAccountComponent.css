@@ -3,6 +3,10 @@ main {
   height: 100%;
 }
 
+main * {
+  text-decoration: none;
+}
+
 #find {
   width: 90%;
   height: 100%;

@@ -6,6 +6,10 @@ main {
   align-items: center;
 }
 
+main * {
+  text-decoration: none;
+}
+
 #register-code {
   width: 35%;
   height: 30%;

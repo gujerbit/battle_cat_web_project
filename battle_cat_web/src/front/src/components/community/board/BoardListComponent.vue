@@ -1,17 +1,22 @@
 <template>
   <div id="board-list">
-    <div class="title">
-      <p>글 번호</p>
-      <p>작성자</p>
-      <p>제목</p>
-      <p>작성 날짜</p>
-    </div>
     <div class="board">
       <router-link :to="`/board_data/${value.idx}`" class="content" v-for="value in board.current" :key="value">
-        <p>{{value.idx}}</p>
-        <p>{{value.name}}</p>
-        <p>{{value.title.length > 20 ? (value.title.substring(0, 20) + '...') : value.title}}</p>
-        <p>{{new Date(new Date(value.writing_date) + 3240 * 10000).toISOString().replace('T', ' ').replace(/\..*/, '')}}</p>
+        <div class="info">
+          <p class="title">
+            <span>[{{value.type === 'normal' ? '일반' : value.type === 'notice' ? '공지' : value.type === 'info' ? '정보/공략' : value.type === 'ask' ? '질문' : value.type === 'creative' ? '창작/번역' : '문의/피드백/정보'}}]</span>
+            {{value.title.length > 20 ? (value.title.substring(0, 20) + '...') : value.title}}
+          </p>
+          <p class="name" :class="value.grade">
+            {{value.name}}
+            <span class="count">
+              <p>조회 {{value.view_count}}</p>
+              <p>추천 {{value.good_count}}</p>
+              <p>비추천 {{value.bad_count}}</p>
+            </span>
+          </p>
+        </div>
+        <p class="write-date">{{new Date(new Date(value.writing_date) + 3240 * 10000).toISOString().replace('T', ' ').replace(/\..*/, '')}}</p>
       </router-link>
     </div>
     <div class="pages">
@@ -85,11 +90,15 @@ export default {
 <style scoped>
 #board-list {
   width: 100%;
-  height: 89%;
+  height: 90%;
   display: grid;
-  grid-template-rows: 0.5fr 9fr 0.5fr;
+  grid-template-rows: 9fr 0.5fr;
   justify-items: center;
   align-items: center;
+}
+
+#board-list * {
+  text-decoration: none;
 }
 
 .board {
@@ -101,47 +110,79 @@ export default {
 
 .content {
   width: 100%;
-  height: 95%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  justify-items: center;
+  height: 100%;
+  display: flex;
+  justify-content: left;
   align-items: center;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
-  transition: all 1s;
-  cursor: pointer;
+  border: 1px solid #ffc038;
+  border-top: none;
 }
 
-.content:hover {
-  transform: scale(95%);
+.content:nth-child(1) {
+  border-top: 1px solid #ffc038;
 }
 
-.content p {
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 3rem;
+.info {
+  width: 50%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  justify-items: left;
+  align-items: center;
+  margin-left: 1%;
 }
 
 .title {
   width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  justify-items: center;
+  display: flex;
+  justify-content: left;
   align-items: center;
+  font-size: 2.3rem;
 }
 
-.title p {
-  width: 95%;
-  height: 95%;
+.title span {
+  font-size: 1.7rem;
+  margin-right: 1%;
+}
+
+.name {
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 3rem;
+  font-size: 1.8rem;
+}
+
+.developer {
+  color: #fe9ec4;
+}
+
+.operator {
+  color: #a97ee4;
+}
+
+.admin {
+  color: #84a9ea;
+}
+
+.count {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.write-date {
+  width: 50%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding-left: 40%;
+  font-size: 1.5rem;
 }
 
 .pages {

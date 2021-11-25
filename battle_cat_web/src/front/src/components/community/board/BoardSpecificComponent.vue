@@ -1,9 +1,18 @@
 <template>
   <main>
     <div id="board">
-      <p v-for="value in board.content" :key="value"><span v-html="value.content"></span></p>
-      <router-link to="">수정</router-link>
-      <router-link to="">삭제</router-link>
+      <p class="title">{{board.content.title}}</p>
+      <div class="content">
+        <div id="editor" />
+      </div>
+      <div class="btn-field">
+        <button class="user">작성자 정보 확인</button>
+        <button class="good">추천</button>
+        <button class="bad">비추천</button>
+        <button class="report">신고</button>
+        <router-link to="">수정</router-link>
+        <router-link to="">삭제</router-link>
+      </div>
     </div>
     <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
     <router-link to="/board" class="board-page">게시판 목록으로 돌아가기</router-link>
@@ -11,8 +20,10 @@
 </template>
 
 <script>
-import { ref, onBeforeMount, getCurrentInstance } from 'vue';
+import { ref, onBeforeMount, onMounted, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
+import { Quill } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 export default {
   setup() {
@@ -23,13 +34,31 @@ export default {
       content: [],
     });
 
+    let quill;
+
     onBeforeMount(async () => {
       let { data } = await proxy.axios.get(`/get_board_data/${route.params.idx}`);
-      board.value.content.push(data);
+      board.value.content = data;
     });
 
-    return { board };
-  }
+    onMounted(() => {
+      setTimeout(() => {
+        quill = new Quill('#editor', {
+          modules: {
+            toolbar: {
+              container: '#editor'
+            }
+          },
+          readOnly: true,
+          theme: 'snow',
+        });
+
+        quill.root.innerHTML = board.value.content.content;
+      }, 100);
+    });
+
+    return { board, quill };
+  },
 }
 </script>
 
@@ -43,6 +72,68 @@ main {
   width: 90%;
   height: 100%;
   margin: 0 auto;
+  overflow: auto;
+}
+
+.title {
+  width: 100%;
+  height: 5%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 0.5% 0;
+  border: 2px solid #ffc038;
+  padding-left: 2%;
+  font-size: 3rem;
+}
+
+.content {
+  width: 100%;
+  height: 85%;
+}
+
+.btn-field {
+  width: 100%;
+  height: 5%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.btn-field a {
+  width: 10%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ffc038;
+  margin-left: 1%;
+  text-decoration: none;
+  font-size: 2.3rem;
+}
+
+.btn-field button {
+  width: 10%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ffc038;
+  margin-left: 1%;
+  background-color: #ffffff;
+  font-size: 2.3rem;
+}
+
+.good {
+  color: #adf6a9;
+}
+
+.bad {
+  color: #f2828f;
+}
+
+.report {
+  color: #ff0000;
 }
 
 .main-page, .board-page {
@@ -60,6 +151,7 @@ main {
   opacity: 0;
   transition: all 1.5s;
   font-size: 3rem;
+  text-decoration: none;
 }
 
 .main-page {

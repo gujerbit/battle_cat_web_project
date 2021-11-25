@@ -1,24 +1,26 @@
 <template>
   <main>
     <div id="board">
-      <nav class="menu">
-        <p class="choose">전체</p>
-        <p>공지</p>
-        <p>일반</p>
-        <p>정보/공략</p>
-        <p>질문</p>
-        <p>창작/번역</p>
-        <p>문의/피드백/제보</p>
-      </nav>
-      <div class="header">
-        <input type="text" placeholder="검색">
-        <select>
-          <option selected>전체</option>
-          <option>제목 + 내용</option>
-          <option>제목</option>
-          <option>내용</option>
-          <option>작성자</option>
-        </select>
+      <div class="menu">
+        <nav>
+          <p class="choose">전체</p>
+          <p>일반</p>
+          <p>공지</p>
+          <p>정보/공략</p>
+          <p>질문</p>
+          <p>창작/번역</p>
+          <p>문의/피드백/재보</p>
+        </nav>
+        <div class="search">
+          <input type="text" placeholder="검색">
+          <select>
+            <option selected>전체</option>
+            <option>제목 + 내용</option>
+            <option>제목</option>
+            <option>내용</option>
+            <option>작성자</option>
+          </select>
+        </div>
         <router-link to="/board_writing">글 쓰기</router-link>
       </div>
       <board-list-component />
@@ -56,6 +58,10 @@ main {
   height: 100%;
 }
 
+main * {
+  text-decoration: none;
+}
+
 #board {
   width: 90%;
   height: 100%;
@@ -65,98 +71,76 @@ main {
 .menu {
   width: 100%;
   height: 5%;
+  margin: 0.5% 0;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+nav {
+  width: 60%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   justify-items: center;
   align-items: center;
 }
 
-.menu p {
+nav p {
   width: 95%;
-  height: 95%;
+  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #ffc038;
+  border: 1px solid #ffc038;
   border-radius: 15px;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 2.5rem;
-  cursor: pointer;
-  transition: all 1s;
 }
 
-.menu p:hover {
-  transform: scale(95%);
+.search {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search input {
+  width: 60%;
+  height: 80%;
+  border: 1px solid #ffc038;
+  border-radius: 15px 0 0 15px;
+  text-align: center;
+  font-size: 1.5rem;
+  outline: 0;
+}
+
+.search select {
+  width: 30%;
+  height: 80%;
+  border: 1px solid #ffc038;
+  border-left: none;
+  border-radius: 0 15px 15px 0;
+  text-align: center;
+  font-size: 1.5rem;
+  outline: 0;
+}
+
+.menu a {
+  width: 10%;
+  height: 80%;
+  margin-left: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ffc038;
+  border-radius: 15px;
 }
 
 .choose {
   background-color: #ffc038;
-  color: #ffffff !important;
+  color: #ffffff;
   pointer-events: none;
-}
-
-.header {
-  width: 100%;
-  height: 5%;
-  display: flex;
-  justify-content: right;
-  align-items: center;
-}
-
-.header input {
-  width: 20%;
-  height: 95%;
-  border: 2px solid #ffc038;
-  border-radius: 15px 0 0 15px;
-  text-align: center;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 2.3rem;
-  outline: 0;
-}
-
-.header input::placeholder {
-  color: #ffc038;
-}
-
-.header select {
-  width: 10%;
-  height: 95%;
-  border: 2px solid #ffc038;
-  border-left: none;
-  border-radius: 0 15px 15px 0;
-  text-align: center;
-  outline: 0;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 2.3rem;
-  transition: all 1s;
-  cursor: pointer;
-}
-
-.header select:hover {
-  background-color: #ffc038;
-  color: #ffffff !important;
-}
-
-.header a {
-  width: 10%;
-  height: 95%;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 2.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 2.5%;
-  transition: all 1s;
-}
-
-.header a:hover {
-  transform: scale(95%);
 }
 
 .main-page, .community-page {

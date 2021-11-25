@@ -15,7 +15,6 @@
     "jquery": "^3.6.0",
     "localforage": "^1.10.0",
     "quill-blot-formatter": "^1.0.5",
-    "quill-image-drop-module": "^1.0.3",
     "quill-image-uploader": "^1.2.2",
     "vue": "^3.2.21",
     "vue-router": "^4.0.12",

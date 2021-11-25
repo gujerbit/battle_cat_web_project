@@ -5,6 +5,10 @@
   grid-template-rows: 9.5fr 0.5fr;
 }
 
+#admin-log * {
+  text-decoration: none;
+}
+
 .log {
   width: 100%;
   height: 100%;

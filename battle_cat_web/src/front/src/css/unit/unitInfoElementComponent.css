@@ -6,6 +6,10 @@
   box-shadow: 0px 5px 10px #ffffff;
 }
 
+#element * {
+  text-decoration: none;
+}
+
 .content {
   width: 90%;
   height: 100%;

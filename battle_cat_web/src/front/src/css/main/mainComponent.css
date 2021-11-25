@@ -4,6 +4,10 @@ main {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
+
+main * {
+  text-decoration: none;
+}
   
 main > a {
   width: 100%;
