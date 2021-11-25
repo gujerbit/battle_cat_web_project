@@ -24,7 +24,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 			
 			if(token != null && token.length() > 0) {
 				service.checkToken(token);
-				
+				System.out.println(token);
 				return true;
 			} else {
 				throw new RuntimeException("no have auth-token");

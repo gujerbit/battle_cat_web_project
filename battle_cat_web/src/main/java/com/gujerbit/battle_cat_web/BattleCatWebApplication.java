@@ -23,7 +23,7 @@ public class BattleCatWebApplication implements WebMvcConfigurer {
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(interceptor).addPathPatterns("").excludePathPatterns(Arrays.asList("/login", "/register"));
+		registry.addInterceptor(interceptor).addPathPatterns(Arrays.asList("/community", "/userInfo/**", "/admin", "/board", "/board_writing")).excludePathPatterns(Arrays.asList("/login", "/register"));
 	}
 	
 	@Override
