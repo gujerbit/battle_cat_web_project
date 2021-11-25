@@ -29,4 +29,9 @@ public class BoardServiceImpl implements BoardService {
 		return dao.getBoardDate(idx);
 	}
 	
+	@Override
+	public int viewCountUpdate(int idx) {
+		return dao.viewCountUpdate(idx);
+	}
+	
 }

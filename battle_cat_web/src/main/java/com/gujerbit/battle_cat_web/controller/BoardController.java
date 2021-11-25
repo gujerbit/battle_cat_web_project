@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.gujerbit.battle_cat_web.service.BoardServiceImpl;
 import com.gujerbit.battle_cat_web.util.RSA;
@@ -43,29 +41,9 @@ public class BoardController {
 		return boardService.getBoardDate(idx);
 	}
 	
-	@PostMapping("/board_image_upload")
-	public @ResponseBody String BoardImageUpload(@RequestParam("image") List<MultipartFile> files) throws Exception {
-		File save = new File("");
-		
-		for(MultipartFile file : files) {
-//			if(!file.isEmpty()) {
-//				if(file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/gif")) {
-//					String fileName = Long.toString(System.nanoTime());
-//					
-//					if(file.getContentType().equals("image/png")) fileName += ".png";
-//					else if(file.getContentType().equals("image/jpeg")) fileName += ".jpg";
-//					else if(file.getContentType().equals("image/gif")) fileName += ".gif";
-//				}
-//			}
-			save = new File(System.getProperty("user.dir") + "/src/main/resources/" + file.getOriginalFilename());
-			file.transferTo(save);
-		}
-		
-		System.out.println(save.getAbsolutePath());
-		System.out.println(save.getPath());
-		System.out.println(save.getName());
-		
-		return save.getAbsolutePath();
+	@GetMapping("/view_count_update/{idx}")
+	public @ResponseBody int viewCountUpdate(@PathVariable int idx) {
+		return boardService.viewCountUpdate(idx);
 	}
 	
 }

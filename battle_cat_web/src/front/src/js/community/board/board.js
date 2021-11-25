@@ -1,6 +1,6 @@
 import { getAccountInfo } from '../admin/admin.js';
 
-export { writing };
+export { writing, viewCountUpdate };
 
 async function writing(title, content, length, type, axios) {
   if(title.length <= 0) {
@@ -21,6 +21,7 @@ async function writing(title, content, length, type, axios) {
   let { data } = await axios.post('/board_writing', {
     email: getAccountInfo().email,
     name: getAccountInfo().name,
+    grade: getAccountInfo().grade,
     title: title,
     content: content,
     writing_date: new Date(),
@@ -31,4 +32,8 @@ async function writing(title, content, length, type, axios) {
     alert('글 작성 완료');
     location.href = '/board';
   } else alert('글 작성 실패');
+}
+
+async function viewCountUpdate(idx, axios) {
+  await axios.get(`/view_count_update/${idx}`);
 }

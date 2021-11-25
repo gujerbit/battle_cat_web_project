@@ -12,4 +12,6 @@ public interface BoardService {
 	
 	BoardVO getBoardDate(int idx);
 	
+	int viewCountUpdate(int idx);
+	
 }

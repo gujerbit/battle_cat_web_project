@@ -15,4 +15,6 @@ public interface BoardDAO {
 	
 	public BoardVO getBoardDate(int idx);
 	
+	public int viewCountUpdate(int idx);
+	
 }

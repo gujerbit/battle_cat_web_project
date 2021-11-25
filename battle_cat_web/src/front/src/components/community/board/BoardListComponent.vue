@@ -1,7 +1,7 @@
 <template>
   <div id="board-list">
     <div class="board">
-      <router-link :to="`/board_data/${value.idx}`" class="content" v-for="value in board.current" :key="value">
+      <router-link @click="viewCountUpdate(value.idx, proxy.axios)" :to="`/board_data/${value.idx}`" class="content" v-for="value in board.current" :key="value">
         <div class="info">
           <p class="title">
             <span>[{{value.type === 'normal' ? '일반' : value.type === 'notice' ? '공지' : value.type === 'info' ? '정보/공략' : value.type === 'ask' ? '질문' : value.type === 'creative' ? '창작/번역' : '문의/피드백/정보'}}]</span>
@@ -31,6 +31,7 @@
 import { ref, onBeforeMount, getCurrentInstance } from 'vue';
 import { checkReject } from '../../../js/community/user/user.js';
 import { pagination, pageDivision } from '../../../js/util/pagination.js';
+import { viewCountUpdate } from '../../../js/community/board/board.js';
 
 export default {
   setup() {
@@ -82,7 +83,7 @@ export default {
       contentUpdate();
     });
 
-    return { board, pageInfo, nextPage, prevPage, selectPage };
+    return { board, pageInfo, proxy, nextPage, prevPage, selectPage, viewCountUpdate };
   }
 }
 </script>
