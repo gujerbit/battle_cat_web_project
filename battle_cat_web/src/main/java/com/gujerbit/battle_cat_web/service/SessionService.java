@@ -8,7 +8,7 @@ public interface SessionService {
 	
 	String createToken(UserVO vo);
 	
-	void checkToken(String token);
+	boolean checkToken(String token);
 	
 	Map<String, Object> getToken(String token);
 

@@ -45,11 +45,6 @@ public class UserController {
 	@Autowired
 	private RSA rsa;
 	
-	@GetMapping("/login")
-	public String init() {
-		return "";
-	}
-	
 	@PostMapping("/login_process")
 	public @ResponseBody ResponseEntity<Map<String, Object>> loginProcess(@RequestBody UserVO vo, HttpServletResponse res) {
 		String password = vo.getPassword();

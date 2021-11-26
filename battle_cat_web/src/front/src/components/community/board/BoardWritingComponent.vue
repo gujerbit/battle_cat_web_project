@@ -141,7 +141,7 @@ main {
 .title input {
   width: 90%;
   height: 95%;
-  border: 2px solid #ffc038;
+  border: 1px solid #cccccc;
   padding-left: 1%;
   outline: 0;
   font-size: 3rem;
@@ -150,23 +150,22 @@ main {
 .title select {
   width: 10%;
   height: 95%;
-  border: 2px solid #ffc038;
+  border: 1px solid #cccccc;
   border-left: none;
   outline: 0;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
   font-size: 2rem;
   text-align: center;
 }
 
 .content {
   width: 100%;
-  height: 85%;
+  height: 75%;
 }
 
 .btn-field {
   width: 100%;
   height: 5%;
+  margin-top: 5%;
   display: flex;
   justify-content: right;
   align-items: center;
@@ -174,7 +173,7 @@ main {
 
 .btn-field * {
   width: 10%;
-  height: 95%;
+  height: 90%;
   margin-left: 1%;
   border: 2px solid #ffc038;
   background-color: #ffffff;

@@ -16,6 +16,7 @@ async function login(loginInfo, axios) {
       alert('로그인 성공!');
       location.href = '/community';
     } else {
+      console.log(data, headers);
       alert('로그인 실패. ID와 비밀번호를 다시 한 번 확인해주세요.');
     }
   } else {
@@ -109,9 +110,12 @@ function logout() {
 async function checkReject(axios) {
   if(window.sessionStorage.getItem('user-info') !== null && window.sessionStorage.getItem('jwt-auth-token') !== null) {
     const user = JSON.parse(window.sessionStorage.getItem('user-info'));
+    console.log(window.sessionStorage.getItem('jwt-auth-token'));
 
     let { data } = await axios.post('check_reject', {
       name: user.name,
+    }, {
+      headers: {'jwt-auth-token': JSON.parse(window.sessionStorage.getItem('jwt-auth-token'))}
     });
 
     if(data.forever_reject) {

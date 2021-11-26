@@ -93,7 +93,7 @@ export default {
   width: 100%;
   height: 90%;
   display: grid;
-  grid-template-rows: 9fr 0.5fr;
+  grid-template-rows: 97% 5%;
   justify-items: center;
   align-items: center;
 }

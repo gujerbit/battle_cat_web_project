@@ -21,7 +21,6 @@ async function writing(title, content, length, type, axios) {
   let { data } = await axios.post('/board_writing', {
     email: getAccountInfo().email,
     name: getAccountInfo().name,
-    grade: getAccountInfo().grade,
     title: title,
     content: content,
     writing_date: new Date(),
