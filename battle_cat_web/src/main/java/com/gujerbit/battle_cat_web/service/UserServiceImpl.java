@@ -95,4 +95,9 @@ public class UserServiceImpl implements UserService {
 		return dao.checkReject(vo);
 	}
 	
+	@Override
+	public String checkGrade(UserVO vo) {
+		return dao.checkGrade(vo);
+	}
+	
 }

@@ -24,7 +24,7 @@
               <p>
                 닉네임: {{value.name}}
                 <span v-if="value.forever_reject">[영구 차단됨]</span>
-                <span v-else-if="new Date(value.reject_end_date).getTime() - new Date().getTime() > 0">[{{new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}}일 후 차단해제]</span>
+                <span v-else-if="new Date(value.reject_end_date).getTime() - new Date().getTime() > 0 && new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getDate() - 1 > 0">[{{new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}}일 후 차단해제]</span>
               </p>
               <p>등급: {{value.grade === 'user' ? '유저' : value.grade === 'admin' ? '관리자' : value.grade === 'operator' ? '운영자' : '개발자'}}</p>
               <p>가입날짜: {{value.reg_date}}</p>
@@ -66,6 +66,9 @@ import { ref, onBeforeMount, getCurrentInstance, watchEffect } from 'vue';
 import { pagination, pageDivision } from '../../../js/util/pagination.js';
 import { searchUser } from '../../../js/community/user/userInfo.js';
 import { userReject, userForeverReject, userRejectRelease, userGradeSetting } from '../../../js/community/admin/admin.js';
+import { removeSessionStorage } from "../../../js/util/value.js";
+import { getAccountInfo } from '../../../js/community/admin/admin.js';
+import { rejectAlert } from '../../../js/util/alert.js';
 
 export default {
   setup() {
@@ -147,25 +150,47 @@ export default {
       };
     }
 
-    function scrollPrevent() {
+    function scrollPrevent(event) {
       watching.value.scroll = false;
       let content = event.currentTarget.closest('.content');
       content.style.pointerEvents = 'auto';
     }
 
     onBeforeMount(async () => {
-      const info = JSON.parse(window.sessionStorage.getItem('user-info'));
-      userInfo.value.user = info;
+      try {
+        let { data } = await proxy.axios.post('/check_grade', {
+          name: getAccountInfo().name,
+        }, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
 
-      if(info.grade === 'admin' || info.grade === 'operator' || info.grade === 'developer') {
-        let { data } = await proxy.axios.get('/user_data');
-        userInfo.value.data = data;
-      } else {
-        alert('관리자만 접근 가능합니다!');
-        location.href = '/community'
+        if(data === 'user') {
+          alert('관리자 이상만 접근 가능합니다');
+          location.href = '/community';
+        } else {
+          if(data !== getAccountInfo().grade) {
+            alert('권한이 변경되었습니다! 다시 로그인해주세요!');
+            removeSessionStorage(['jwt-auth-token', 'user-info']);
+            location.href = '/login';
+          } else {
+            try {
+              let { data } = await proxy.axios.get('/user_data', {
+                headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+              });
+
+              userInfo.value.data = data;
+              userInfo.value.user = JSON.parse(window.sessionStorage.getItem('user-info'));
+              contentUpdate();
+            } catch (error) {
+              alert('접근 권한 없음!');
+              removeSessionStorage(['jwt-auth-token', 'user-info']);
+              location.href = '/login'; 
+            }
+          }
+        }
+      } catch (error) {
+        rejectAlert();
       }
-
-      contentUpdate();
     });
 
     watchEffect(() => {

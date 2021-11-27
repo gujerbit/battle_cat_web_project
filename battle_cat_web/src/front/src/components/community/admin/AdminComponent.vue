@@ -29,7 +29,7 @@ export default {
       select: 'userList',
     });
 
-    onBeforeMount(() => {
+    onBeforeMount(async () => {
       checkReject(proxy.axios);
     });
 

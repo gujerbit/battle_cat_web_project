@@ -32,6 +32,7 @@ import { ref, onBeforeMount, getCurrentInstance } from 'vue';
 import { checkReject } from '../../../js/community/user/user.js';
 import { pagination, pageDivision } from '../../../js/util/pagination.js';
 import { viewCountUpdate } from '../../../js/community/board/board.js';
+import { rejectAlert } from '../../../js/util/alert.js';
 
 export default {
   setup() {
@@ -78,9 +79,16 @@ export default {
     onBeforeMount(async () => {
       checkReject(proxy.axios);
 
-      let { data } = await proxy.axios.get('/get_board_list');
-      board.value.list = data.reverse();
-      contentUpdate();
+      try {
+        let { data } = await proxy.axios.get('/get_board_list', {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        board.value.list = data.reverse();
+        contentUpdate();
+      } catch (error) {
+        rejectAlert();
+      }
     });
 
     return { board, pageInfo, proxy, nextPage, prevPage, selectPage, viewCountUpdate };

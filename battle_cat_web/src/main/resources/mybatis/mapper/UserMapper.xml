@@ -107,4 +107,11 @@
 		</where>
 	</select>
 	
+	<select id="checkGrade" resultType="string">
+		SELECT grade FROM user_data
+		<where>
+			name = #{name}
+		</where>
+	</select>
+	
 </mapper>

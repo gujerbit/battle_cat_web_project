@@ -24,6 +24,7 @@ import { ref, onBeforeMount, onMounted, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
 import { Quill } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import { rejectAlert } from '../../../js/util/alert';
 
 export default {
   setup() {
@@ -37,8 +38,15 @@ export default {
     let quill;
 
     onBeforeMount(async () => {
-      let { data } = await proxy.axios.get(`/get_board_data/${route.params.idx}`);
-      board.value.content = data;
+      try {
+        let { data } = await proxy.axios.get(`/get_board_data/${route.params.idx}`, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        board.value.content = data;
+      } catch (error) {
+        rejectAlert();
+      }
     });
 
     onMounted(() => {

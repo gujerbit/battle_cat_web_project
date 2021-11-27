@@ -33,7 +33,7 @@ public class SessionServiceImpl implements SessionService {
 		builder.setHeaderParam(Header.TYPE, Header.JWT_TYPE); //jwt_type
 		builder.setIssuer("nyanko-db.shop"); //발급자
 		builder.setAudience(vo.getName()); //대상자
-		builder.setSubject("token"); //token title
+		builder.setSubject(vo.getGrade().equals("user") ? "user" : vo.getGrade().equals("admin") ? "admin" : vo.getGrade().equals("operator") ? "operator" : "developer"); //token title
 		builder.claim("user", vo); //none-registration claim
 		builder.signWith(SignatureAlgorithm.HS256, hashingKey);
 		builder.setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000));
@@ -42,12 +42,17 @@ public class SessionServiceImpl implements SessionService {
 	}
 	
 	@Override
-	public boolean checkToken(String token) {
+	public boolean checkToken(String token, String path) {
 		try {
 			byte[] hashingKey = hashing.hashing(key.getBytes()).getBytes();
 			Jwts.parser().setSigningKey(hashingKey).parseClaimsJws(token).getBody();
 			
-			getToken(token);
+			Claims claims = getToken(token).getBody();
+			
+			if(!claims.getIssuer().equals("nyanko-db.shop")) return false;
+			
+			if((path.equals("/user_data") || path.equals("/get_admin_log") || path.equals("/user_reject") || path.equals("/user_forever_reject") || path.equals("/user_reject_release") || path.equals("/user_grade_setting") || path.equals("/set_admin_log")) && !claims.getSubject().equals("admin") && !claims.getSubject().equals("operator") && !claims.getSubject().equals("developer")) return false;
+			else if(!claims.getSubject().equals("user") && !claims.getSubject().equals("admin") && !claims.getSubject().equals("operator") && !claims.getSubject().equals("developer")) return false;
 			
 			return true;
 		} catch (Exception e) {
@@ -56,7 +61,7 @@ public class SessionServiceImpl implements SessionService {
 	}
 	
 	@Override
-	public Map<String, Object> getToken(String token) {
+	public Jws<Claims> getToken(String token) {
 		byte[] hashingKey = hashing.hashing(key.getBytes()).getBytes();
 		Jws<Claims> claims = null;
 		
@@ -68,7 +73,7 @@ public class SessionServiceImpl implements SessionService {
 		
 		System.out.println(claims.getBody());
 		
-		return claims.getBody();
+		return claims;
 	}
 	
 }

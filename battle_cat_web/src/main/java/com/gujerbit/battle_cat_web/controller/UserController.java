@@ -90,11 +90,9 @@ public class UserController {
 		vo.setCode(rsa.encryptRSA(vo.getCode()));
 		vo.setGrade("user");
 		vo.setSalt(salt);
-		vo.setReg_date(new Date(System.currentTimeMillis()));
 		vo.setProfile_img("normal/cat/cat.png");
 		vo.setDescription("");
 		vo.setReport_count(0);
-		vo.setReject_end_date(new Date(System.currentTimeMillis()));
 		vo.setForever_reject(false);
 		vo.setReputation(50);
 		
@@ -211,6 +209,11 @@ public class UserController {
 	@PostMapping("/check_reject")
 	public @ResponseBody UserVO checkReject(@RequestBody UserVO vo) {
 		return userService.checkReject(vo);
+	}
+	
+	@PostMapping("/check_grade")
+	public @ResponseBody String checkGrade(@RequestBody UserVO vo) {
+		return userService.checkGrade(vo);
 	}
 	
 }

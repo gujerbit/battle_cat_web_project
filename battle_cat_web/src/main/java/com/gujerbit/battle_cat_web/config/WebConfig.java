@@ -20,7 +20,29 @@ public class WebConfig implements WebMvcConfigurer {
 	private SessionInterceptor interceptor;
 	
 	private final String[] EXCLUDE_PATHS = {
-		"/login_process"
+		"/",
+		"/static/**",
+		"/js/**",
+		"/css/**",
+		"/img/**",
+		"/fonts/**",
+		"/*.html",
+		"/*.ico",
+		"/unit_data",
+		"/unitInfo/**",
+		"/login",
+		"/login_process",
+		"/community",
+		"/userInfo/**",
+		"/admin",
+		"/board",
+		"/board_data/**",
+		"/register",
+		"/register_process",
+		"/check_email",
+		"/register_code",
+		"/check_name",
+		"/check_code",
 	};
 
 	@Override

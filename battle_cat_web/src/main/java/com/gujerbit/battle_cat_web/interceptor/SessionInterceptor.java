@@ -22,15 +22,12 @@ public class SessionInterceptor implements HandlerInterceptor {
 		} else {
 			String token = request.getHeader("jwt-auth-token");
 			
-			if(token != null && token.length() > 0 && service.checkToken(token)) {
-				System.out.println(token);
-				
+			if(token != null && token.length() > 0 && service.checkToken(token, request.getRequestURI())) {
 				return true;
-			} else {				
-				System.out.println("no have jwt-auth-token");
-				response.addHeader("jwt-auth-token-enable", "false");
+			} else {
+				System.out.println(request.getRequestURI());
 				
-				return false;
+				throw new RuntimeException();
 			}
 		}
 	}

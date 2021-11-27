@@ -42,4 +42,6 @@ public interface UserDAO {
 	
 	public UserVO checkReject(UserVO vo);
 	
+	public String checkGrade(UserVO vo);
+	
 }

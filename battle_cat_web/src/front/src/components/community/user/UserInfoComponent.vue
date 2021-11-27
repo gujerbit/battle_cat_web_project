@@ -10,7 +10,7 @@
             <p class="name">{{value.name}}
               <span class="grade">[{{value.grade === 'user' ? '유저' : value.grade === 'admin' ? '관리자' : value.grade === 'operator' ? '운영자' : '개발자'}}]</span>
               <span class="reject" v-if="value.forever_reject">[영구 차단됨]</span>
-              <span class="reject" v-else-if="new Date(value.reject_end_date).getTime() - new Date().getTime() > 0">[{{new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}}일 후 차단해제]</span>
+              <span class="reject" v-else-if="new Date(value.reject_end_date).getTime() - new Date().getTime() > 0 && new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getDate() - 1 > 0">[{{new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}}일 후 차단해제]</span>
             </p>
             <p v-if="value.email !== undefined">이메일: {{value.email}}</p>
             <p v-if="value.code !== undefined">문의 코드: {{value.code}}</p>
@@ -92,6 +92,7 @@ import { checkName, checkCode } from '../../../js/util/validation.js';
 import { getUnitInfo } from '../../../js/unit/unitInfo.js';
 import { logout, checkReject } from '../../../js/community/user/user.js';
 import { descriptionChange, nameChange, codeChange, profileImgChange, userRemove } from '../../../js/community/user/userInfo.js';
+import { rejectAlert } from '../../../js/util/alert.js';
 
 export default {
   setup() {
@@ -157,29 +158,33 @@ export default {
     onBeforeMount(() => {
       checkReject(proxy.axios);
 
-      const userName = route.params.userName;
-      const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
+      try {
+        const userName = route.params.userName;
+        const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
 
-      if(temp !== null && userName === temp.name) {
-        const key = Object.keys(temp);
-        const info = {};
+        if(temp !== null && userName === temp.name) {
+          const key = Object.keys(temp);
+          const info = {};
 
-        for(let i = 0; i < key.length; i++) if(temp[`${key[i]}`] !== null) info[`${key[i]}`] = temp[`${key[i]}`];
+          for(let i = 0; i < key.length; i++) if(temp[`${key[i]}`] !== null) info[`${key[i]}`] = temp[`${key[i]}`];
 
-        userInfo.value.data.push(info);
-        userInfo.value.description = temp.description;
-        userInfo.value.name = temp.name;
-        userInfo.value.code = temp.code;
-        userInfo.value.email = temp.email;
+          userInfo.value.data.push(info);
+          userInfo.value.description = temp.description;
+          userInfo.value.name = temp.name;
+          userInfo.value.code = temp.code;
+          userInfo.value.email = temp.email;
 
-        // const loadData = setInterval(() => {
-        //   if(getUnitInfo(proxy.store) !== undefined) {
-            
-        //     clearInterval(loadData);
-        //   }
-        // }, 100);
-        unit.value.all = getUnitInfo(proxy.store);
-      } else getUserInfo(userName);
+          // const loadData = setInterval(() => {
+          //   if(getUnitInfo(proxy.store) !== undefined) {
+              
+          //     clearInterval(loadData);
+          //   }
+          // }, 100);
+          unit.value.all = getUnitInfo(proxy.store);
+        } else getUserInfo(userName);
+      } catch (error) {
+        rejectAlert();
+      }
     });
 
     return { userInfo, update, tip, unit, proxy, logout, descriptionChange, nameChange, codeChange, profileImgChange, clear, checkName, checkCode, userRemove };

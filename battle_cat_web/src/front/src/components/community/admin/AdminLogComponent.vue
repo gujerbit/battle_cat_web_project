@@ -22,6 +22,7 @@
 <script>
 import { ref, onBeforeMount, getCurrentInstance } from 'vue';
 import { pagination, pageDivision } from '../../../js/util/pagination.js';
+import { rejectAlert } from '../../../js/util/alert.js';
 
 export default {
   setup() {
@@ -66,10 +67,16 @@ export default {
     };
 
     onBeforeMount(async () => {
-      let { data } = await proxy.axios.get('/get_admin_log');
+      try {
+        let { data } = await proxy.axios.get('/get_admin_log', {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
 
-      log.value.data = data.reverse();
-      contentUpdate();
+        log.value.data = data.reverse();
+        contentUpdate();
+      } catch (error) {
+        rejectAlert();
+      }
     });
 
     return { log, pageInfo, nextPage, prevPage, selectPage };

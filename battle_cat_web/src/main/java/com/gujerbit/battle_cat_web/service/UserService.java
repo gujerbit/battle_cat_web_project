@@ -38,5 +38,7 @@ public interface UserService {
 	int userRemove(UserVO vo);
 	
 	UserVO checkReject(UserVO vo);
+	
+	String checkGrade(UserVO vo);
 
 }
