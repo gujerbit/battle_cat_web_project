@@ -84,6 +84,17 @@ async function userRejectRelease(name, axios) {
 
 async function userGradeSetting(name, grade, axios) {
   if(confirm(`정말 해당 사용자를 ${grade} 등급으로 전환하시겠습니까?`)) {
+    // try {
+    //   let { data:userGrade } = await axios.post('/check_grade', {
+    //     name: name,
+    //   }, {
+    //     headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+    //   });
+
+    //   if(userGrade)
+    // } catch (error) {
+      
+    // } 유저 권한 변경되었을 시 코드 처리해줘야 함
     try {
       let { data } = await axios.post('/user_grade_setting', {
         name: name,
