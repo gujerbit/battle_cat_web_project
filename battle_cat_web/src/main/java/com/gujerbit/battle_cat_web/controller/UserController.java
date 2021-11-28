@@ -42,9 +42,6 @@ public class UserController {
 	@Autowired
 	private Hashing hashing;
 	
-	@Autowired
-	private RSA rsa;
-	
 	@PostMapping("/login_process")
 	public @ResponseBody ResponseEntity<Map<String, Object>> loginProcess(@RequestBody UserVO vo, HttpServletResponse res) {
 		String password = vo.getPassword();
@@ -60,7 +57,7 @@ public class UserController {
 		
 		if(user != null) {
 			try {
-				user.setCode(rsa.decryptRSA(user.getCode()));
+				user.setCode(hashing.decryptAESCBC(user.getCode()));
 				String token = sessionService.createToken(user);
 				res.setHeader("jwt-auth-token", token);
 				resultMap.put("status", true);
@@ -87,7 +84,7 @@ public class UserController {
 		String saltingPassword = hashing.hashing((digestPassword + salt).getBytes());
 		
 		vo.setPassword(saltingPassword);
-		vo.setCode(rsa.encryptRSA(vo.getCode()));
+		vo.setCode(hashing.encryptAESCBC(vo.getCode()));
 		vo.setGrade("user");
 		vo.setSalt(salt);
 		vo.setProfile_img("normal/cat/cat.png");
@@ -119,7 +116,7 @@ public class UserController {
 		ArrayList<String> list = userService.selectCode();
 		boolean check = true;
 		
-		for(int i = 0; i < list.size(); i++) if(rsa.decryptRSA(list.get(i)).equals(vo.getCode())) check = false;
+		for(int i = 0; i < list.size(); i++) if(hashing.decryptAESCBC(list.get(i)).equals(vo.getCode())) check = false;
 		
 		return check;
 	}
@@ -129,7 +126,7 @@ public class UserController {
 		ArrayList<UserVO> list = userService.findEmail();
 		String email = "";
 		
-		for(int i = 0; i < list.size(); i++) if(rsa.decryptRSA(list.get(i).getCode()).equals(vo.getCode())) email = list.get(i).getEmail();
+		for(int i = 0; i < list.size(); i++) if(hashing.decryptAESCBC(list.get(i).getCode()).equals(vo.getCode())) email = list.get(i).getEmail();
 		
 		return email;
 	}
@@ -140,7 +137,7 @@ public class UserController {
 			ArrayList<String> list = userService.selectCode();
 			boolean check = false;
 			
-			for(int i = 0; i < list.size(); i++) if(rsa.decryptRSA(list.get(i)).equals(vo.getCode())) check = true;
+			for(int i = 0; i < list.size(); i++) if(hashing.decryptAESCBC(list.get(i)).equals(vo.getCode())) check = true;
 			
 			if(check) {
 				return mailService.mailSend(vo.getEmail(), "비밀번호 변경 코드", "냥코대전쟁 정보 & 커뮤니티 사이트 비밀번호 변경 코드");
@@ -179,7 +176,7 @@ public class UserController {
 	
 	@PostMapping("/change_code")
 	public @ResponseBody int codeChange(@RequestBody UserVO vo) {
-		vo.setCode(rsa.encryptRSA(vo.getCode()));
+		vo.setCode(hashing.encryptAESCBC(vo.getCode()));
 		
 		return userService.codeChange(vo);
 	}
