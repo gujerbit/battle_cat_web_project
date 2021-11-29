@@ -1,9 +1,9 @@
 <template>
   <main>
-    <div id="board-writing">
+    <div id="board-updating">
       <div class="title">
-        <input v-model="writeInfo.title" type="text" placeholder="제목을 입력하세요">
-        <select v-model="writeInfo.type">
+        <input v-model="updateInfo.title" type="text" placeholder="제목을 입력하세요">
+        <select v-model="updateInfo.type">
           <option value="normal">일반</option>
           <option value="notice">공지</option>
           <option value="info">정보/공략</option>
@@ -13,11 +13,11 @@
         </select>
       </div>
       <div class="content">
-        <div id="editor" />
-        <p>{{writeInfo.htmlContent.length}}</p>
+        <div id="update-editor" />
+        <p>{{updateInfo.htmlContent.length}}</p>
       </div>
       <div class="btn-field">
-        <button class="writing" @click="quillSetting()">글 작성</button>
+        <button class="updating" @click="quillSetting()">글 수정</button>
         <router-link to="/board">취소</router-link>
       </div>
     </div>
@@ -28,11 +28,13 @@
 
 <script>
 import { ref, getCurrentInstance, onMounted, onBeforeMount } from 'vue';
-import { writing } from '../../../js/community/board/board.js';
+import { useRoute } from 'vue-router';
+import { updating } from '../../../js/community/board/board.js';
 import { Quill } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import BlotFormatter from 'quill-blot-formatter';
 import ImageUploader from 'quill-image-uploader';
+import { rejectAlert } from '../../../js/util/alert.js';
 import { checkReject } from '../../../js/community/user/user.js';
 
 Quill.register('modules/blotFormatter', BlotFormatter);
@@ -41,10 +43,12 @@ Quill.register('modules/imageUploader', ImageUploader);
 export default {
   setup() {
     const { proxy } = getCurrentInstance();
+    const route = useRoute();
 
-    const writeInfo = ref({
+    const updateInfo = ref({
       title: '',
       type: 'normal',
+      content: '',
       htmlContent: ''
     });
 
@@ -76,15 +80,27 @@ export default {
     ];
 
     const quillSetting = () => {
-      writing(writeInfo.value.title, quill.root.innerHTML, quill.getText(), writeInfo.value.type, proxy.axios);
+      updating(updateInfo.value.title, quill.root.innerHTML, quill.getText(), updateInfo.value.type, proxy.axios);
     };
 
-    onBeforeMount(() => {
+    onBeforeMount(async () => {
       checkReject(proxy.axios);
-    })
+
+      try {
+        let { data } = await proxy.axios.get(`/get_board_data/${route.params.idx}`, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        updateInfo.value.title = data.title;
+        updateInfo.value.type = data.type;
+        updateInfo.value.content = data.content;
+      } catch (error) {
+        rejectAlert();
+      }
+    });
 
     onMounted(() => {
-      quill = new Quill('#editor', {
+      quill = new Quill('#update-editor', {
         modules: {
           blotFormatter: {},
           imageUploader: {
@@ -110,14 +126,16 @@ export default {
         theme: 'snow'
       });
 
+      setTimeout(() => {
+        quill.root.innerHTML = updateInfo.value.content;
+      }, 100);
+
       setInterval(() => {
-        writeInfo.value.htmlContent = quill.root.innerHTML;
+        updateInfo.value.htmlContent = quill.root.innerHTML;
       }, 1000);
     });
 
-    return { writeInfo, proxy, quill, quillSetting };
-  },
-  components: {
+    return { updateInfo, proxy, quill, quillSetting };
   }
 }
 </script>
@@ -128,7 +146,7 @@ main {
   height: 100%;
 }
 
-#board-writing {
+#board-updating {
   width: 90%;
   height: 100%;
   margin: 0 auto;

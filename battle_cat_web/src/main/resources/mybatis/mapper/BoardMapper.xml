@@ -56,13 +56,13 @@
 		</where>
 	</update>
 	
-	<select id="deleteBoardCheck" resultType="UserVO">
-		SELECT email, name, code FROM user_data
+	<update id="updateBoard">
+		UPDATE board_data SET title = #{title}, content = #{content}, text = #{text}, type = #{type}
 		<where>
-			email = #{email}
+			idx = #{idx}
 			AND
-			password = #{password}
+			email = #{email}
 		</where>
-	</select>
+	</update>
 
 </mapper>

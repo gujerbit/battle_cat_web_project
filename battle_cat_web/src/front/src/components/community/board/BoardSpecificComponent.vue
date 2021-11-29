@@ -3,14 +3,14 @@
     <div id="board">
       <p class="title">{{board.content.title}}</p>
       <div class="content">
-        <div id="editor" />
+        <div id="view-editor" />
       </div>
       <div class="btn-field">
         <router-link :to="`/userInfo/${board.content.name}`" class="user">작성자 정보 확인</router-link>
         <button class="good" @click="countUpdate(board.content.idx, 'good', proxy.axios)">{{getCountData(board.count, board.content.idx, 'good')}} 추천</button>
         <button class="bad" @click="countUpdate(board.content.idx, 'bad', proxy.axios)">{{getCountData(board.count, board.content.idx, 'bad')}} 비추천</button>
         <button class="report" v-if="getAccountInfo().email !== board.content.email">신고</button>
-        <router-link to="" v-if="getAccountInfo().email === board.content.email">수정</router-link>
+        <router-link :to="`/board_updating/${board.content.idx}`" v-if="getAccountInfo().email === board.content.email">수정</router-link>
         <button @click="deleteBoard(board.content.idx, proxy.axios)" v-if="getAccountInfo().email === board.content.email">삭제</button>
       </div>
     </div>
@@ -27,6 +27,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { rejectAlert } from '../../../js/util/alert';
 import { countUpdate, getCountData, deleteBoard } from '../../../js/community/board/board.js';
 import { getAccountInfo } from '../../../js/community/admin/admin.js';
+import { checkReject } from '../../../js/community/user/user';
 
 export default {
   setup() {
@@ -41,6 +42,8 @@ export default {
     let quill;
 
     onBeforeMount(async () => {
+      checkReject(proxy.axios);
+
       try {
         let { data } = await proxy.axios.get(`/get_board_data/${route.params.idx}`, {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
@@ -64,10 +67,10 @@ export default {
 
     onMounted(() => {
       setTimeout(() => {
-        quill = new Quill('#editor', {
+        quill = new Quill('#view-editor', {
           modules: {
             toolbar: {
-              container: '#editor'
+              container: '#view-editor'
             }
           },
           readOnly: true,

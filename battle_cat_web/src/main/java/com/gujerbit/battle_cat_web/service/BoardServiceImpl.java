@@ -57,8 +57,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public UserVO deleteBoardCheck(UserVO vo) {
-		return dao.deleteBoardCheck(vo);
+	public int updateBoard(BoardVO vo) {
+		return dao.updateBoard(vo);
 	}
 	
 }

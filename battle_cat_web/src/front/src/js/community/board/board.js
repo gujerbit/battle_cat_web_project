@@ -1,7 +1,7 @@
 import { rejectAlert } from '../../util/alert.js';
 import { getAccountInfo } from '../admin/admin.js';
 
-export { writing, countUpdate, getCountData, searchBoardData, deleteBoard };
+export { writing, countUpdate, getCountData, searchBoardData, deleteBoard, updating };
 
 async function writing(title, content, text, type, axios) {
   if(title.length <= 0) {
@@ -20,7 +20,7 @@ async function writing(title, content, text, type, axios) {
   }
   
   try {
-    let { data } = await axios.post('/board_writing', {
+    let { data } = await axios.post('/write_board', {
       email: getAccountInfo().email,
       name: getAccountInfo().name,
       title: title,
@@ -38,6 +38,67 @@ async function writing(title, content, text, type, axios) {
     } else alert('글 작성 실패');
   } catch (error) {
     rejectAlert();
+  }
+}
+
+async function updating(idx, title, content, text, type, axios) {
+  console.log(type);
+  if(title.length <= 0) {
+    alert('제목을 입력하세요!');
+    return;
+  }
+
+  if(text.length <= 1) {
+    alert('내용을 입력하세요!');
+    return;
+  }
+
+  if(content.length > 10000) {
+    alert(`내용 용량 초과! ${content.length}/10000`);
+    return;
+  }
+  
+  if(confirm('정말로 해당 게시글을 수정하시겠습니까??')) {
+    const password = prompt('비밀번호를 입력해주세요');
+
+    if(password === null) location.reload();
+    else {
+      try {
+        let { data:check } = await axios.post('/change_board_check', {
+          email: getAccountInfo().email,
+          password: password,
+        }, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+  
+        if(check) {
+          try {
+            let { data } = await axios.post('/delete_board', {
+              idx: idx,
+              email: getAccountInfo().email,
+            }, {
+              headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+            });
+  
+            if(data > 0) {
+              alert('게시물 삭제 성공!');
+              location.href = '/board';
+            } else {
+              alert('게시물 삭제 실패');
+              location.reload();
+            }
+          } catch (error) {
+            rejectAlert();
+          }
+        } else {
+          alert('다시 한 번 비밀번호를 확인해주세요!');
+          location.reload();
+        }
+      } catch (error) {
+        console.log('a');
+        rejectAlert();
+      } 
+    }
   }
 }
 
@@ -113,39 +174,42 @@ async function deleteBoard(idx, axios) {
   if(confirm('정말로 해당 게시글을 삭제하시겠습니까??')) {
     const password = prompt('비밀번호를 입력해주세요');
 
-    try {
-      let { data:check } = await axios.post('/delete_board_check', {
-        email: getAccountInfo().email,
-        password: password,
-      }, {
-        headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-      });
-
-      if(check) {
-        try {
-          let { data } = await axios.post('/delete_board', {
-            idx: idx,
-            email: getAccountInfo().email,
-          }, {
-            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-          });
-
-          if(data > 0) {
-            alert('게시물 삭제 성공!');
-            location.href = '/board';
-          } else {
-            alert('게시물 삭제 실패');
-            location.reload();
+    if(password === null) location.reload();
+    else {
+      try {
+        let { data:check } = await axios.post('/change_board_check', {
+          email: getAccountInfo().email,
+          password: password,
+        }, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+  
+        if(check) {
+          try {
+            let { data } = await axios.post('/delete_board', {
+              idx: idx,
+              email: getAccountInfo().email,
+            }, {
+              headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+            });
+  
+            if(data > 0) {
+              alert('게시물 삭제 성공!');
+              location.href = '/board';
+            } else {
+              alert('게시물 삭제 실패');
+              location.reload();
+            }
+          } catch (error) {
+            rejectAlert();
           }
-        } catch (error) {
-          rejectAlert();
+        } else {
+          alert('다시 한 번 비밀번호를 확인해주세요!');
+          location.reload();
         }
-      } else {
-        alert('다시 한 번 비밀번호를 확인해주세요!');
-        location.reload();
+      } catch (error) {
+        rejectAlert();
       }
-    } catch (error) {
-      rejectAlert();
     }
   }
 }

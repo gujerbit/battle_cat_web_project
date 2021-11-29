@@ -35,7 +35,7 @@ public class BoardController {
 	@Autowired
 	private RSA rsa;
 	
-	@PostMapping("/board_writing")
+	@PostMapping("/write_board")
 	public @ResponseBody int writing(@RequestBody BoardVO vo) {
 		return boardService.writing(vo);
 	}
@@ -74,7 +74,12 @@ public class BoardController {
 		return boardService.deleteBoard(vo);
 	}
 	
-	@PostMapping("/delete_board_check")
+	@PostMapping("/update_board")
+	public @ResponseBody int updateBoard(@RequestBody BoardVO vo) {
+		return boardService.updateBoard(vo);
+	}
+	
+	@PostMapping("/change_board_check")
 	public @ResponseBody boolean deleteBoardCheck(@RequestBody UserVO vo) {
 		String password = vo.getPassword();
 		String digestPassword = hashing.hashing(password.getBytes());
@@ -82,7 +87,7 @@ public class BoardController {
 		String saltingPassword = hashing.hashing((digestPassword + salt).getBytes());
 		vo.setPassword(saltingPassword);
 		
-		return boardService.deleteBoardCheck(vo) != null ? true : false;
+		return userService.login(vo) != null ? true : false;
 	}
 	
 }

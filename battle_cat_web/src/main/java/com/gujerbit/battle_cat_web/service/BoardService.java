@@ -24,6 +24,6 @@ public interface BoardService {
 	
 	int deleteBoard(BoardVO vo);
 	
-	UserVO deleteBoardCheck(UserVO vo);
+	int updateBoard(BoardVO vo);
 	
 }

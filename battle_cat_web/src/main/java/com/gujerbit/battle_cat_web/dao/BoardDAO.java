@@ -27,6 +27,6 @@ public interface BoardDAO {
 	
 	public int deleteBoard(BoardVO vo);
 	
-	public UserVO deleteBoardCheck(UserVO vo);
+	public int updateBoard(BoardVO vo);
 	
 }

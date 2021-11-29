@@ -16,6 +16,7 @@ import updateScheduleSpecificComponent from '../components/etc/schedule/UpdateSc
 import patchNoteSpecificComponent from '../components/etc/schedule/PatchNoteSpecificComponent.vue';
 import boardComponent from '../components/community/board/BoardComponent.vue';
 import boardWritingComponent from '../components/community/board/BoardWritingComponent.vue';
+import boardUpdatingComponent from '../components/community/board/BoardUpdatingComponent.vue';
 import boardSpecificComponent from '../components/community/board/BoardSpecificComponent.vue';
 import adminComponent from '../components/community/admin/AdminComponent.vue';
 import userInfoComponent from '../components/community/user/UserInfoComponent.vue';
@@ -93,6 +94,11 @@ const routes = [
     {
         path: '/board_writing',
         component: boardWritingComponent,
+    },
+    {
+        path: '/board_updating/:idx',
+        component: boardUpdatingComponent,
+        props: true,
     },
     {
         path: '/board_data/:idx',
