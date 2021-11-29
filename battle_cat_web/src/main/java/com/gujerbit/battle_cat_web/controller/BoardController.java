@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gujerbit.battle_cat_web.service.BoardServiceImpl;
+import com.gujerbit.battle_cat_web.service.UserServiceImpl;
+import com.gujerbit.battle_cat_web.util.Hashing;
 import com.gujerbit.battle_cat_web.util.RSA;
 import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
+import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @CrossOrigin("*")
 @Controller
@@ -22,6 +25,12 @@ public class BoardController {
 
 	@Autowired
 	private BoardServiceImpl boardService;
+	
+	@Autowired
+	private UserServiceImpl userService;
+	
+	@Autowired
+	private Hashing hashing;
 	
 	@Autowired
 	private RSA rsa;
@@ -58,6 +67,22 @@ public class BoardController {
 	@GetMapping("/get_board_count/{idx}")
 	public @ResponseBody List<BoardCountVO> getBoardCountData(@PathVariable int idx) {
 		return boardService.getCountData(idx);
+	}
+	
+	@PostMapping("/delete_board")
+	public @ResponseBody int deleteBoard(@RequestBody BoardVO vo) {
+		return boardService.deleteBoard(vo);
+	}
+	
+	@PostMapping("/delete_board_check")
+	public @ResponseBody boolean deleteBoardCheck(@RequestBody UserVO vo) {
+		String password = vo.getPassword();
+		String digestPassword = hashing.hashing(password.getBytes());
+		String salt = userService.selectSalt(vo.getEmail());
+		String saltingPassword = hashing.hashing((digestPassword + salt).getBytes());
+		vo.setPassword(saltingPassword);
+		
+		return boardService.deleteBoardCheck(vo) != null ? true : false;
 	}
 	
 }

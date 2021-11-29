@@ -37,9 +37,6 @@ public class BoardVO {
 	private Timestamp writing_date;
 	
 	@JsonProperty
-	private String file;
-	
-	@JsonProperty
 	private int view_count;
 	
 	@JsonProperty

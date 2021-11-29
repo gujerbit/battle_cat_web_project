@@ -1,7 +1,7 @@
 import { rejectAlert } from '../../util/alert.js';
 import { getAccountInfo } from '../admin/admin.js';
 
-export { writing, countUpdate, getCountData, searchBoardData };
+export { writing, countUpdate, getCountData, searchBoardData, deleteBoard };
 
 async function writing(title, content, text, type, axios) {
   if(title.length <= 0) {
@@ -107,4 +107,45 @@ function searchBoardData(data, type, value, valueType) {
       return result;
     }
   } else if(type === 'all' && value.length <= 0) return data;
+}
+
+async function deleteBoard(idx, axios) {
+  if(confirm('정말로 해당 게시글을 삭제하시겠습니까??')) {
+    const password = prompt('비밀번호를 입력해주세요');
+
+    try {
+      let { data:check } = await axios.post('/delete_board_check', {
+        email: getAccountInfo().email,
+        password: password,
+      }, {
+        headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+      });
+
+      if(check) {
+        try {
+          let { data } = await axios.post('/delete_board', {
+            idx: idx,
+            email: getAccountInfo().email,
+          }, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
+
+          if(data > 0) {
+            alert('게시물 삭제 성공!');
+            location.href = '/board';
+          } else {
+            alert('게시물 삭제 실패');
+            location.reload();
+          }
+        } catch (error) {
+          rejectAlert();
+        }
+      } else {
+        alert('다시 한 번 비밀번호를 확인해주세요!');
+        location.reload();
+      }
+    } catch (error) {
+      rejectAlert();
+    }
+  }
 }

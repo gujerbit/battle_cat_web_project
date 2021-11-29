@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
+import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @Mapper
 public interface BoardDAO {
@@ -23,5 +24,9 @@ public interface BoardDAO {
 	public int countUpdate(BoardCountVO vo);
 	
 	public List<BoardCountVO> getCountData(int idx);
+	
+	public int deleteBoard(BoardVO vo);
+	
+	public UserVO deleteBoardCheck(UserVO vo);
 	
 }

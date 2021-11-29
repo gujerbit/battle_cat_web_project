@@ -130,7 +130,9 @@ export default {
     });
 
     const getUserInfo = async (name) => {
-      let { data } = await proxy.axios.get(`/user_info/${name}`);
+      let { data } = await proxy.axios.get(`/user_info/${name}`, {
+        headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+      });
       
       if(data.length === 0) {
         alert('존재하지 않는 유저입니다!');

@@ -1,5 +1,6 @@
 import { removeSessionStorage } from "../../util/value.js";
 import { rejectAlert } from '../../util/alert.js';
+import { getAccountInfo } from "../admin/admin.js";
 
 export { login, getRegisterCode, checkRegisterCode, register, logout, checkReject };
 
@@ -129,8 +130,22 @@ async function checkReject(axios) {
         alert(`해당 계정은 차단된 계정입니다! 남은 차단 일수: ${new Date(new Date(data.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}일`);
         removeSessionStorage(['jwt-auth-token', 'user-info']);
         location.href = '/login';
-      } else if(data === '') {
-        rejectAlert();
+      } else {
+        try {
+          let { data:grade } = await axios.post('/check_grade', {
+            name: getAccountInfo().name,
+          }, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
+
+          if(grade !== getAccountInfo().grade) {
+            alert('등급이 변경되었습니다! 다시 로그인해주세요!');
+            removeSessionStorage(['jwt-auth-token', 'user-info']);
+            location.href = '/login';
+          }
+        } catch (error) {
+          rejectAlert();
+        }
       }
     } catch (error) {
       rejectAlert();

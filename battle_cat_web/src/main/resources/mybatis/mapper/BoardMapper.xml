@@ -46,5 +46,23 @@
 			board_idx = #{idx}
 		</where>
 	</select>
+	
+	<update id="deleteBoard">
+		UPDATE board_data SET remove = true
+		<where>
+			idx = #{idx}
+			AND
+			email = #{email}
+		</where>
+	</update>
+	
+	<select id="deleteBoardCheck" resultType="UserVO">
+		SELECT email, name, code FROM user_data
+		<where>
+			email = #{email}
+			AND
+			password = #{password}
+		</where>
+	</select>
 
 </mapper>

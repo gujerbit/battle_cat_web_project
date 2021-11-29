@@ -136,7 +136,7 @@ export default {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
-        const list = data.reverse();
+        const list = data.reverse().filter(res => !res.remove);
         board.value.list = list;
         board.value.data = list;
         board.value.countList = count;
@@ -166,7 +166,7 @@ main * {
   height: 90%;
   margin: 0 auto;
   display: grid;
-  grid-template-rows: 5% 90% 5%;
+  grid-template-rows: 5% 100% 5%;
   justify-items: center;
   align-items: center;
 }

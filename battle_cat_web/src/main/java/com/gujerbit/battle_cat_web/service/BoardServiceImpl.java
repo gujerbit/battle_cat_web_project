@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.gujerbit.battle_cat_web.dao.BoardDAO;
 import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
+import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -48,6 +49,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardCountVO> getCountData(int idx) {
 		return dao.getCountData(idx);
+	}
+	
+	@Override
+	public int deleteBoard(BoardVO vo) {
+		return dao.deleteBoard(vo);
+	}
+	
+	@Override
+	public UserVO deleteBoardCheck(UserVO vo) {
+		return dao.deleteBoardCheck(vo);
 	}
 	
 }

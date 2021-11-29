@@ -169,7 +169,7 @@ export default {
           location.href = '/community';
         } else {
           if(data !== getAccountInfo().grade) {
-            alert('권한이 변경되었습니다! 다시 로그인해주세요!');
+            alert('등급이 변경되었습니다! 다시 로그인해주세요!');
             removeSessionStorage(['jwt-auth-token', 'user-info']);
             location.href = '/login';
           } else {
