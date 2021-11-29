@@ -71,8 +71,6 @@ public class SessionServiceImpl implements SessionService {
 			throw new RuntimeException();
 		}
 		
-		System.out.println(claims.getBody());
-		
 		return claims;
 	}
 	

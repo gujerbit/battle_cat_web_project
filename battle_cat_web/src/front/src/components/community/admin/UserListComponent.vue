@@ -38,12 +38,12 @@
         <div class="setting" v-if="value.name !== userInfo.user.name">
           <div class="reject" v-if="userInfo.user.grade === 'developer' || userInfo.user.grade !== value.grade && (value.grade === 'user' || value.grade === 'admin')">
             <input @mouseleave="scrollPrevent($event)" @mouseover="wheelRejectLengthChange($event, idx)" v-model="reject.length[idx]" type="number" placeholder="차단 기간" onfocus="this.select()">
-            <button :disabled="value.forever_reject" @click="userReject(value.name, reject.length[idx], proxy.axios)">차단</button>
-            <button :disabled="value.forever_reject" @click="userForeverReject(value.name, proxy.axios)">영구 차단</button>
-            <button :disabled="!value.forever_reject && new Date(value.reject_end_date).getTime() - new Date().getTime() <= 0" @click="userRejectRelease(value.name, proxy.axios)">차단 해제</button>
+            <button :disabled="value.forever_reject" @click="userReject(value.name, reject.length[idx], value.grade, proxy.axios)">차단</button>
+            <button :disabled="value.forever_reject" @click="userForeverReject(value.name, value.grade, proxy.axios)">영구 차단</button>
+            <button :disabled="!value.forever_reject && new Date(value.reject_end_date).getTime() - new Date().getTime() <= 0" @click="userRejectRelease(value.name, value.grade, proxy.axios)">차단 해제</button>
           </div>
           <div class="grade" v-if="userInfo.user.grade !== 'admin' && value.grade !== 'developer' && userInfo.user.grade !== value.grade">
-            <select @change="userGradeSetting(value.name, userInfo.grade, proxy.axios)" v-model="userInfo.grade">
+            <select @change="userGradeSetting(value.name, userInfo.grade, value.grade, proxy.axios)" v-model="userInfo.grade">
               <option disabled selected>등급 설정</option>
               <option :disabled="value.grade === 'user'">유저</option>
               <option :disabled="value.grade === 'admin'">관리자</option>

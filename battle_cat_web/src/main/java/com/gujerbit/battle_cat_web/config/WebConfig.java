@@ -11,13 +11,17 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
+import com.gujerbit.battle_cat_web.interceptor.GradeInterceptor;
 import com.gujerbit.battle_cat_web.interceptor.SessionInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 	
 	@Autowired
-	private SessionInterceptor interceptor;
+	private SessionInterceptor sessionInterceptor;
+	
+	@Autowired
+	private GradeInterceptor gradeInterceptor;
 	
 	private final String[] EXCLUDE_PATHS = {
 		"/",
@@ -44,6 +48,13 @@ public class WebConfig implements WebMvcConfigurer {
 		"/check_name",
 		"/check_code",
 	};
+	
+	private final String[] INCLUDE_PATHS = {
+		"/user_reject",
+		"/user_forever_reject",
+		"/user_reject_release",
+		"/user_grade_setting"
+	};
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -59,7 +70,8 @@ public class WebConfig implements WebMvcConfigurer {
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns(EXCLUDE_PATHS);
+		registry.addInterceptor(sessionInterceptor).addPathPatterns("/**").excludePathPatterns(EXCLUDE_PATHS);
+		registry.addInterceptor(gradeInterceptor).addPathPatterns(INCLUDE_PATHS);
 	}
 	
 }
