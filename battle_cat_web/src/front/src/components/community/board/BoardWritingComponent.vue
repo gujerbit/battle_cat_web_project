@@ -76,6 +76,7 @@ export default {
     ];
 
     const quillSetting = () => {
+      console.log(proxy.axios);
       writing(writeInfo.value.title, quill.root.innerHTML, quill.getText(), writeInfo.value.type, proxy.axios);
     };
 

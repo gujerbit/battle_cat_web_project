@@ -39,7 +39,8 @@
               </span>
             </p>
           </div>
-          <p class="write-date">{{new Date(new Date(value.writing_date) + 3240 * 10000).toISOString().replace('T', ' ').replace(/\..*/, '')}}</p>
+          <!-- <p class="write-date">{{new Date(new Date(value.writing_date) + 3240 * 10000).toISOString().replace('T', ' ').replace(/\..*/, '')}}</p> -->
+          <p class="write-date">{{new Date(value.writing_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
         </router-link>
       </div>
       <div class="pages">
@@ -198,6 +199,12 @@ nav p {
   align-items: center;
   border: 1px solid #ffc038;
   border-radius: 15px;
+  transition: all 1s;
+  cursor: pointer;
+}
+
+nav p:hover {
+  transform: scale(95%);
 }
 
 .search {
@@ -238,6 +245,12 @@ nav p {
   align-items: center;
   border: 1px solid #ffc038;
   border-radius: 15px;
+  transition: all 1s;
+  cursor: pointer;
+}
+
+.menu a:hover {
+  transform: scale(95%);
 }
 
 .choose {
@@ -261,6 +274,12 @@ nav p {
   align-items: center;
   border: 1px solid #ffc038;
   border-top: none;
+  cursor: pointer;
+  transition: all 1s;
+}
+
+.content:hover {
+  background: #fff6e3;
 }
 
 .content:nth-child(1) {

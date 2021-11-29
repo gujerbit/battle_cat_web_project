@@ -49,6 +49,8 @@ export default {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
+        board.value.content = data;
+
         if(data.remove) {
           alert('해당 게시물은 삭제되었습니다!');
           location.href = '/board';
@@ -58,7 +60,6 @@ export default {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
-        board.value.content = data;
         board.value.count = count;
       } catch (error) {
         rejectAlert();
@@ -66,19 +67,19 @@ export default {
     });
 
     onMounted(() => {
-      setTimeout(() => {
-        quill = new Quill('#view-editor', {
-          modules: {
-            toolbar: {
-              container: '#view-editor'
-            }
-          },
-          readOnly: true,
-          theme: 'snow',
-        });
+      quill = new Quill('#view-editor', {
+        modules: {
+          toolbar: {
+            container: '#view-editor'
+          }
+        },
+        readOnly: true,
+        theme: 'snow',
+      });
 
+      setTimeout(() => {
         quill.root.innerHTML = board.value.content.content;
-      }, 100);
+      }, 200);
     });
 
     return { board, quill, proxy, countUpdate, getCountData, getAccountInfo, deleteBoard };

@@ -80,7 +80,7 @@ export default {
     ];
 
     const quillSetting = () => {
-      updating(updateInfo.value.title, quill.root.innerHTML, quill.getText(), updateInfo.value.type, proxy.axios);
+      updating(route.params.idx, updateInfo.value.title, quill.root.innerHTML, quill.getText(), updateInfo.value.type, proxy.axios);
     };
 
     onBeforeMount(async () => {

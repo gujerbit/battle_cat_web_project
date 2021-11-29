@@ -42,7 +42,6 @@ async function writing(title, content, text, type, axios) {
 }
 
 async function updating(idx, title, content, text, type, axios) {
-  console.log(type);
   if(title.length <= 0) {
     alert('제목을 입력하세요!');
     return;
@@ -72,21 +71,28 @@ async function updating(idx, title, content, text, type, axios) {
         });
   
         if(check) {
+          console.log(idx);
+          console.log(title);
+          console.log(content);
+          console.log(text);
+          console.log(type);
+
           try {
-            let { data } = await axios.post('/delete_board', {
+            let { data } = await axios.post('/update_board', {
               idx: idx,
               email: getAccountInfo().email,
+              title: title,
+              content: content,
+              text: text,
+              type: type,
             }, {
               headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
             });
   
             if(data > 0) {
-              alert('게시물 삭제 성공!');
-              location.href = '/board';
-            } else {
-              alert('게시물 삭제 실패');
+              alert('게시물 수정 성공!');
               location.reload();
-            }
+            } else alert('게시물 수정 실패');
           } catch (error) {
             rejectAlert();
           }
