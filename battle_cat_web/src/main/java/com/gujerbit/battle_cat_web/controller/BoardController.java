@@ -1,6 +1,5 @@
 package com.gujerbit.battle_cat_web.controller;
 
-import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gujerbit.battle_cat_web.service.BoardServiceImpl;
 import com.gujerbit.battle_cat_web.util.RSA;
+import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
 
 @CrossOrigin("*")
@@ -38,12 +38,26 @@ public class BoardController {
 	
 	@GetMapping("/get_board_data/{idx}")
 	public @ResponseBody BoardVO getBoardData(@PathVariable int idx) {
-		return boardService.getBoardDate(idx);
+		return boardService.getBoardData(idx);
 	}
 	
-	@GetMapping("/view_count_update/{idx}")
-	public @ResponseBody int viewCountUpdate(@PathVariable int idx) {
-		return boardService.viewCountUpdate(idx);
+	@GetMapping("/get_board_count_list")
+	public @ResponseBody List<BoardCountVO> getAllBoardCountData() {
+		return boardService.getAllBoardCountData();
+	}
+	
+	@PostMapping("/count_update")
+	public @ResponseBody int countUpdate(@RequestBody BoardCountVO vo) {
+		if(boardService.duplicateCheck(vo) <= 0) {
+			return boardService.countUpdate(vo);
+		} else {
+			return 0;
+		}
+	}
+	
+	@GetMapping("/get_board_count/{idx}")
+	public @ResponseBody List<BoardCountVO> getBoardCountData(@PathVariable int idx) {
+		return boardService.getCountData(idx);
 	}
 	
 }

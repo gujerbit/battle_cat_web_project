@@ -7,8 +7,8 @@
       </div>
       <div class="btn-field">
         <button class="user">작성자 정보 확인</button>
-        <button class="good">추천</button>
-        <button class="bad">비추천</button>
+        <button class="good" @click="countUpdate(board.content.idx, 'good', proxy.axios)">{{getCountData(board.count, board.content.idx, 'good')}} 추천</button>
+        <button class="bad" @click="countUpdate(board.content.idx, 'bad', proxy.axios)">{{getCountData(board.count, board.content.idx, 'bad')}} 비추천</button>
         <button class="report">신고</button>
         <router-link to="">수정</router-link>
         <router-link to="">삭제</router-link>
@@ -25,6 +25,7 @@ import { useRoute } from 'vue-router';
 import { Quill } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { rejectAlert } from '../../../js/util/alert';
+import { countUpdate, getCountData } from '../../../js/community/board/board.js';
 
 export default {
   setup() {
@@ -33,6 +34,7 @@ export default {
 
     const board = ref({
       content: [],
+      count: [],
     });
 
     let quill;
@@ -43,7 +45,12 @@ export default {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
+        let { data:count } = await proxy.axios.get(`/get_board_count/${route.params.idx}`, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
         board.value.content = data;
+        board.value.count = count;
       } catch (error) {
         rejectAlert();
       }
@@ -65,7 +72,7 @@ export default {
       }, 100);
     });
 
-    return { board, quill };
+    return { board, quill, proxy, countUpdate, getCountData };
   },
 }
 </script>
@@ -97,12 +104,13 @@ main {
 
 .content {
   width: 100%;
-  height: 85%;
+  height: 80%;
 }
 
 .btn-field {
   width: 100%;
   height: 5%;
+  margin-top: 1%;
   display: flex;
   justify-content: right;
   align-items: center;
@@ -130,6 +138,7 @@ main {
   margin-left: 1%;
   background-color: #ffffff;
   font-size: 2.3rem;
+  cursor: pointer;
 }
 
 .good {

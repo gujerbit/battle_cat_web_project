@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
 
 @Mapper
@@ -13,8 +14,14 @@ public interface BoardDAO {
 	
 	public List<BoardVO> getAllBoardData();
 	
-	public BoardVO getBoardDate(int idx);
+	public BoardVO getBoardData(int idx);
 	
-	public int viewCountUpdate(int idx);
+	public List<BoardCountVO> getAllBoardCountData();
+	
+	public int duplicateCheck(BoardCountVO vo);
+	
+	public int countUpdate(BoardCountVO vo);
+	
+	public List<BoardCountVO> getCountData(int idx);
 	
 }

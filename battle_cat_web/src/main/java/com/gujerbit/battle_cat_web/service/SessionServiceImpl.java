@@ -36,7 +36,7 @@ public class SessionServiceImpl implements SessionService {
 		builder.setSubject(vo.getGrade().equals("user") ? "user" : vo.getGrade().equals("admin") ? "admin" : vo.getGrade().equals("operator") ? "operator" : "developer"); //token title
 		builder.claim("user", vo); //none-registration claim
 		builder.signWith(SignatureAlgorithm.HS256, hashingKey);
-		builder.setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000));
+//		builder.setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000));
 		
 		return builder.compact();
 	}

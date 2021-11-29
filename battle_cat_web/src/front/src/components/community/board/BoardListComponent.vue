@@ -1,7 +1,7 @@
 <template>
   <div id="board-list">
     <div class="board">
-      <router-link @click="viewCountUpdate(value.idx, proxy.axios)" :to="`/board_data/${value.idx}`" class="content" v-for="value in board.current" :key="value">
+      <router-link @click="countUpdate(value.idx, 'view', proxy.axios)" :to="`/board_data/${value.idx}`" class="content" v-for="value in board.current" :key="value">
         <div class="info">
           <p class="title">
             <span>[{{value.type === 'normal' ? '일반' : value.type === 'notice' ? '공지' : value.type === 'info' ? '정보/공략' : value.type === 'ask' ? '질문' : value.type === 'creative' ? '창작/번역' : '문의/피드백/정보'}}]</span>
@@ -10,9 +10,9 @@
           <p class="name" :class="value.grade">
             {{value.name}}
             <span class="count">
-              <p>조회 {{value.view_count}}</p>
-              <p>추천 {{value.good_count}}</p>
-              <p>비추천 {{value.bad_count}}</p>
+              <p>조회 {{getCountData(board.countList, value.idx, 'view')}}</p>
+              <p>추천 {{getCountData(board.countList, value.idx, 'good')}}</p>
+              <p>비추천 {{getCountData(board.countList, value.idx, 'bad')}}</p>
             </span>
           </p>
         </div>
@@ -31,7 +31,7 @@
 import { ref, onBeforeMount, getCurrentInstance } from 'vue';
 import { checkReject } from '../../../js/community/user/user.js';
 import { pagination, pageDivision } from '../../../js/util/pagination.js';
-import { viewCountUpdate } from '../../../js/community/board/board.js';
+import { countUpdate, getCountData } from '../../../js/community/board/board.js';
 import { rejectAlert } from '../../../js/util/alert.js';
 
 export default {
@@ -40,6 +40,7 @@ export default {
 
     const board = ref({
       list: [],
+      countList: [],
       current: [],
     });
 
@@ -84,14 +85,19 @@ export default {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
+        let { data:count } = await proxy.axios.get('/get_board_count_list', {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
         board.value.list = data.reverse();
+        board.value.countList = count;
         contentUpdate();
       } catch (error) {
         rejectAlert();
       }
     });
 
-    return { board, pageInfo, proxy, nextPage, prevPage, selectPage, viewCountUpdate };
+    return { board, pageInfo, proxy, nextPage, prevPage, selectPage, countUpdate, getCountData };
   }
 }
 </script>

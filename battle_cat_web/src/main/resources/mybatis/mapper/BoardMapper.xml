@@ -3,29 +3,48 @@
 <mapper namespace="com.gujerbit.battle_cat_web.dao.BoardDAO">
 
 	<insert id="writing">
-		INSERT INTO board_data(email, name, title, content, writing_date, view_count, good_count, bad_count, remove, type)
-		VALUES(#{email}, #{name}, #{title}, #{content}, #{writing_date}, 0, 0, 0, false, #{type})
+		INSERT INTO board_data(email, name, title, content, writing_date, remove, type)
+		VALUES(#{email}, #{name}, #{title}, #{content}, #{writing_date}, false, #{type})
 	</insert>
 	
 	<select id="getAllBoardData" resultType="BoardVO">
-		SELECT b.idx, b.name, u.grade, b.title, b.writing_date, b.view_count, b.good_count, b.bad_count, b.remove, b.type FROM board_data b, user_data u
+		SELECT b.idx, b.name, u.grade, b.title, b.writing_date, b.remove, b.type FROM board_data b, user_data u
 		<where>
 			b.email = u.email
 		</where>
 	</select>
 	
-	<select id="getBoardDate" resultType="BoardVO">
+	<select id="getAllBoardCountData" resultType="BoardCountVO">
+		SELECT * FROM board_count_data
+	</select>
+	
+	<select id="getBoardData" resultType="BoardVO">
 		SELECT * FROM board_data
 		<where>
 			idx = #{idx}
 		</where>
 	</select>
 	
-	<update id="viewCountUpdate">
-		UPDATE board_data SET view_count = view_count + 1
+	<select id="duplicateCheck" resultType="int">
+		SELECT COUNT(idx) FROM board_count_data
 		<where>
-			idx = #{idx}
+			board_idx = #{board_idx}
+			AND
+			type = #{type}
+			AND
+			email = #{email}
 		</where>
-	</update>
+	</select>
+	
+	<insert id="countUpdate">
+		INSERT INTO board_count_data(board_idx, type, email, name) VALUES(#{board_idx}, #{type}, #{email}, #{name})
+	</insert>
+	
+	<select id="getCountData" resultType="BoardCountVO">
+		SELECT * FROM board_count_data
+		<where>
+			board_idx = #{idx}
+		</where>
+	</select>
 
 </mapper>

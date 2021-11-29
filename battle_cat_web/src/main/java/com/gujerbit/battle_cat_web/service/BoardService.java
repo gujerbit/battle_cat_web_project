@@ -2,6 +2,7 @@ package com.gujerbit.battle_cat_web.service;
 
 import java.util.List;
 
+import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
 
 public interface BoardService {
@@ -10,8 +11,14 @@ public interface BoardService {
 	
 	List<BoardVO> getAllBoardData();
 	
-	BoardVO getBoardDate(int idx);
+	BoardVO getBoardData(int idx);
 	
-	int viewCountUpdate(int idx);
+	List<BoardCountVO> getAllBoardCountData();
+	
+	int duplicateCheck(BoardCountVO vo);
+	
+	int countUpdate(BoardCountVO vo);
+	
+	List<BoardCountVO> getCountData(int idx);
 	
 }
