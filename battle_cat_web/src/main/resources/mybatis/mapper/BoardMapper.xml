@@ -3,12 +3,12 @@
 <mapper namespace="com.gujerbit.battle_cat_web.dao.BoardDAO">
 
 	<insert id="writing">
-		INSERT INTO board_data(email, name, title, content, writing_date, remove, type)
-		VALUES(#{email}, #{name}, #{title}, #{content}, #{writing_date}, false, #{type})
+		INSERT INTO board_data(email, name, title, content, text, writing_date, remove, type)
+		VALUES(#{email}, #{name}, #{title}, #{content}, #{text}, #{writing_date}, false, #{type})
 	</insert>
 	
 	<select id="getAllBoardData" resultType="BoardVO">
-		SELECT b.idx, b.name, u.grade, b.title, b.writing_date, b.remove, b.type FROM board_data b, user_data u
+		SELECT b.idx, b.name, u.grade, b.title, b.text, b.writing_date, b.remove, b.type FROM board_data b, user_data u
 		<where>
 			b.email = u.email
 		</where>

@@ -31,6 +31,9 @@ public class BoardVO {
 	private String content;
 	
 	@JsonProperty
+	private String text;
+	
+	@JsonProperty
 	private Timestamp writing_date;
 	
 	@JsonProperty

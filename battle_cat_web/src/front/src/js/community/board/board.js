@@ -1,15 +1,15 @@
 import { rejectAlert } from '../../util/alert.js';
 import { getAccountInfo } from '../admin/admin.js';
 
-export { writing, countUpdate, getCountData };
+export { writing, countUpdate, getCountData, searchBoardData };
 
-async function writing(title, content, length, type, axios) {
+async function writing(title, content, text, type, axios) {
   if(title.length <= 0) {
     alert('제목을 입력하세요!');
     return;
   }
 
-  if(length.length <= 1) {
+  if(text.length <= 1) {
     alert('내용을 입력하세요!');
     return;
   }
@@ -25,6 +25,7 @@ async function writing(title, content, length, type, axios) {
       name: getAccountInfo().name,
       title: title,
       content: content,
+      text: text,
       writing_date: new Date(),
       type: type,
     }, {
@@ -70,4 +71,40 @@ function getCountData(data, idx, type) {
   });
 
   return count;
+}
+
+function searchBoardData(data, type, value, valueType) {
+  let result = [];
+  
+  if(type !== 'all' || value.length > 0) {
+    if(type !== 'all' && value.length > 0) {
+      data.forEach(res => {
+        if(res.type === type) result.push(res);
+      });
+
+      if(valueType === 'all') result = result.filter(res => res.name.includes(value) || res.title.includes(value) || res.text.includes(value));
+      else if(valueType === 'title_content') result = result.filter(res => res.title.includes(value) || res.text.includes(value));
+      else if(valueType === 'title') result = result.filter(res => res.title.includes(value));
+      else if(valueType === 'content') result = result.filter(res => res.text.includes(value));
+      else if(valueType === 'writer') result = result.filter(res => res.name.includes(value));
+
+      return result;
+    } else if(type === 'all' && value.length > 0) {
+      data.forEach(res => {
+        if(valueType === 'all' && (res.name.includes(value) || res.title.includes(value) || res.text.includes(value))) result.push(res);
+        else if(valueType === 'title_content' && (res.title.includes(value) || res.text.includes(value))) result.push(res);
+        else if(valueType === 'title' && res.title.includes(value)) result.push(res);
+        else if(valueType === 'content' && res.text.includes(value)) result.push(res);
+        else if(valueType === 'writer' && res.name.includes(value)) result.push(res);
+      });
+
+      return result;
+    } else if(type !== 'all' && value.length <= 0) {
+      data.forEach(res => {
+        if(res.type === type) result.push(res);
+      });
+
+      return result;
+    }
+  } else if(type === 'all' && value.length <= 0) return data;
 }
