@@ -93,6 +93,11 @@ export default {
               return new Promise((resolve, reject) => {
                 const formData = new FormData();
                 formData.append('image', file);
+                
+                if(file.size > 1024 * 1024 * 30) {
+                  alert('파일 용량이 너무 큽니다! 30mb 이하의 이미지를 선택해주세요!');
+                  return;
+                }
 
                 proxy.axios.post('https://api.imgbb.com/1/upload?key=2c1f21d106572ee9bf1999c3b56a21a7', formData).then(response => JSON.parse(JSON.stringify(response))).then(result => {
                   quill.root.innerHTML += ' ';
