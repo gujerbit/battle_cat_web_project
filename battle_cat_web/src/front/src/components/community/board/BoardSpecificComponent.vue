@@ -20,7 +20,7 @@
                 <button>신고하기</button>
               </div>
             </div>
-            <div @click="comment.commentIdx = 0" v-else class="comment-sub">
+            <div @click="comment.commentIdx = value.comment_idx; comment.parentComment = value.comment" v-else class="comment-sub">
               <img :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
               <div class="comment-info">
                 <p>{{value.name}}</p>
@@ -39,7 +39,10 @@
         </div>
         <div class="comment-btn-field">
           <textarea :placeholder="comment.commentIdx > 0 ? '대댓글 작성중' : ''" v-model="comment.content" type="text" />
-          <button @click="quillSetting(comment.data.length > 0 ? comment.data.length : 0)">댓글 작성</button>
+          <div class="comment-write-btn-field">
+            <button @click="comment.commentIdx = 0" :disabled="comment.commentIdx <= 0">대댓 취소</button>
+            <button @click="quillSetting(comment.data.length > 0 ? comment.data.length : 0)">댓글 작성</button>
+          </div>
         </div>
       </div>
       <div class="btn-field">
@@ -90,7 +93,7 @@ export default {
         comment.value.data.forEach(res => {
           if(res.idx === comment.value.commentIdx) {
             saltIdx = res.salt_idx;
-            comment.value.parentComment = res.comment;
+            if(comment.value.parentComment.length <= 0) comment.value.parentComment = res.comment;
           }
         });
 
@@ -201,7 +204,7 @@ main {
   justify-content: left;
   align-items: center;
   margin: 0.5% 0;
-  border: 2px solid #ffc038;
+  border: 1px solid #ffc038;
   padding-left: 2%;
   font-size: 3rem;
 }
@@ -272,6 +275,12 @@ main {
   align-items: flex-end;
 }
 
+.comment-write-btn-field {
+  width: 100%;
+  height: 50%;
+  margin-bottom: 5%;
+}
+
 .comment-btn-field textarea {
   width: 100%;
   height: 95%;
@@ -282,12 +291,13 @@ main {
 
 .comment-btn-field button {
   width: 95%;
-  height: 25%;
-  margin-left: 1%;
+  height: 50%;
+  margin-left: 5%;
   border: 1px solid #ffc038;
   outline: 0;
   cursor: pointer;
   background-color: #ffffff;
+  margin-bottom: 5%;
 }
 
 .comment-content {
@@ -348,6 +358,8 @@ main {
   width: 100%;
   height: 25%;
   margin: 1% 0;
+  border: 1px solid #ffc038;
+  background-color: #ffffff;
 }
 
 .main-page, .board-page {
