@@ -126,8 +126,13 @@ export default {
         theme: 'snow'
       });
 
-      setTimeout(() => {
-        quill.root.innerHTML = updateInfo.value.content;
+      quill.root.innerHTML = '';
+      
+      const interval = setInterval(() => {
+        if(updateInfo.value.content.length > 0) {
+          quill.root.innerHTML = updateInfo.value.content;
+          clearInterval(interval);
+        }
       }, 100);
 
       setInterval(() => {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
+import com.gujerbit.battle_cat_web.vo.CommentVO;
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
 public interface BoardService {
@@ -25,5 +26,9 @@ public interface BoardService {
 	int deleteBoard(BoardVO vo);
 	
 	int updateBoard(BoardVO vo);
+	
+	int writingComment(CommentVO vo);
+	
+	List<CommentVO> getCommentData(int idx);
 	
 }

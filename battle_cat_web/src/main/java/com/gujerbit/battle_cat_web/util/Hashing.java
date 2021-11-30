@@ -27,7 +27,7 @@ public class Hashing {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			
-			for(int i = 0; i < 77; i++) {
+			for(int i = 0; i < 2000; i++) {
 				 String temp = converter.byteToString(value);
 				 md.update(temp.getBytes());
 				 value = md.digest();

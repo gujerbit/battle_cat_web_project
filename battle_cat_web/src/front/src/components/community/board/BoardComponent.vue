@@ -80,7 +80,7 @@ export default {
 
     const pageInfo = ref({
       totalPage: [], //전체 페이지
-      divisionPage: 15, //한 번호에 몇 개씩 데이터를 보여줄 것인지 정하는 변수
+      divisionPage: 13, //한 번호에 몇 개씩 데이터를 보여줄 것인지 정하는 변수
       currentPage: 1, //현재 페이지
       viewPage: 0, //현재 번호
     });
@@ -164,10 +164,10 @@ main * {
 
 #board {
   width: 90%;
-  height: 90%;
+  height: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-rows: 5% 100% 5%;
+  grid-template-rows: 5% 87.5% 5%;
   justify-items: center;
   align-items: center;
 }
@@ -175,7 +175,7 @@ main * {
 .menu {
   width: 100%;
   height: 100%;
-  margin: 0.5% 0;
+  margin: 1% 0;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -263,7 +263,7 @@ nav p:hover {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: repeat(15, 1fr);
+  grid-template-rows: repeat(13, 1fr);
 }
 
 .content {
@@ -342,17 +342,19 @@ nav p:hover {
 
 .write-date {
   width: 50%;
+  height: 100%;
   display: flex;
   justify-content: left;
   align-items: center;
-  padding-left: 40%;
   font-size: 1.5rem;
+  padding-left: 37.5%;
 }
 
 .pages {
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  margin-top: 1%;
   display: flex;
   justify-content: space-around;
   align-items: center;

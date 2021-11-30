@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.gujerbit.battle_cat_web.dao.BoardDAO;
 import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
+import com.gujerbit.battle_cat_web.vo.CommentVO;
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @Service
@@ -59,6 +60,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int updateBoard(BoardVO vo) {
 		return dao.updateBoard(vo);
+	}
+	
+	@Override
+	public int writingComment(CommentVO vo) {
+		return dao.writingComment(vo);
+	}
+	
+	@Override
+	public List<CommentVO> getCommentData(int idx) {
+		return dao.getCommentData(idx);
 	}
 	
 }

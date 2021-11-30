@@ -5,6 +5,22 @@
       <div class="content">
         <div id="view-editor" />
       </div>
+      <div class="comment">
+        <div v-show="comment.data.length > 0" class="comment-list">
+          <div class="comment-content" v-for="value in comment.data" :key="value">
+            <img :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
+            <div class="comment-info">
+              <p>{{value.name}}</p>
+              <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
+            </div>
+            <p>{{value.comment}}</p>
+          </div>
+        </div>
+        <div class="comment-btn-field">
+          <textarea v-model="comment.content" type="text" />
+          <button @click="quillSetting()">댓글 작성</button>
+        </div>
+      </div>
       <div class="btn-field">
         <router-link :to="`/userInfo/${board.content.name}`" class="user">작성자 정보 확인</router-link>
         <button class="good" @click="countUpdate(board.content.idx, 'good', proxy.axios)">{{getCountData(board.count, board.content.idx, 'good')}} 추천</button>
@@ -25,7 +41,7 @@ import { useRoute } from 'vue-router';
 import { Quill } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { rejectAlert } from '../../../js/util/alert';
-import { countUpdate, getCountData, deleteBoard } from '../../../js/community/board/board.js';
+import { countUpdate, getCountData, deleteBoard, writingComment } from '../../../js/community/board/board.js';
 import { getAccountInfo } from '../../../js/community/admin/admin.js';
 import { checkReject } from '../../../js/community/user/user';
 
@@ -39,7 +55,16 @@ export default {
       count: [],
     });
 
+    const comment = ref({
+      data: [],
+      content: '',
+    });
+
     let quill;
+
+    const quillSetting = () => {
+      writingComment(route.params.idx, 0, comment.value.content, proxy.axios);
+    };
 
     onBeforeMount(async () => {
       checkReject(proxy.axios);
@@ -61,6 +86,12 @@ export default {
         });
 
         board.value.count = count;
+
+        let { data:commentData } = await proxy.axios.get(`/get_comment_data/${route.params.idx}`, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        comment.value.data = commentData;
       } catch (error) {
         rejectAlert();
       }
@@ -77,12 +108,17 @@ export default {
         theme: 'snow',
       });
 
-      setTimeout(() => {
-        quill.root.innerHTML = board.value.content.content;
-      }, 200);
+      quill.root.innerHTML = '';
+      
+      const interval = setInterval(() => {
+        if(board.value.content !== undefined && board.value.content.content.length > 0) {
+          quill.root.innerHTML = board.value.content.content;
+          clearInterval(interval);
+        }
+      }, 100);
     });
 
-    return { board, quill, proxy, countUpdate, getCountData, getAccountInfo, deleteBoard };
+    return { board, quill, proxy, comment, countUpdate, getCountData, getAccountInfo, deleteBoard, quillSetting };
   },
 }
 </script>
@@ -98,6 +134,10 @@ main {
   height: 100%;
   margin: 0 auto;
   overflow: auto;
+}
+
+#board::-webkit-scrollbar {
+  display: none;
 }
 
 .title {
@@ -120,7 +160,7 @@ main {
 .btn-field {
   width: 100%;
   height: 5%;
-  margin-top: 1%;
+  margin: 1% 0;
   display: flex;
   justify-content: right;
   align-items: center;
@@ -150,6 +190,84 @@ main {
 
 .report {
   color: #ff0000;
+}
+
+.comment {
+  width: 100%;
+  height: 60%;
+  margin-top: 0.5%;
+}
+
+.comment-list {
+  width: 100%;
+  height: 50%;
+  border: 1px solid #ffc038;
+  overflow: auto;
+}
+
+.comment-list::-webkit-scrollbar {
+  display: none;
+}
+
+.comment-btn-field {
+  width: 100%;
+  height: 30%;
+  display: grid;
+  grid-template-columns: 90% 10%;
+  justify-items: center;
+  align-items: flex-end;
+}
+
+.comment-btn-field textarea {
+  width: 100%;
+  height: 95%;
+  border: 1px solid #ffc038;
+  outline: 0;
+  resize: none;
+}
+
+.comment-btn-field button {
+  width: 95%;
+  height: 25%;
+  margin-left: 1%;
+  border: 1px solid #ffc038;
+  outline: 0;
+  cursor: pointer;
+  background-color: #ffffff;
+}
+
+.comment-content {
+  width: 100%;
+  height: 50%;
+  display: grid;
+  grid-template-columns: 10% 30% 60%;
+  border-bottom: 1px solid #ffc038;
+}
+
+.comment-content:last-child {
+  border-bottom: none;
+}
+
+.comment-content:first-child {
+  border-bottom: 1px solid #ffc038;
+}
+
+.comment-content img {
+  height: 95%;
+}
+
+.comment-content p {
+  width: 100%;
+  height: 100%;
+  font-size: 3rem;
+}
+
+.comment-info {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  align-items: center;
 }
 
 .main-page, .board-page {

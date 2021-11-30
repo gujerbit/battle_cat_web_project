@@ -76,13 +76,12 @@ export default {
     ];
 
     const quillSetting = () => {
-      console.log(proxy.axios);
       writing(writeInfo.value.title, quill.root.innerHTML, quill.getText(), writeInfo.value.type, proxy.axios);
     };
 
     onBeforeMount(() => {
       checkReject(proxy.axios);
-    })
+    });
 
     onMounted(() => {
       quill = new Quill('#editor', {
@@ -95,6 +94,7 @@ export default {
                 formData.append('image', file);
 
                 proxy.axios.post('https://api.imgbb.com/1/upload?key=2c1f21d106572ee9bf1999c3b56a21a7', formData).then(response => JSON.parse(JSON.stringify(response))).then(result => {
+                  quill.root.innerHTML += ' ';
                   resolve(result.data.data.url);
                 }).catch(error => {
                   reject('upload failed');
@@ -107,7 +107,6 @@ export default {
             container: toolbarOptions,
           },
         },
-        placeholder: '내용을 입력하세요',
         theme: 'snow'
       });
 

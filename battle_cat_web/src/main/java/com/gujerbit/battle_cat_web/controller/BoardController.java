@@ -17,6 +17,7 @@ import com.gujerbit.battle_cat_web.util.Hashing;
 import com.gujerbit.battle_cat_web.util.RSA;
 import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
+import com.gujerbit.battle_cat_web.vo.CommentVO;
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @CrossOrigin("*")
@@ -88,6 +89,16 @@ public class BoardController {
 		vo.setPassword(saltingPassword);
 		
 		return userService.login(vo) != null ? true : false;
+	}
+	
+	@PostMapping("/writing_comment")
+	public @ResponseBody int writingComment(@RequestBody CommentVO vo) {
+		return boardService.writingComment(vo);
+	}
+	
+	@GetMapping("/get_comment_data/{idx}")
+	public @ResponseBody List<CommentVO> getCommentData(@PathVariable int idx) {
+		return boardService.getCommentData(idx);
 	}
 	
 }

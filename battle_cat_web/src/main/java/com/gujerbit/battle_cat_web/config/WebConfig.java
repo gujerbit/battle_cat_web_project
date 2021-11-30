@@ -48,7 +48,11 @@ public class WebConfig implements WebMvcConfigurer {
 		"/check_name",
 		"/check_code",
 		"/board_writing",
-		"/board_updating/**"
+		"/board_updating/**",
+		"/find_account",
+		"/find_email",
+		"/get_password_change_code",
+		"/change_password"
 	};
 	
 	private final String[] INCLUDE_PATHS = {

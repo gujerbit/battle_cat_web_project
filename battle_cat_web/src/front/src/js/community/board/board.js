@@ -1,7 +1,7 @@
 import { rejectAlert } from '../../util/alert.js';
 import { getAccountInfo } from '../admin/admin.js';
 
-export { writing, countUpdate, getCountData, searchBoardData, deleteBoard, updating };
+export { writing, countUpdate, getCountData, searchBoardData, deleteBoard, updating, writingComment };
 
 async function writing(title, content, text, type, axios) {
   if(title.length <= 0) {
@@ -217,5 +217,32 @@ async function deleteBoard(idx, axios) {
         rejectAlert();
       }
     }
+  }
+}
+
+async function writingComment(boardIdx, commentIdx, comment, axios) {
+  if(comment.length <= 0) {
+    alert('댓글을 입력해주세요!');
+
+    return;
+  }
+
+  try {
+    let { data } = await axios.post('/writing_comment', {
+      board_idx: boardIdx,
+      comment_idx: commentIdx,
+      email: getAccountInfo().email,
+      name: getAccountInfo().name,
+      comment: comment,
+      comment_date: new Date(),
+    },{
+      headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+    });
+
+    if(data <= 0) alert('댓글 작성 실패');
+
+    location.reload();
+  } catch (error) {
+    rejectAlert();
   }
 }
