@@ -8,17 +8,38 @@
       <div class="comment">
         <div v-show="comment.data.length > 0" class="comment-list">
           <div class="comment-content" v-for="value in comment.data" :key="value">
-            <img :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
-            <div class="comment-info">
-              <p>{{value.name}}</p>
-              <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
+            <div @click="comment.commentIdx = value.idx" v-if="value.comment_idx <= 0" class="comment-main">
+              <img :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
+              <div class="comment-info">
+                <p>{{value.name}}</p>
+                <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
+              </div>
+              <p>{{value.comment}}</p>
+              <div class="comment-btn-area">
+                <button>작성자 정보 확인</button>
+                <button>신고하기</button>
+              </div>
             </div>
-            <p>{{value.comment}}</p>
+            <div @click="comment.commentIdx = 0" v-else class="comment-sub">
+              <img :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
+              <div class="comment-info">
+                <p>{{value.name}}</p>
+                <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
+              </div>
+              <p>
+                <span>└{{value.parent_comment}}</span>
+                {{value.comment}}
+              </p>
+              <div class="comment-btn-area">
+                <button>작성자 정보 확인</button>
+                <button>신고하기</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="comment-btn-field">
-          <textarea v-model="comment.content" type="text" />
-          <button @click="quillSetting()">댓글 작성</button>
+          <textarea :placeholder="comment.commentIdx > 0 ? '대댓글 작성중' : ''" v-model="comment.content" type="text" />
+          <button @click="quillSetting(comment.data.length > 0 ? comment.data.length : 0)">댓글 작성</button>
         </div>
       </div>
       <div class="btn-field">
@@ -58,12 +79,32 @@ export default {
     const comment = ref({
       data: [],
       content: '',
+      commentIdx: 0,
+      parentComment: '',
     });
 
     let quill;
 
-    const quillSetting = () => {
-      writingComment(route.params.idx, 0, comment.value.content, proxy.axios);
+    const quillSetting = (saltIdx) => {
+      if(comment.value.commentIdx > 0) {
+        comment.value.data.forEach(res => {
+          if(res.idx === comment.value.commentIdx) {
+            saltIdx = res.salt_idx;
+            comment.value.parentComment = res.comment;
+          }
+        });
+
+        let saltValue = 1;
+
+        comment.value.data.forEach(res => {
+          if(res.comment_idx === comment.value.commentIdx) saltValue++;
+        });
+
+        saltIdx += '.' + saltValue;
+        saltIdx *= 1;
+      }
+
+      writingComment(route.params.idx, comment.value.commentIdx > 0 ? comment.value.commentIdx : 0, saltIdx, comment.value.content, comment.value.parentComment, proxy.axios);
     };
 
     onBeforeMount(async () => {
@@ -92,6 +133,19 @@ export default {
         });
 
         comment.value.data = commentData;
+        let temp = {};
+
+        for(let i = 0; i < comment.value.data.length - 1; i++) {
+          for(let j = i; j < comment.value.data.length - 1; j++) {
+            if(comment.value.data.length <= 1) break;
+
+            if(comment.value.data[i].salt_idx * 1 > comment.value.data[j + 1].salt_idx * 1) {
+              temp = comment.value.data[i];
+              comment.value.data[i] = comment.value.data[j + 1];
+              comment.value.data[j + 1] = temp;
+            }
+          }
+        }
       } catch (error) {
         rejectAlert();
       }
@@ -239,9 +293,24 @@ main {
 .comment-content {
   width: 100%;
   height: 50%;
+}
+
+.comment-main, .comment-sub {
+  width: 100%;
+  height: 100%;
   display: grid;
-  grid-template-columns: 10% 30% 60%;
+  grid-template-columns: 10% 30% 50% 10%;
   border-bottom: 1px solid #ffc038;
+}
+
+.comment-sub {
+  width: 90%;
+  margin-left: 10%;
+  grid-template-columns: 11% 28% 50% 11%;
+}
+
+.comment-sub span {
+  color: #cccccc;
 }
 
 .comment-content:last-child {
@@ -268,6 +337,17 @@ main {
   display: grid;
   grid-template-rows: repeat(2, 1fr);
   align-items: center;
+}
+
+.comment-btn-area {
+  width: 100%;
+  height: 100%;
+}
+
+.comment-btn-area button {
+  width: 100%;
+  height: 25%;
+  margin: 1% 0;
 }
 
 .main-page, .board-page {

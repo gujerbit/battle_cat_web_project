@@ -220,9 +220,15 @@ async function deleteBoard(idx, axios) {
   }
 }
 
-async function writingComment(boardIdx, commentIdx, comment, axios) {
+async function writingComment(boardIdx, commentIdx, saltIdx, comment, parentComment, axios) {
   if(comment.length <= 0) {
     alert('댓글을 입력해주세요!');
+
+    return;
+  }
+
+  if(comment.length > 1000) {
+    alert('댓글은 최대 1000자까지 입력 가능합니다!');
 
     return;
   }
@@ -231,9 +237,11 @@ async function writingComment(boardIdx, commentIdx, comment, axios) {
     let { data } = await axios.post('/writing_comment', {
       board_idx: boardIdx,
       comment_idx: commentIdx,
+      salt_idx: saltIdx,
       email: getAccountInfo().email,
       name: getAccountInfo().name,
       comment: comment,
+      parent_comment: parentComment,
       comment_date: new Date(),
     },{
       headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}

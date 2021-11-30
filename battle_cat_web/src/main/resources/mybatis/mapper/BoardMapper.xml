@@ -66,11 +66,11 @@
 	</update>
 	
 	<insert id="writingComment">
-		INSERT INTO comment_data(board_idx, comment_idx, email, name, comment, comment_date) VALUES(#{board_idx}, #{comment_idx}, #{email}, #{name}, #{comment}, #{comment_date})
+		INSERT INTO comment_data(board_idx, comment_idx, salt_idx, email, name, comment, parent_comment, comment_date) VALUES(#{board_idx}, #{comment_idx}, #{salt_idx}, #{email}, #{name}, #{comment}, #{parent_comment}, #{comment_date})
 	</insert>
 	
 	<select id="getCommentData" resultType="CommentVO">
-		SELECT c.idx, c.board_idx, c.comment_idx, c.email, c.name, c.comment, c.comment_date, u.profile_img FROM comment_data c, user_data u
+		SELECT c.idx, c.board_idx, c.comment_idx, c.salt_idx, c.email, c.name, c.comment, c.parent_comment, c.comment_date, u.profile_img FROM comment_data c, user_data u
 		<where>
 			board_idx = #{idx}
 			AND

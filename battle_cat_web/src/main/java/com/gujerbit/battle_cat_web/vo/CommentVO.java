@@ -22,6 +22,9 @@ public class CommentVO {
 	private int comment_idx;
 	
 	@JsonProperty
+	private float salt_idx;
+	
+	@JsonProperty
 	private String email;
 	
 	@JsonProperty
@@ -29,6 +32,9 @@ public class CommentVO {
 	
 	@JsonProperty
 	private String comment;
+	
+	@JsonProperty
+	private String parent_comment;
 	
 	@JsonProperty
 	private Timestamp comment_date;
