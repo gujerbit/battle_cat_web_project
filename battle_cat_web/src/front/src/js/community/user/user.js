@@ -116,7 +116,7 @@ async function checkReject(axios) {
     const user = JSON.parse(window.sessionStorage.getItem('user-info'));
 
     try {
-      let { data } = await axios.post('check_reject', {
+      let { data } = await axios.post('/check_reject', {
         name: user.name,
       }, {
         headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
