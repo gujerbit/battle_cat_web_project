@@ -31,6 +31,9 @@ public class CommentVO {
 	private String name;
 	
 	@JsonProperty
+	private String grade;
+	
+	@JsonProperty
 	private String comment;
 	
 	@JsonProperty

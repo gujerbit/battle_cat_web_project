@@ -22,7 +22,6 @@ async function writing(title, content, text, type, axios) {
   try {
     let { data } = await axios.post('/write_board', {
       email: getAccountInfo().email,
-      name: getAccountInfo().name,
       title: title,
       content: content,
       text: text,
@@ -71,12 +70,6 @@ async function updating(idx, title, content, text, type, axios) {
         });
   
         if(check) {
-          console.log(idx);
-          console.log(title);
-          console.log(content);
-          console.log(text);
-          console.log(type);
-
           try {
             let { data } = await axios.post('/update_board', {
               idx: idx,
@@ -91,7 +84,7 @@ async function updating(idx, title, content, text, type, axios) {
   
             if(data > 0) {
               alert('게시물 수정 성공!');
-              location.reload();
+              location.href = `/board_data/${idx}`;
             } else alert('게시물 수정 실패');
           } catch (error) {
             rejectAlert();
@@ -101,7 +94,6 @@ async function updating(idx, title, content, text, type, axios) {
           location.reload();
         }
       } catch (error) {
-        console.log('a');
         rejectAlert();
       } 
     }
@@ -239,7 +231,6 @@ async function writingComment(boardIdx, commentIdx, saltIdx, comment, parentComm
       comment_idx: commentIdx,
       salt_idx: saltIdx,
       email: getAccountInfo().email,
-      name: getAccountInfo().name,
       comment: comment,
       parent_comment: parentComment,
       comment_date: new Date(),

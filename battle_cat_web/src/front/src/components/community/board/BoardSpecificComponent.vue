@@ -8,37 +8,41 @@
       <div class="comment">
         <div v-show="comment.data.length > 0" class="comment-list">
           <div class="comment-content" v-for="value in comment.data" :key="value">
-            <div @click="comment.commentIdx = value.idx" v-if="value.comment_idx <= 0" class="comment-main">
+            <div @click="comment.commentIdx = value.idx; comment.parentComment = value.comment" v-if="value.comment_idx <= 0" class="comment-main">
               <img :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
               <div class="comment-info">
-                <p>{{value.name}}</p>
+                <p :class="value.grade">{{value.name}}</p>
                 <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
               </div>
               <p>{{value.comment}}</p>
               <div class="comment-btn-area">
-                <button>작성자 정보 확인</button>
+                <button>
+                  <router-link :to="`/userInfo/${value.name}`">작성자 정보 확인</router-link>
+                </button>
                 <button>신고하기</button>
               </div>
             </div>
             <div @click="comment.commentIdx = value.comment_idx; comment.parentComment = value.comment" v-else class="comment-sub">
               <img :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
               <div class="comment-info">
-                <p>{{value.name}}</p>
+                <p :class="value.grade">{{value.name}}</p>
                 <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
               </div>
               <p>
-                <span>└{{value.parent_comment}}</span>
+                <span>└{{value.parent_comment.length > 10 ? (value.parent_comment.substring(0, 10) + '...') : value.parent_comment}}</span>
                 {{value.comment}}
               </p>
               <div class="comment-btn-area">
-                <button>작성자 정보 확인</button>
+                <button>
+                  <router-link :to="`/userInfo/${value.name}`">작성자 정보 확인</router-link>
+                </button>
                 <button>신고하기</button>
               </div>
             </div>
           </div>
         </div>
         <div class="comment-btn-field">
-          <textarea :placeholder="comment.commentIdx > 0 ? '대댓글 작성중' : ''" v-model="comment.content" type="text" />
+          <textarea :placeholder="comment.parentComment" v-model="comment.content" type="text" />
           <div class="comment-write-btn-field">
             <button @click="comment.commentIdx = 0" :disabled="comment.commentIdx <= 0">대댓 취소</button>
             <button @click="quillSetting(comment.data.length > 0 ? comment.data.length : 0)">댓글 작성</button>
@@ -93,7 +97,6 @@ export default {
         comment.value.data.forEach(res => {
           if(res.idx === comment.value.commentIdx) {
             saltIdx = res.salt_idx;
-            if(comment.value.parentComment.length <= 0) comment.value.parentComment = res.comment;
           }
         });
 
@@ -193,6 +196,10 @@ main {
   overflow: auto;
 }
 
+#board * {
+  text-decoration: none;
+}
+
 #board::-webkit-scrollbar {
   display: none;
 }
@@ -223,7 +230,7 @@ main {
   align-items: center;
 }
 
-.btn-field button, .btn-field a {
+.btn-field button, .btn-field > a {
   width: 10%;
   height: 90%;
   display: flex;
@@ -235,6 +242,11 @@ main {
   font-size: 2.3rem;
   text-decoration: none;
   cursor: pointer;
+  transition: all 1s;
+}
+
+.btn-field button:hover, .btn-field > a:hover {
+  transform: scale(95%);
 }
 
 .good {
@@ -298,11 +310,22 @@ main {
   cursor: pointer;
   background-color: #ffffff;
   margin-bottom: 5%;
+  transition: all 1s;
+}
+
+.comment-btn-field button:hover {
+  transform: scale(95%);
 }
 
 .comment-content {
   width: 100%;
   height: 50%;
+  cursor: pointer;
+  transition: all 1s;
+}
+
+.comment-content:hover {
+  transform: scale(95%);
 }
 
 .comment-main, .comment-sub {
@@ -360,6 +383,35 @@ main {
   margin: 1% 0;
   border: 1px solid #ffc038;
   background-color: #ffffff;
+  cursor: pointer;
+  transition: all 1s;
+}
+
+.comment-btn-area button:hover {
+  transform: scale(95%);
+}
+
+.comment-btn-area a {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transition: all 1s;
+}
+
+.comment-btn-area a:hover {
+  transform: scale(95%);
+}
+
+.developer {
+  color: #fe9ec4;
+}
+
+.operator {
+  color: #a97ee4;
+}
+
+.admin {
+  color: #84a9ea;
 }
 
 .main-page, .board-page {

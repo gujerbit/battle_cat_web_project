@@ -5,7 +5,7 @@
         <input v-model="writeInfo.title" type="text" placeholder="제목을 입력하세요">
         <select v-model="writeInfo.type">
           <option value="normal">일반</option>
-          <option value="notice">공지</option>
+          <option :disabled="getAccountInfo().grade === 'user'" value="notice">공지</option>
           <option value="info">정보/공략</option>
           <option value="ask">질문</option>
           <option value="creative">창작/번역</option>
@@ -34,6 +34,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import BlotFormatter from 'quill-blot-formatter';
 import ImageUploader from 'quill-image-uploader';
 import { checkReject } from '../../../js/community/user/user.js';
+import { getAccountInfo } from '../../../js/community/admin/admin.js';
 
 Quill.register('modules/blotFormatter', BlotFormatter);
 Quill.register('modules/imageUploader', ImageUploader);
@@ -115,7 +116,7 @@ export default {
       }, 1000);
     });
 
-    return { writeInfo, proxy, quill, quillSetting };
+    return { writeInfo, proxy, quill, quillSetting, getAccountInfo };
   },
   components: {
   }

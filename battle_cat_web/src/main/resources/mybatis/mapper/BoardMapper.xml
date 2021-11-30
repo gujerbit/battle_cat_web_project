@@ -3,12 +3,12 @@
 <mapper namespace="com.gujerbit.battle_cat_web.dao.BoardDAO">
 
 	<insert id="writing">
-		INSERT INTO board_data(email, name, title, content, text, writing_date, remove, type)
-		VALUES(#{email}, #{name}, #{title}, #{content}, #{text}, #{writing_date}, false, #{type})
+		INSERT INTO board_data(email, title, content, text, writing_date, remove, type)
+		VALUES(#{email}, #{title}, #{content}, #{text}, #{writing_date}, false, #{type})
 	</insert>
 	
 	<select id="getAllBoardData" resultType="BoardVO">
-		SELECT b.idx, b.name, u.grade, b.title, b.text, b.writing_date, b.remove, b.type FROM board_data b, user_data u
+		SELECT b.idx, u.name, u.grade, b.title, b.text, b.writing_date, b.remove, b.type FROM board_data b, user_data u
 		<where>
 			b.email = u.email
 		</where>
@@ -66,11 +66,11 @@
 	</update>
 	
 	<insert id="writingComment">
-		INSERT INTO comment_data(board_idx, comment_idx, salt_idx, email, name, comment, parent_comment, comment_date) VALUES(#{board_idx}, #{comment_idx}, #{salt_idx}, #{email}, #{name}, #{comment}, #{parent_comment}, #{comment_date})
+		INSERT INTO comment_data(board_idx, comment_idx, salt_idx, email, comment, parent_comment, comment_date) VALUES(#{board_idx}, #{comment_idx}, #{salt_idx}, #{email}, #{comment}, #{parent_comment}, #{comment_date})
 	</insert>
 	
 	<select id="getCommentData" resultType="CommentVO">
-		SELECT c.idx, c.board_idx, c.comment_idx, c.salt_idx, c.email, c.name, c.comment, c.parent_comment, c.comment_date, u.profile_img FROM comment_data c, user_data u
+		SELECT c.idx, c.board_idx, c.comment_idx, c.salt_idx, c.email, u.name, u.grade, c.comment, c.parent_comment, c.comment_date, u.profile_img FROM comment_data c, user_data u
 		<where>
 			board_idx = #{idx}
 			AND

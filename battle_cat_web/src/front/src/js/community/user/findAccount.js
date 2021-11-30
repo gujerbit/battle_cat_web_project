@@ -67,6 +67,6 @@ async function changePassword (find, result, axios) {
     alert('성공적으로 비밀번호를 변경하였습니다');
     clearValue(find);
     clearValue(result);
-    location.reload();
+    location.href = '/login';
   } else alert('비밀번호를 변경 중 문제가 발생했습니다');
 }
