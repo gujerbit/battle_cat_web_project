@@ -15,7 +15,7 @@
         <input @input="checkCode(find, tip)" v-model="find.code" type="text" placeholder="문의코드를 입력해주세요" onfocus="this.select()">
         <div class="btn-field">
           <button @click="findEmail(find, show, result, proxy.axios)" :disabled="tip.code.length > 0 || find.code.length <= 0">이메일 찾기</button>
-          <button @click="show.email = false; clear()">취소</button>
+          <button @click="clear()">취소</button>
         </div>
       </div>
       <div class="result" v-else>
@@ -23,8 +23,8 @@
           <p class="title">이메일을 찾았습니다</p>
           <p class="find">{{result.email}}</p>
           <div class="result-field">
-            <router-link to="/login" @click="clear()">로그인하러 가기</router-link>
-            <button @click="show.password = true; clear()">비밀번호 찾기</button>
+            <router-link to="/login">로그인하러 가기</router-link>
+            <button @click="clear()">돌아가기</button>
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
         <input @input="checkCode(find, tip)" v-model="find.code" type="text" placeholder="문의코드를 입력해주세요" onfocus="this.select()">
         <div class="btn-field">
           <button @click="getPasswordChangeCode(find, result, proxy.axios)" :disabled="tip.code.length + tip.email.length > 0 || find.email.length <= 0 || find.code.length <= 0">비밀번호 찾기</button>
-          <button @click="show.password = false; passwordChangeInfoClear(); clear()">취소</button>
+          <button @click="clear()">취소</button>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@
         <input v-model="find.passwordChangeCode" type="text" placeholder="비밀번호 변경 코드를 입력하세요">
         <div class="btn-field">
           <button @click="checkPasswordChangeCode(find, result, show)" :disabled="find.passwordChangeCode.length <= 0">입력</button>
-          <button @click="show.password = false; passwordChangeInfoClear(); clear()">취소</button>
+          <button @click="clear()">취소</button>
         </div>
       </div>
     </div>
@@ -60,13 +60,13 @@
         <p class="tip">{{tip.checkPassword}}</p>
         <input @input="checkCheckPassword(find, tip)" v-model="find.checkPassword" type="password" placeholder="변경할 비밀번호를 다시 한 번 입력해주세요">
         <div class="btn-field">
-          <button @click="changePassword(find, result, proxy.axios)" :disabled="tip.password.length + tip.checkPassword.length > 0 || find.password.length <= 0 || find.checkPassword.length <= 0">비밀번호 변경</button>
-          <button @click="show.password = false; passwordChangeInfoClear(); clear()">취소</button>
+          <button @click="changePassword(find, proxy.axios)" :disabled="tip.password.length + tip.checkPassword.length > 0 || find.password.length <= 0 || find.checkPassword.length <= 0">비밀번호 변경</button>
+          <button @click="clear()">취소</button>
         </div>
       </div>
     </div>
-    <router-link @click="passwordChangeInfoClear()" to="/" class="main-page">메인 화면으로 돌아가기</router-link>
-    <router-link @click="passwordChangeInfoClear()" to="/login" class="login-page">로그인 화면으로 돌아가기</router-link>
+    <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
+    <router-link to="/login" class="login-page">로그인 화면으로 돌아가기</router-link>
     <div class="loading">
       <div class="loading-content">
         <h1>LOADING</h1>
@@ -80,7 +80,7 @@
 import { ref, getCurrentInstance, onBeforeMount } from 'vue';
 import { checkCode, checkEmail, checkPassword, checkCheckPassword } from '../../../js/util/validation.js';
 import { findEmail, getPasswordChangeCode, checkPasswordChangeCode, changePassword } from '../../../js/community/user/findAccount.js';
-import { clearValue, removeSessionStorage } from '../../../js/util/value.js';
+import { removeSessionStorage } from '../../../js/util/value.js';
 
 export default {
   setup() {
@@ -115,16 +115,8 @@ export default {
     });
 
     const clear = () => {
-      clearValue(find.value);
-      clearValue(result.value);
-      clearValue(show.value);
-      clearValue(tip.value);
+      location.reload();
     };
-
-    const passwordChangeInfoClear = () => {
-      removeSessionStorage('passwordChangeInfo');
-      clearValue(result.value);
-    }
 
     onBeforeMount(() => {
       if(window.sessionStorage.getItem('jwt-auth-token') !== null) {
@@ -133,7 +125,7 @@ export default {
       }
     });
 
-    return { find, show, tip, result, proxy, findEmail, getPasswordChangeCode, clear, removeSessionStorage, passwordChangeInfoClear, checkPasswordChangeCode, changePassword, checkPassword, checkCheckPassword, checkCode, checkEmail };
+    return { find, show, tip, result, proxy, findEmail, getPasswordChangeCode, removeSessionStorage, checkPasswordChangeCode, changePassword, checkPassword, checkCheckPassword, checkCode, checkEmail, clear };
   }
 }
 </script>

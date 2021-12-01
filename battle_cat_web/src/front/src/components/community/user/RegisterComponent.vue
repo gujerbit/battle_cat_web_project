@@ -11,7 +11,7 @@
         <button v-if="registerInfo.registerCode.length <= 0" @click="getRegisterCode(registerInfo, proxy.axios)" :disabled="tip.email.length > 0 || registerInfo.email.length <= 0">확인</button>
         <button v-else @click="checkRegisterCode(registerInfo)" :disabled="registerInfo.inputCode.length <= 0">확인</button>
         <button>
-          <router-link @click="removeSessionStorage(['registerInfo', 'registerCodeCheck'])" to="/login">취소</router-link>
+          <router-link to="/login">취소</router-link>
         </button>
       </div>
     </div>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, onBeforeMount } from 'vue';
+import { ref, getCurrentInstance, onBeforeMount, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { checkPassword, checkCheckPassword, checkName, checkCode, checkEmail } from '../../../js/util/validation.js';
 import { getRegisterCode, checkRegisterCode, register } from '../../../js/community/user/user.js';
@@ -83,14 +83,10 @@ export default {
         alert('로그인 상태에서는 이용하실 수 없습니다');
         location.href = '/';
       }
+    });
 
-      if(window.sessionStorage.getItem('registerInfo') != null) {
-        registerInfo.value.email = JSON.parse(window.sessionStorage.getItem('registerInfo')).email;
-        registerInfo.value.registerCode = JSON.parse(window.sessionStorage.getItem('registerInfo')).registerCode;
-        registerInfo.value.expireTime = JSON.parse(window.sessionStorage.getItem('registerInfo')).expireTime;
-      }
-
-      if(window.sessionStorage.getItem('registerCodeCheck') != null) registerInfo.value.registerCodeCheck = window.sessionStorage.getItem('registerCodeCheck');
+    onUnmounted(() => {
+      console.log('page down!!!');
     });
 
     return { registerInfo, tip, proxy, router, getRegisterCode, checkRegisterCode, register, removeSessionStorage, checkPassword, checkCheckPassword, checkName, checkCode, checkEmail };

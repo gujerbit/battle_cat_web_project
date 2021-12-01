@@ -47,18 +47,11 @@ async function getRegisterCode(registerInfo, axios) {
     alert('해당 이메일로 회원가입 코드를 전송했습니다!');
     document.querySelector('.loading').style.display = 'none';
 
-    let registerTemp = {
-      email: registerInfo.email,
-      registerCode: registerCode,
-      expireTime: new Date().setMinutes(new Date().getMinutes() + 10),
-    };
-
-    window.sessionStorage.setItem('registerInfo', JSON.stringify(registerTemp));
     registerInfo.registerCode = registerCode;
-    registerInfo.expireTime = registerTemp.expireTime;
+    registerInfo.expireTime = new Date().getTime() + (1000 * 60 * 10);
   } else {
-    alert('해당 이메일은 이미 사용중입니다!');
     document.querySelector('.loading').style.display = 'none';
+    alert('해당 이메일은 이미 사용중입니다!');
   }
 }
 
@@ -68,12 +61,10 @@ function checkRegisterCode(registerInfo) {
 
     if(registerInfo.expireTime - today.getTime() <= 0) {
       alert('만료된 회원가입 코드입니다');
-      window.sessionStorage.removeItem('registerInfo');
       location.href = '/register';
     } else {
       alert('회원가입 코드 확인 완료');
       registerInfo.registerCodeCheck = true;
-      window.sessionStorage.setItem('registerCodeCheck', true);
     }
   } else alert('올바르지 않은 회원가입 코드입니다');
 }

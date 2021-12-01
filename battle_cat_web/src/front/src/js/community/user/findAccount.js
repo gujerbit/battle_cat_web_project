@@ -1,5 +1,3 @@
-import { clearValue } from "../../util/value.js";
-
 export { findEmail, getPasswordChangeCode, checkPasswordChangeCode, changePassword };
 
 async function findEmail(find, show, result, axios) {
@@ -28,17 +26,9 @@ async function getPasswordChangeCode(find, result, axios) {
   else {
     alert('해당 이메일로 회원가입 코드를 전송했습니다!');
     document.querySelector('.loading').style.display = 'none';
-
-    let temp = {
-      email: find.email,
-      passwordChangeCode: data,
-      expireTime: new Date().setMinutes(new Date().getMinutes() + 10),
-    };
-
-    window.sessionStorage.setItem('passwordChangeInfo', JSON.stringify(temp));
-    result.email = find.email;
+    
     result.passwordChangeCode = data;
-    result.expireTime = temp.expireTime;
+    result.expireTime = new Date().getTime() + (1000 * 60 * 10);
   }
 }
 
@@ -48,7 +38,6 @@ function checkPasswordChangeCode(find, result, show) {
 
     if(result.expireTime - today.getTime() <= 0) {
       alert('만료된 회원가입 코드입니다');
-      window.sessionStorage.removeItem('passwordChangeInfo');
       location.reload();
     } else {
       alert('회원가입 코드 확인 완료');
@@ -57,16 +46,14 @@ function checkPasswordChangeCode(find, result, show) {
   } else alert('올바르지 않은 비밀번호 변경 코드입니다');
 }
 
-async function changePassword (find, result, axios) {
+async function changePassword (find, axios) {
   let { data } = await axios.post('/change_password', {
-    email: result.email,
+    email: find.email,
     password: find.password,
   });
 
   if(data > 0) {
     alert('성공적으로 비밀번호를 변경하였습니다');
-    clearValue(find);
-    clearValue(result);
-    location.href = '/login';
+    location.reload();
   } else alert('비밀번호를 변경 중 문제가 발생했습니다');
 }
