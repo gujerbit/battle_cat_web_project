@@ -9,12 +9,6 @@ async function login(loginInfo, axios) {
     let { data, headers } = await axios.post('/login_process', {
       email: loginInfo.email,
       password: loginInfo.password,
-    }, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': '*',
-        'Access-Control-Allow-Headers': '*',
-      }
     });
 
     if(data.status) {
@@ -23,13 +17,8 @@ async function login(loginInfo, axios) {
 
       alert('로그인 성공!');
       location.href = '/community';
-    } else {
-      console.log(data, headers);
-      alert('로그인 실패. ID와 비밀번호를 다시 한 번 확인해주세요.');
-    }
-  } else {
-    alert('ID와 비밀번호를 모두 입력해주세요');
-  }
+    } else alert('로그인 실패. 이메일과 비밀번호를 다시 한 번 확인해주세요.');
+  } else alert('ID와 비밀번호를 모두 입력해주세요');
 }
 
 async function getRegisterCode(registerInfo, axios) {
@@ -60,9 +49,11 @@ function checkRegisterCode(registerInfo) {
     let today = new Date();
 
     if(registerInfo.expireTime - today.getTime() <= 0) {
+      console.log(registerInfo.expireTime - today.getTime());
       alert('만료된 회원가입 코드입니다');
       location.href = '/register';
     } else {
+      console.log(registerInfo.expireTime - today.getTime());
       alert('회원가입 코드 확인 완료');
       registerInfo.registerCodeCheck = true;
     }
@@ -80,24 +71,27 @@ async function register(registerInfo, axios, router) {
     });
 
     if(checkCode) {
-      let { data } = await axios.post('/register_process', {
-        email: registerInfo.email,
-        password: registerInfo.password,
-        name: registerInfo.name,
-        code: registerInfo.code,
-        reg_date: new Date(),
-        reject_end_date: new Date(),
-      });
-
-      if(data > 0) {
-        alert('회원가입이 정상적으로 처리되었습니다');
-        router.push('/login');
-      } else {
-        alert('회원가입 중 문제가 발생했습니다');
+      try {
+        let { data } = await axios.post('/register_process', {
+          email: registerInfo.email,
+          password: registerInfo.password,
+          name: registerInfo.name,
+          code: registerInfo.code,
+          reg_date: new Date(),
+          reject_end_date: new Date(),
+        });
+  
+        if(data > 0) {
+          alert('회원가입이 정상적으로 처리되었습니다');
+          router.push('/login');
+        } else {
+          alert('회원가입 중 문제가 발생했습니다');
+          location.reload();
+        }
+      } catch (error) {
+        alert('회원가입 정보가 올바르지 않습니다!!');
         location.reload();
       }
-
-      removeSessionStorage(['registerInfo', 'registerCodeCheck'])
     } else alert('중복된 문의코드입니다. 이미 가입한 계정이 있는지 다시 한 번 확인해주세요');
   } else alert('중복된 닉네임입니다');
 }

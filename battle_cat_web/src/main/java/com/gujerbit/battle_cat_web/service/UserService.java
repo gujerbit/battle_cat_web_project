@@ -40,5 +40,7 @@ public interface UserService {
 	UserVO checkReject(UserVO vo);
 	
 	String checkGrade(UserVO vo);
+	
+	List<String> userProfileImgCheck();
 
 }

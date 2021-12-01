@@ -47,13 +47,18 @@ function checkPasswordChangeCode(find, result, show) {
 }
 
 async function changePassword (find, axios) {
-  let { data } = await axios.post('/change_password', {
-    email: find.email,
-    password: find.password,
-  });
-
-  if(data > 0) {
-    alert('성공적으로 비밀번호를 변경하였습니다');
+  try {
+    let { data } = await axios.post('/change_password', {
+      email: find.email,
+      password: find.password,
+    });
+  
+    if(data > 0) {
+      alert('성공적으로 비밀번호를 변경하였습니다');
+      location.reload();
+    } else alert('비밀번호를 변경 중 문제가 발생했습니다');
+  } catch (error) {
+    alert('올바르지 않은 비밀번호입니다!');
     location.reload();
-  } else alert('비밀번호를 변경 중 문제가 발생했습니다');
+  }
 }

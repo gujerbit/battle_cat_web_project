@@ -44,4 +44,6 @@ public interface UserDAO {
 	
 	public String checkGrade(UserVO vo);
 	
+	public List<String> userProfileImgCheck();
+	
 }

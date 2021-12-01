@@ -1,6 +1,5 @@
 package com.gujerbit.battle_cat_web.controller;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +22,6 @@ import com.gujerbit.battle_cat_web.service.MailServiceImpl;
 import com.gujerbit.battle_cat_web.service.SessionServiceImpl;
 import com.gujerbit.battle_cat_web.service.UserServiceImpl;
 import com.gujerbit.battle_cat_web.util.Hashing;
-import com.gujerbit.battle_cat_web.util.RSA;
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @CrossOrigin("*")
@@ -65,9 +63,7 @@ public class UserController {
 				resultMap.put("data", user);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
-				resultMap.put("message", e.getMessage());
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
-				e.printStackTrace();
+				throw new RuntimeException();
 			}
 		} else {
 			resultMap.put("status", false);
@@ -79,6 +75,8 @@ public class UserController {
 	
 	@PostMapping("/register_process")
 	public @ResponseBody int registerProcess(@RequestBody UserVO vo) {
+		if(vo.getEmail().length() > 50 || vo.getEmail().length() <= 0 || vo.getName().length() > 20 || vo.getName().length() <= 0 || vo.getCode().length() != 9) throw new RuntimeException();
+		
 		String password = vo.getPassword();
 		String digestPassword = hashing.hashing(password.getBytes());
 		String salt = hashing.createSalt();
@@ -148,6 +146,8 @@ public class UserController {
 	
 	@PostMapping("/change_password")
 	public @ResponseBody int changePassword(@RequestBody UserVO vo) {
+		if(vo.getPassword().length() > 20 || vo.getPassword().length() < 8) throw new RuntimeException();
+		
 		String password = vo.getPassword();
 		String digestPassword = hashing.hashing(password.getBytes());
 		String salt = hashing.createSalt();
@@ -167,16 +167,22 @@ public class UserController {
 	
 	@PostMapping("/change_description")
 	public @ResponseBody int descriptionChange(@RequestBody UserVO vo) {
+		if(vo.getDescription().length() < 0 || vo.getDescription().length() > 100) throw new RuntimeException();
+		
 		return userService.descriptionChange(vo);
 	}
 	
 	@PostMapping("/change_name")
 	public @ResponseBody int nameChange(@RequestBody UserVO vo) {
+		if(vo.getName().length() < 0 || vo.getName().length() > 20) throw new RuntimeException();
+		
 		return userService.nameChange(vo);
 	}
 	
 	@PostMapping("/change_code")
 	public @ResponseBody int codeChange(@RequestBody UserVO vo) {
+		if(vo.getCode().length() < 0 || vo.getCode().length() > 9) throw new RuntimeException();
+		
 		vo.setCode(hashing.encryptAESCBC(vo.getCode()));
 		
 		return userService.codeChange(vo);
@@ -184,6 +190,13 @@ public class UserController {
 	
 	@PostMapping("/change_profile_img")
 	public @ResponseBody int profileImgChange(@RequestBody UserVO vo) {
+		List<String> list = userService.userProfileImgCheck();
+		boolean check = false;
+		
+		for(String img : list) if(img.equals(vo.getProfile_img())) check = true;
+		
+		if(!check) throw new RuntimeException();
+		
 		return userService.profileImgChange(vo);
 	}
 	
@@ -194,6 +207,8 @@ public class UserController {
 	
 	@PostMapping("/user_remove")
 	public @ResponseBody int userRemove(@RequestBody UserVO vo) {
+		if(vo.getEmail().length() < 0 || vo.getEmail().length() > 50 || vo.getPassword().length() < 8 || vo.getPassword().length() > 20) throw new RuntimeException();
+		
 		String password = vo.getPassword();
 		String digestPassword = hashing.hashing(password.getBytes());
 		String salt = userService.selectSalt(vo.getEmail());

@@ -114,4 +114,8 @@
 		</where>
 	</select>
 	
+	<select id="userProfileImgCheck" resultType="string">
+		SELECT image_dir FROM unit_data
+	</select>
+	
 </mapper>

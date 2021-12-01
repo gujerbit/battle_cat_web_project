@@ -100,4 +100,9 @@ public class UserServiceImpl implements UserService {
 		return dao.checkGrade(vo);
 	}
 	
+	@Override
+	public List<String> userProfileImgCheck() {
+		return dao.userProfileImgCheck();
+	}
+	
 }
