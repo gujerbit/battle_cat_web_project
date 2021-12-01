@@ -148,12 +148,6 @@
               </div>
             </div>
           </section>
-          <div class="property" v-show="unitData.property[index] != ''">
-            <p>능력/효과</p>
-            <div class="property-content">
-              <p v-for="item in unitData.property[index]" :key="item">{{item.split(',')[1]}}</p>
-            </div>
-          </div>
           <div class="instinct" v-show="index === 2 && settingUnitData.instinct.instinct.img.length > 1">
             <p>본능</p>
             <div class="instinct-content" v-for="item in settingUnitData.instinct" :key="item">
@@ -171,6 +165,12 @@
                   <button @click="instinctApply(idx)">{{unitData.instinctApply[idx] === true ? '적용' : '미적용'}}</button>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="property" v-show="unitData.property[index] != ''">
+            <p>능력/효과</p>
+            <div class="property-content">
+              <p v-for="item in unitData.property[index]" :key="item">{{item.split(',')[1]}}</p>
             </div>
           </div>
           <div class="description">

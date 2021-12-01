@@ -59,6 +59,7 @@ public class UserController {
 			try {
 				user.setCode(hashing.decryptAESCBC(user.getCode()));
 				String token = sessionService.createToken(user);
+				res.addHeader("Access-Control-Expose-Headers", "jwt-auth-token"); //이거 안하면 front에서 테스트할 때 jwt-auth-token header 못받음. 서버에서는 상관없음
 				res.setHeader("jwt-auth-token", token);
 				resultMap.put("status", true);
 				resultMap.put("data", user);

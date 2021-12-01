@@ -4,7 +4,7 @@ function wheelLevelChange(index, wathcing, value) {
   wathcing.scroll = true;
 
   window.onmousewheel = e => {
-    if(wathcing.scroll) value.level[index] += Math.floor(e.wheelDelta / 120);
+    if(wathcing.scroll) value.level[index] += e.wheelDelta / 180;
   }
 }
 
@@ -17,7 +17,7 @@ function wheelInstinctLevelChange(event, index, watching, value) {
 
   window.onmousewheel = e => {
     if(watching.scroll) {
-      value.instinctLevel[index] += Math.floor(e.wheelDelta / 120);
+      value.instinctLevel[index] += e.wheelDelta / 180;
     }
   };
 }

@@ -11,7 +11,7 @@ main * {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 45% 50%;
+  grid-template-rows: 45% 54%;
   margin-top: 0.25%;
 }
   
@@ -20,8 +20,7 @@ section {
   height: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-rows: 90% 10%;
-  margin-top: 1%;
+  grid-template-rows: 92.5% 7.5%;
 }
   
 .content {
@@ -42,83 +41,73 @@ section {
 .unit-content {
   width: 100%;
   height: 100%;
-  transition: all 1s;
-}
-  
-.unit-content:hover {
-  transform: scale(90%);
 }
   
 .unit-content img {
-  width: 90%;
+  width: 100%;
   height: 70%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  border: 2px solid #ffc038;
+  border: 1.5px solid #ffc038;
+  border-top: none;
+  border-right: none;
+}
+
+.unit-content:nth-child(9n) img, .unit-content:nth-child(9n) p {
+  border-right: 1.5px solid #ffc038;
+}
+
+.unit-content:nth-child(n + 19) p {
   border-bottom: none;
 }
   
 .unit-content p {
-  width: 90%;
-  height: 25%;
+  width: 100%;
+  height: 30%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  font-size: 2.2rem;
-  color: #ffc038;
-  border: 2px solid #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  font-size: 2.3rem;
+  border: 1.5px solid #ffc038;
+  border-top: none;
+  border-right: none;
 }
   
 .pages {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  margin-top: 1%;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
+  border: 1.5px solid #ffc038;
 }
   
 .pages p {
-  width: 2%;
-  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: all 0.5s;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-}
-  
-.pages p:hover {
-  color: #ffffff;
-  text-shadow: -0.5px 0 #ffc038, 0 0.5px #ffc038, 0.5px 0 #ffc038, 0 -0.5px #ffc038;
 }
   
 .page {
   width: 100%;
   height: 100%;
-  font-size: 3rem;
+  font-size: 2.8rem;
 }
   
 .select {
+  color: #ffc038;
   pointer-events: none;
-  color: #ffffff !important;
-  text-shadow: -2px 0 3px #ffc038, 0 2px 3px #ffc038, 2px 0 3px #ffc038, 0 -2px 3px #ffc038 !important;
 }
   
 .prev, .next {
   width: 100%;
   height: 100%;
-  color: #ffffff;
-  font-size: 3rem;
+  font-size: 2.8rem;
 }
   
 .main-page {

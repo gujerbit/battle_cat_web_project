@@ -9,6 +9,12 @@ async function login(loginInfo, axios) {
     let { data, headers } = await axios.post('/login_process', {
       email: loginInfo.email,
       password: loginInfo.password,
+    }, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': '*',
+        'Access-Control-Allow-Headers': '*',
+      }
     });
 
     if(data.status) {

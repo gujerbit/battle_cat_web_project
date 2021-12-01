@@ -14,28 +14,11 @@ main * {
   margin-top: 0.25%;
 }
   
-.unit-info {
-  width: 100%;
-  height: 100%;
-}
-  
-.rarity {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-  
-.rarity img {
-  width: 35%;
-  height: 95%;
-}
-  
 .upgrade {
   width: 100%;
   height: 5%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-bottom: 0.5%;
 }
   
 .upgrade p {
@@ -44,36 +27,35 @@ main * {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #ffc038;
+  border: 1.5px solid #ffc038;
   border-right: none;
-  font-size: 3.2rem;
+  font-size: 3rem;
   cursor: pointer;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  transition: all 0.5s;
-}
-  
-.upgrade p:hover {
-  color: #ffffff;
-  text-shadow: -0.5px 0 #ffc038, 0 0.5px #ffc038, 0.5px 0 #ffc038, 0 -0.5px #ffc038;
 }
   
 .upgrade p:last-child {
-  border-right: 2px solid #ffc038;
+  border-right: 1.5px solid #ffc038;
 }
-  
+
 .select {
-  background-color: #ffc038;
-  color: #ffffff !important;
+  color: #ffc038;
   pointer-events: none;
 }
-  
+
+.unit-info {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 10% 25% 58.5%;
+}
+
 .title {
   width: 100%;
-  height: 10%;
+  height: 100%;
   display: grid;
   grid-template-rows: repeat(2, 1fr);
   justify-items: center;
+  align-items: center;
 }
   
 .title-header, .title-content {
@@ -89,27 +71,32 @@ main * {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3.2rem;
-  background-color: #ffc038;
+  font-size: 2.8rem;
+  border: 1.5px solid #ffc038;
+  border-top: none;
+  border-right: none;
   color: #ffffff;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  background-color: #ffc038;
+}
+
+.title-header p:last-child {
+  border-right: 1.5px solid #ffc038;
 }
   
-.title-content p, .title-content div, .title-content .level {
+.title-content p, .rarity, .title-content .level {
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2.8rem;
-  border: 2px solid #ffc038;
-  border-left: none;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
+  font-size: 2.3rem;
+  border: 1.5px solid #ffc038;
+  border-top: none;
+  border-right: none;
 }
   
-.title-content p:first-child {
-  border-left: 2px solid #ffc038;
+.title-content > :last-child {
+  border-right: 1.5px solid #ffc038;
 }
   
 .level {
@@ -121,13 +108,23 @@ main * {
   display: none;
 }
   
+.rarity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  
+.rarity img {
+  width: 30%;
+  height: 92.5%;
+}
+  
 .image {
   width: 100%;
-  height: 20%;
+  height: 100%;
   display: grid;
-  grid-template-rows: 1fr 3fr;
-  margin-top: 0.5%;
-  overflow-y: auto;
+  grid-template-rows: 20% 80%;
+  overflow: auto;
 }
   
 .image-title {
@@ -143,9 +140,8 @@ main * {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 3.2rem;
+  font-size: 2.8rem;
   color: #ffffff;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
   background-color: #ffc038;
 }
   
@@ -162,12 +158,13 @@ main * {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #ffc038;
+  border: 1.5px solid #ffc038;
+  border-top: none;
 }
   
 .thumbnail img {
-  width: 30%;
-  height: 77.5%;
+  width: 40%;
+  height: 85%;
 }
   
 .target, .element {
@@ -176,8 +173,9 @@ main * {
   display: grid;
   justify-items: center;
   align-items: center;
-  border: 2px solid #ffc038;
+  border: 1.5px solid #ffc038;
   border-left: none;
+  border-top: none;
 }
 
 .target {
@@ -192,20 +190,17 @@ main * {
   
 .target img {
   width: 60%;
-  height: 90%;
+  height: 80%;
 }
 
 .element img {
   width: 90%;
-  height: 90%;
+  height: 75%;
 }
   
 .content {
   width: 100%;
-  height: 60%;
-  display: grid;
-  grid-template-rows: 1fr 1fr 2fr 2fr 2fr;
-  margin-top: 0.5%;
+  height: 100%;
   overflow: auto;
 }
   
@@ -215,9 +210,9 @@ main * {
   
 section {
   width: 100%;
-  height: 100%;
+  height: 20%;
   display: grid;
-  grid-template-rows: 1fr 2fr;
+  grid-template-rows: 35% 65%;
 }
   
 section p {
@@ -237,28 +232,25 @@ section p {
   
 .content-title p {
   background-color: #ffc038;
-  font-size: 3.2rem;
+  font-size: 2.8rem;
   color: #ffffff;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
 }
   
 .content-data > p {
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 2.8rem;
-  border: 2px solid #ffc038;
+  font-size: 2.3rem;
+  border: 1.5px solid #ffc038;
   border-left: none;
 }
   
 .content-data > :first-child {
-  border-left: 2px solid #ffc038;
+  border-left: 1.5px solid #ffc038;
 }
   
 .attack-power, .attack-speed, .attack-cycle, .cost, .attack-end-speed, .produce-speed, .attack-freq, .move-speed {
   width: 100%;
   height: 100%;
-  font-size: 2.8rem;
-  border: 2px solid #ffc038;
+  font-size: 2.3rem;
+  border: 1.5px solid #ffc038;
   border-left: none;
 }
   
@@ -278,23 +270,21 @@ section p {
 .attack-power p, .attack-speed p, .attack-cycle p, .cost p, .attack-end-speed p, .produce-speed p, .attack-freq p, .move-speed p {
   width: 100%;
   height: 100%;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
 }
   
 .property, .instinct, .description {
   width: 100%;
-  height: 100%;
+  height: 35%;
   display: grid;
-  grid-template-rows: 1fr 4fr;
-  border: 2px solid #ffc038;
+  grid-template-rows: 22.5% 77.5%;
+  border: 1.5px solid #ffc038;
+  border-top: none;
 }
-  
+
 .description > p:first-child, .property > p:first-child, .instinct > p:first-child {
   background-color: #ffc038;
-  font-size: 3.2rem;
+  font-size: 2.8rem;
   color: #ffffff;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -307,10 +297,8 @@ section p {
 .description p, .property p {
   width: 100%;
   height: 100%;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
   text-align: center;
-  font-size: 2.8rem;
+  font-size: 2.3rem;
 }
   
 .instinct-content {
@@ -325,8 +313,8 @@ section p {
   height: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-rows: 2fr 1fr;
-  border-left: 2px solid #ffc038;
+  grid-template-rows: 70% 30%;
+  border-left: 1.5px solid #ffc038;
 }
 
 .instinct-data:first-child {
@@ -343,20 +331,16 @@ section p {
 }
   
 .instinct-data .text span {
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 2.8rem;
+  font-size: 2.3rem;
 }
   
 .instinct-data .input .instinct-level {
   width: 50%;
   height: 100%;
   text-align: center;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 2.8rem;
+  font-size: 2.3rem;
   border: none;
-  border-top: 2px solid #ffc038;
+  border-top: 1.5px solid #ffc038;
   outline: 0;
 }
   
@@ -367,20 +351,12 @@ section p {
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 2.2rem;
+  font-size: 2.3rem;
   border: none;
-  border-top: 2px solid #ffc038;
-  border-left: 2px solid #ffc038;
+  border-top: 1.5px solid #ffc038;
+  border-left: 1.5px solid #ffc038;
   background-color: #ffffff;
-  transition: all 0.5s;
   cursor: pointer;
-}
-
-.instinct-data .input button:hover {
-  color: #ffffff;
-  text-shadow: -0.5px 0 #ffc038, 0 0.5px #ffc038, 0.5px 0 #ffc038, 0 -0.5px #ffc038;
 }
   
 .unselect {
