@@ -80,7 +80,7 @@ export default {
 
     const pageInfo = ref({
       totalPage: [], //전체 페이지
-      divisionPage: 13, //한 번호에 몇 개씩 데이터를 보여줄 것인지 정하는 변수
+      divisionPage: 15, //한 번호에 몇 개씩 데이터를 보여줄 것인지 정하는 변수
       currentPage: 1, //현재 페이지
       viewPage: 0, //현재 번호
     });
@@ -167,7 +167,7 @@ main * {
   height: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-rows: 5% 87.5% 5%;
+  grid-template-rows: 5% 89% 5%;
   justify-items: center;
   align-items: center;
 }
@@ -175,11 +175,10 @@ main * {
 .menu {
   width: 100%;
   height: 100%;
-  margin: 1% 0;
   display: flex;
   justify-content: left;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 nav {
@@ -192,23 +191,22 @@ nav {
 }
 
 nav p {
-  width: 95%;
+  width: 100%;
   height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #ffc038;
-  border-radius: 15px;
-  transition: all 1s;
+  border: 1.5px solid #ffc038;
+  border-left: none;
   cursor: pointer;
 }
 
-nav p:hover {
-  transform: scale(95%);
+nav p:first-child {
+  border-left: 1.5px solid #ffc038;
 }
 
 .search {
-  width: 25%;
+  width: 30%;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -218,44 +216,41 @@ nav p:hover {
 .search input {
   width: 60%;
   height: 80%;
-  border: 1px solid #ffc038;
-  border-radius: 15px 0 0 15px;
+  border: 1.5px solid #ffc038;
+  border-radius: 5px 0 0 5px;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   outline: 0;
+}
+
+.search input::placeholder {
+  color: #000000;
 }
 
 .search select {
   width: 30%;
   height: 80%;
-  border: 1px solid #ffc038;
+  border: 1.5px solid #ffc038;
   border-left: none;
-  border-radius: 0 15px 15px 0;
+  border-radius: 0 5px 5px 0;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   outline: 0;
 }
 
 .menu a {
   width: 10%;
   height: 80%;
-  margin-left: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #ffc038;
-  border-radius: 15px;
-  transition: all 1s;
+  border: 1.5px solid #ffc038;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-.menu a:hover {
-  transform: scale(95%);
-}
-
 .choose {
-  background-color: #ffc038;
-  color: #ffffff;
+  color: #ffc038;
   pointer-events: none;
 }
 
@@ -263,7 +258,13 @@ nav p:hover {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: repeat(13, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  overflow: auto;
+  border-top: 1.5px solid #ffc038;
+}
+
+.board-list::-webkit-scrollbar {
+  display: none;
 }
 
 .content {
@@ -272,18 +273,13 @@ nav p:hover {
   display: flex;
   justify-content: left;
   align-items: center;
-  border: 1px solid #ffc038;
+  border: 1.5px solid #ffc038;
   border-top: none;
   cursor: pointer;
-  transition: all 1s;
 }
 
-.content:hover {
-  background: #fff6e3;
-}
-
-.content:nth-child(1) {
-  border-top: 1px solid #ffc038;
+.content:nth-child(15) {
+  border-bottom: none;
 }
 
 .info {
@@ -306,7 +302,7 @@ nav p:hover {
 }
 
 .title span {
-  font-size: 1.7rem;
+  font-size: 2.3rem;
   margin-right: 1%;
 }
 
@@ -337,7 +333,7 @@ nav p:hover {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .write-date {
@@ -346,7 +342,7 @@ nav p:hover {
   display: flex;
   justify-content: left;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   padding-left: 37.5%;
 }
 
@@ -354,48 +350,34 @@ nav p:hover {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  margin-top: 1%;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
+  border: 1.5px solid #ffc038;
 }
   
 .pages p {
-  width: 2%;
-  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: all 0.5s;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-}
-  
-.pages p:hover {
-  color: #ffffff;
-  text-shadow: -0.5px 0 #ffc038, 0 0.5px #ffc038, 0.5px 0 #ffc038, 0 -0.5px #ffc038;
 }
   
 .page {
   width: 100%;
   height: 100%;
-  font-size: 3rem;
+  font-size: 2.8rem;
 }
   
 .select {
+  color: #ffc038;
   pointer-events: none;
-  color: #ffffff !important;
-  text-shadow: -2px 0 3px #ffc038, 0 2px 3px #ffc038, 2px 0 3px #ffc038, 0 -2px 3px #ffc038 !important;
 }
   
 .prev, .next {
   width: 100%;
   height: 100%;
-  color: #ffffff;
-  font-size: 3rem;
+  font-size: 2.8rem;
 }
 
 .main-page, .community-page {
