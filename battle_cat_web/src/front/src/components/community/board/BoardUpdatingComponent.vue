@@ -14,7 +14,7 @@
       </div>
       <div class="content">
         <div id="update-editor" />
-        <p>{{updateInfo.htmlContent.length}}</p>
+        <p :class="updateInfo.htmlContent.length > 10000 ? 'excess' : ''">{{updateInfo.htmlContent.length}}</p>
       </div>
       <div class="btn-field">
         <button class="updating" @click="quillSetting()">글 수정</button>
@@ -169,25 +169,33 @@ main {
 .title input {
   width: 90%;
   height: 95%;
-  border: 1px solid #cccccc;
+  border: 1.5px solid #ffc038;
   padding-left: 1%;
   outline: 0;
-  font-size: 3rem;
+  font-size: 2.8rem;
 }
 
 .title select {
   width: 10%;
   height: 95%;
-  border: 1px solid #cccccc;
+  border: 1.5px solid #ffc038;
   border-left: none;
   outline: 0;
-  font-size: 2rem;
+  font-size: 2.3rem;
   text-align: center;
 }
 
 .content {
   width: 100%;
   height: 75%;
+}
+
+.content p {
+  font-size: 2.3rem;
+}
+
+.excess {
+  color :#f11212;
 }
 
 .btn-field {
@@ -203,15 +211,13 @@ main {
   width: 10%;
   height: 90%;
   margin-left: 1%;
-  border: 2px solid #ffc038;
+  border: 1.5px solid #ffc038;
   background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2.3rem;
   text-decoration: none;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
 }
 
 .main-page, .board-page {

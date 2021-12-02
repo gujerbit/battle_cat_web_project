@@ -14,12 +14,14 @@
                 <p :class="value.grade">{{value.name}}</p>
                 <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
               </div>
-              <p>{{value.comment}}</p>
+              <p class="comment-data">{{value.comment}}</p>
               <div class="comment-btn-area">
                 <button>
                   <router-link :to="`/userInfo/${value.name}`">작성자 정보 확인</router-link>
                 </button>
-                <button>신고하기</button>
+                <button v-if="value.email === getAccountInfo().email">수정하기</button>
+                <button v-if="value.email === getAccountInfo().email">삭제하기</button>
+                <button v-if="value.email !== getAccountInfo().email">신고하기</button>
               </div>
             </div>
             <div @click="comment.commentIdx = value.comment_idx; comment.parentComment = value.comment" v-else class="comment-sub">
@@ -36,17 +38,20 @@
                 <button>
                   <router-link :to="`/userInfo/${value.name}`">작성자 정보 확인</router-link>
                 </button>
-                <button>신고하기</button>
+                <button v-if="value.email === getAccountInfo().email">수정하기</button>
+                <button v-if="value.email === getAccountInfo().email">삭제하기</button>
+                <button v-if="value.email !== getAccountInfo().email">신고하기</button>
               </div>
             </div>
           </div>
         </div>
         <div class="comment-btn-field">
-          <textarea :placeholder="comment.parentComment" v-model="comment.content" type="text" />
+          <textarea :placeholder="comment.parentComment.length > 0 ? ('└ ' + comment.parentComment) : '댓글을 입력하세요'" v-model="comment.content" type="text" />
           <div class="comment-write-btn-field">
-            <button @click="comment.commentIdx = 0" :disabled="comment.commentIdx <= 0">대댓 취소</button>
+            <button @click="comment.commentIdx = 0; comment.parentComment = ''" :disabled="comment.commentIdx <= 0">대댓 취소</button>
             <button @click="quillSetting(comment.data.length > 0 ? comment.data.length : 0)">댓글 작성</button>
           </div>
+          <p :class="`comment-length ${comment.content.length > 300 ? 'excess' : ''}`">{{comment.content.length}}</p>
         </div>
       </div>
       <div class="btn-field">
@@ -211,9 +216,9 @@ main {
   justify-content: left;
   align-items: center;
   margin: 0.5% 0;
-  border: 1px solid #ffc038;
-  padding-left: 2%;
-  font-size: 3rem;
+  border: 1.5px solid #ffc038;
+  padding-left: 1%;
+  font-size: 2.8rem;
 }
 
 .content {
@@ -224,7 +229,7 @@ main {
 .btn-field {
   width: 100%;
   height: 5%;
-  margin: 1% 0;
+  margin: 0.5% 0;
   display: flex;
   justify-content: right;
   align-items: center;
@@ -236,17 +241,12 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #ffc038;
+  border: 1.5px solid #ffc038;
   margin-left: 1%;
   background-color: #ffffff;
   font-size: 2.3rem;
   text-decoration: none;
   cursor: pointer;
-  transition: all 1s;
-}
-
-.btn-field button:hover, .btn-field > a:hover {
-  transform: scale(95%);
 }
 
 .good {
@@ -263,14 +263,21 @@ main {
 
 .comment {
   width: 100%;
-  height: 60%;
+  height: 40%;
   margin-top: 0.5%;
+}
+
+.comment img {
+  width: 85%;
+  height: 90%;
+  margin-left: 2.5%;
+  margin-top: 3.5%;
 }
 
 .comment-list {
   width: 100%;
-  height: 50%;
-  border: 1px solid #ffc038;
+  height: 70%;
+  border: 1.5px solid #ffc038;
   overflow: auto;
 }
 
@@ -285,47 +292,47 @@ main {
   grid-template-columns: 90% 10%;
   justify-items: center;
   align-items: flex-end;
+  position: relative;
 }
 
 .comment-write-btn-field {
   width: 100%;
   height: 50%;
-  margin-bottom: 5%;
+  margin-bottom: 15%;
 }
 
 .comment-btn-field textarea {
   width: 100%;
   height: 95%;
-  border: 1px solid #ffc038;
+  border: 1.5px solid #ffc038;
   outline: 0;
   resize: none;
 }
 
+.comment-btn-field textarea::-webkit-scrollbar {
+  display: none;
+}
+
 .comment-btn-field button {
   width: 95%;
-  height: 50%;
+  height: 70%;
   margin-left: 5%;
-  border: 1px solid #ffc038;
+  border: 1.5px solid #ffc038;
   outline: 0;
   cursor: pointer;
   background-color: #ffffff;
-  margin-bottom: 5%;
-  transition: all 1s;
-}
-
-.comment-btn-field button:hover {
-  transform: scale(95%);
+  margin-bottom: 2%;
 }
 
 .comment-content {
   width: 100%;
   height: 50%;
   cursor: pointer;
-  transition: all 1s;
+  border-bottom: 1.5px solid #ffc038;
 }
 
-.comment-content:hover {
-  transform: scale(95%);
+.comment-content:last-child {
+  border-bottom: none;
 }
 
 .comment-main, .comment-sub {
@@ -333,12 +340,10 @@ main {
   height: 100%;
   display: grid;
   grid-template-columns: 10% 30% 50% 10%;
-  border-bottom: 1px solid #ffc038;
 }
 
 .comment-sub {
-  width: 90%;
-  margin-left: 10%;
+  padding-left: 10%;
   grid-template-columns: 11% 28% 50% 11%;
 }
 
@@ -351,17 +356,13 @@ main {
 }
 
 .comment-content:first-child {
-  border-bottom: 1px solid #ffc038;
-}
-
-.comment-content img {
-  height: 95%;
+  border-bottom: 1.5px solid #ffc038;
 }
 
 .comment-content p {
   width: 100%;
   height: 100%;
-  font-size: 3rem;
+  font-size: 2.3rem;
 }
 
 .comment-info {
@@ -378,28 +379,18 @@ main {
 }
 
 .comment-btn-area button {
-  width: 100%;
-  height: 25%;
+  width: 95%;
+  height: 30%;
   margin: 1% 0;
-  border: 1px solid #ffc038;
+  border: 1.5px solid #ffc038;
   background-color: #ffffff;
   cursor: pointer;
-  transition: all 1s;
-}
-
-.comment-btn-area button:hover {
-  transform: scale(95%);
 }
 
 .comment-btn-area a {
   width: 100%;
   height: 100%;
   cursor: pointer;
-  transition: all 1s;
-}
-
-.comment-btn-area a:hover {
-  transform: scale(95%);
 }
 
 .developer {
@@ -412,6 +403,31 @@ main {
 
 .admin {
   color: #84a9ea;
+}
+
+button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.comment-data {
+  padding-right: 2.5%;
+  overflow: auto;
+}
+
+.comment-data::-webkit-scrollbar {
+  display: none;
+}
+
+.comment-length {
+  position: absolute;
+  left: 0;
+  bottom: -25%;
+  font-size: 2.3rem;
+}
+
+.excess {
+  color: #f11212;
 }
 
 .main-page, .board-page {

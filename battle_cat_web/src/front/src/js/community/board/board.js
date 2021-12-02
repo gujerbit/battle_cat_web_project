@@ -219,8 +219,8 @@ async function writingComment(boardIdx, commentIdx, saltIdx, comment, parentComm
     return;
   }
 
-  if(comment.length > 1000) {
-    alert('댓글은 최대 1000자까지 입력 가능합니다!');
+  if(comment.length > 300) {
+    alert('댓글은 최대 300자까지 입력 가능합니다!');
 
     return;
   }
