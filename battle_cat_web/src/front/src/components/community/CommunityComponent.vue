@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { onBeforeMount, getCurrentInstance } from 'vue';
+import { ref, onBeforeMount, getCurrentInstance } from 'vue';
 import { checkReject } from '../../js/community/user/user.js';
 import { getAccountInfo } from '../../js/community/admin/admin.js';
 
@@ -16,15 +16,16 @@ export default {
   setup() {
     const { proxy } = getCurrentInstance();
     
-    const elements = {
+    const elements = ref({
       content: ['board', 'admin', 'user'],
-      title: ['게시판', getAccountInfo().grade === 'user' ? '유저 목록/검색' : '관리자 페이지', '유저 정보'],
+      title: [],
       path: ['/board', '/admin'],
-    };
+    });
 
     onBeforeMount(() => {
       checkReject(proxy.axios);
-      elements.path.push(`/userInfo/${getAccountInfo().name}`);
+      elements.value.path.push(`/userInfo/${getAccountInfo().name}`);
+      elements.value.title = ['게시판', getAccountInfo().grade === 'user' ? '유저 목록/검색' : '관리자 페이지', '유저 정보'];
     });
 
     return { elements };
