@@ -35,19 +35,19 @@
             </section>
           </div>
         </router-link>
-        <div class="setting" v-if="value.name !== userInfo.user.name">
-          <div class="reject" v-if="userInfo.user.grade === 'developer' || userInfo.user.grade !== value.grade && (value.grade === 'user' || value.grade === 'admin')">
+        <div class="setting" v-if="value.name !== userInfo.user.name && userInfo.user.grade !== 'user'">
+          <div class="reject" v-if="userInfo.user.grade !== 'user' && userInfo.user.grade !== value.grade && ((userInfo.user.grade === 'admin' && value.grade === 'user') || (userInfo.user.grade === 'operator' && (value.grade === 'user' || value.grade === 'admin')) || userInfo.user.grade === 'developer')">
             <input @mouseleave="scrollPrevent($event)" @mouseover="wheelRejectLengthChange($event, idx)" v-model="reject.length[idx]" type="number" placeholder="차단 기간" onfocus="this.select()">
             <button :disabled="value.forever_reject" @click="userReject(value.name, reject.length[idx], value.grade, proxy.axios)">차단</button>
             <button :disabled="value.forever_reject" @click="userForeverReject(value.name, value.grade, proxy.axios)">영구 차단</button>
             <button :disabled="!value.forever_reject && new Date(value.reject_end_date).getTime() - new Date().getTime() <= 0" @click="userRejectRelease(value.name, value.grade, proxy.axios)">차단 해제</button>
           </div>
-          <div class="grade" v-if="userInfo.user.grade !== 'admin' && value.grade !== 'developer' && userInfo.user.grade !== value.grade">
+          <div class="grade" v-if="userInfo.user.grade !== 'user' && userInfo.user.grade !== 'admin' && value.grade !== 'developer' && userInfo.user.grade !== value.grade">
             <select @change="userGradeSetting(value.name, userInfo.grade, value.grade, proxy.axios)" v-model="userInfo.grade">
               <option disabled selected>등급 설정</option>
-              <option :disabled="value.grade === 'user'">유저</option>
-              <option :disabled="value.grade === 'admin'">관리자</option>
-              <option v-if="userInfo.user.grade === 'developer'" :disabled="value.grade === 'operator'">운영자</option>
+              <option v-if="value.grade !== 'user'">유저</option>
+              <option v-if="value.grade !== 'admin'">관리자</option>
+              <option v-if="value.grade !== 'operator' && userInfo.user.grade === 'developer'">운영자</option>
             </select>
           </div>
         </div>
@@ -64,10 +64,9 @@
 <script>
 import { ref, onBeforeMount, getCurrentInstance, watchEffect } from 'vue';
 import { pagination, pageDivision } from '../../../js/util/pagination.js';
+import { checkReject } from '../../../js/community/user/user.js';
 import { searchUser } from '../../../js/community/user/userInfo.js';
 import { userReject, userForeverReject, userRejectRelease, userGradeSetting } from '../../../js/community/admin/admin.js';
-import { removeSessionStorage } from "../../../js/util/value.js";
-import { getAccountInfo } from '../../../js/community/admin/admin.js';
 import { rejectAlert } from '../../../js/util/alert.js';
 
 export default {
@@ -142,7 +141,7 @@ export default {
 
       window.onmousewheel = e => {
         if(watching.value.scroll) {
-          reject.value.length[index] += e.wheelDelta / 120;
+          reject.value.length[index] += e.wheelDelta / 180;
 
           if(reject.value.length[index] > 365) reject.value.length[index] = 365;
           else if(reject.value.length[index] < 1) reject.value.length[index] = 1;
@@ -157,37 +156,16 @@ export default {
     }
 
     onBeforeMount(async () => {
+      checkReject(proxy.axios);
+
       try {
-        let { data } = await proxy.axios.post('/check_grade', {
-          name: getAccountInfo().name,
-        }, {
+        let { data } = await proxy.axios.get('/user_data', {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
-        if(data === 'user') {
-          alert('관리자 이상만 접근 가능합니다');
-          location.href = '/community';
-        } else {
-          if(data !== getAccountInfo().grade) {
-            alert('등급이 변경되었습니다! 다시 로그인해주세요!');
-            removeSessionStorage(['jwt-auth-token', 'user-info']);
-            location.href = '/login';
-          } else {
-            try {
-              let { data } = await proxy.axios.get('/user_data', {
-                headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-              });
-
-              userInfo.value.data = data;
-              userInfo.value.user = JSON.parse(window.sessionStorage.getItem('user-info'));
-              contentUpdate();
-            } catch (error) {
-              alert('접근 권한 없음!');
-              removeSessionStorage(['jwt-auth-token', 'user-info']);
-              location.href = '/login'; 
-            }
-          }
-        }
+        userInfo.value.data = data;
+        userInfo.value.user = JSON.parse(window.sessionStorage.getItem('user-info'));
+        contentUpdate();        
       } catch (error) {
         rejectAlert();
       }

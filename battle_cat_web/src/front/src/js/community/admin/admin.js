@@ -158,13 +158,14 @@ async function userGradeSetting(name, grade, targetGrade, axios) {
         location.href = '/login';
       } else {
         try {
+          console.log(btoa(encodeURIComponent(name)));
           let { data } = await axios.post('/user_grade_setting', {
             name: name,
             grade: grade === '유저' ? 'user' : grade === '관리자' ? 'admin' : 'operator',
           }, {
             headers: {
               'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token'),
-              name: name,
+              name: btoa(encodeURIComponent(name)),
               grade: targetGrade,
             }
           });
@@ -179,8 +180,9 @@ async function userGradeSetting(name, grade, targetGrade, axios) {
       
           location.reload();
         } catch (error) {
+          console.log(error);
           gradeChangeAlert();
-        }        
+        }     
       }
     } catch (error) {
       rejectAlert();

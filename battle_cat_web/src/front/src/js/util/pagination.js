@@ -8,7 +8,7 @@ function pageDivision(arr, divisionPage) { //원본 배열, 한 화면에 보여
   for(let i = 1; i <= maxPage; i++) { //1페이지부터 최대 페이지까지
     tempArr.push(i); //한 페이지에 번호를 하나씩 추가해준다
 
-    if(i % divisionPage === 0 || i === maxPage) { //한 화면에 보여질 페이지 번호 수까지 i가 도달했거나 i가 최대 페이지까지 도달했다면
+    if(i % 5 === 0 || i === maxPage) { //한 화면에 보여질 페이지 번호 수까지 i가 도달했거나 i가 최대 페이지까지 도달했다면
       totalPage.push(tempArr); //전체 페이지에 한 페이지 배열을 넣어줌
       tempArr = []; //다음 페이지로
     }

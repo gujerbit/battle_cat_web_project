@@ -1,8 +1,8 @@
 #admin-log {
   width: 100%;
-  height: 90%;
+  height: 95%;
   display: grid;
-  grid-template-rows: 9.5fr 0.5fr;
+  grid-template-rows: 94% 5%;
 }
 
 #admin-log * {
@@ -15,7 +15,7 @@
   display: grid;
   grid-template-rows: repeat(15, 1fr);
   align-items: center;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   overflow: auto;
 }
 
@@ -25,41 +25,25 @@
 
 .content {
   width: 100%;
-  height: 90%;
+  height: 100%;
   display: grid;
-  grid-template-columns: 8fr 2fr;
-  justify-items: center;
+  grid-template-columns: 80% 20%;
+  justify-items: left;
   align-items: center;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
+  border: 1.5px solid #ffc038;
+  border-top: none;
 }
 
-.log p {
+.content:nth-child(15) {
+  border-bottom: none;
+}
+
+.content p {
+  margin-left: 2.5%;
+}
+
+.name, .target {
   color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-}
-
-.log a {
-  transition: all 1s;
-}
-
-.name {
-  color: #000000;
-  text-shadow: -0.5px 0 #ffc038, 0 0.5px #ffc038, 0.5px 0 #ffc038, 0 -0.5px #ffc038;
-}
-
-.name:hover {
-  color: #ffffff;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-}
-
-.target {
-  color: #ffffff;
-}
-
-.target:hover {
-  color: #000000;
-  text-shadow: -0.5px 0 #ffc038, 0 0.5px #ffc038, 0.5px 0 #ffc038, 0 -0.5px #ffc038;
 }
 
 .pages {
@@ -69,42 +53,29 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border: 2px solid #ffc038;
-  border-radius: 15px;
+  border: 1.5px solid #ffc038;
 }
   
 .pages p {
-  width: 2%;
-  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: all 0.5s;
-  color: #ffc038;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-}
-  
-.pages p:hover {
-  color: #ffffff;
-  text-shadow: -0.5px 0 #ffc038, 0 0.5px #ffc038, 0.5px 0 #ffc038, 0 -0.5px #ffc038;
 }
   
 .page {
   width: 100%;
   height: 100%;
-  font-size: 3rem;
+  font-size: 2.8rem;
 }
   
 .select {
+  color: #ffc038;
   pointer-events: none;
-  color: #ffffff !important;
-  text-shadow: -2px 0 3px #ffc038, 0 2px 3px #ffc038, 2px 0 3px #ffc038, 0 -2px 3px #ffc038 !important;
 }
   
 .prev, .next {
   width: 100%;
   height: 100%;
-  color: #ffffff;
-  font-size: 3rem;
+  font-size: 2.8rem;
 }

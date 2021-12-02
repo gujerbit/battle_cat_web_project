@@ -52,11 +52,11 @@ section {
   margin: 0 auto;
   border: 1.5px solid #ffc038;
   border-top: none;
-  border-right: none;
+  border-left: none;
 }
 
-.unit-content:nth-child(9n) img, .unit-content:nth-child(9n) p {
-  border-right: 1.5px solid #ffc038;
+.unit-content:nth-child(9n - 8) img, .unit-content:nth-child(9n - 8) p {
+  border-left: 1.5px solid #ffc038;
 }
 
 .unit-content:nth-child(n + 19) p {
@@ -73,7 +73,7 @@ section {
   font-size: 2.3rem;
   border: 1.5px solid #ffc038;
   border-top: none;
-  border-right: none;
+  border-left: none;
 }
   
 .pages {

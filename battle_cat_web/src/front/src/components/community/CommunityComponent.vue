@@ -18,7 +18,7 @@ export default {
     
     const elements = {
       content: ['board', 'admin', 'user'],
-      title: ['게시판', '관리자 페이지', '유저 정보'],
+      title: ['게시판', getAccountInfo().grade === 'user' ? '유저 목록/검색' : '관리자 페이지', '유저 정보'],
       path: ['/board', '/admin'],
     };
 

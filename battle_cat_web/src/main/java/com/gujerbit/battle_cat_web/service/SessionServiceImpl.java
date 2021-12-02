@@ -51,7 +51,7 @@ public class SessionServiceImpl implements SessionService {
 			
 			if(!claims.getIssuer().equals("nyanko-db.shop")) return false;
 			
-			if((path.equals("/user_data") || path.equals("/get_admin_log") || path.equals("/user_reject") || path.equals("/user_forever_reject") || path.equals("/user_reject_release") || path.equals("/user_grade_setting") || path.equals("/set_admin_log")) && !claims.getSubject().equals("admin") && !claims.getSubject().equals("operator") && !claims.getSubject().equals("developer")) return false;
+			if(((path.equals("/get_admin_log") || path.equals("/user_reject") || path.equals("/user_forever_reject") || path.equals("/user_reject_release") || path.equals("/user_grade_setting") || path.equals("/set_admin_log"))) && !claims.getSubject().equals("admin") && !claims.getSubject().equals("operator") && !claims.getSubject().equals("developer")) return false;
 			else if(!claims.getSubject().equals("user") && !claims.getSubject().equals("admin") && !claims.getSubject().equals("operator") && !claims.getSubject().equals("developer")) return false;
 			
 			return true;
