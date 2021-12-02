@@ -5,7 +5,7 @@
         <input v-model="writeInfo.title" type="text" placeholder="제목을 입력하세요">
         <select v-model="writeInfo.type">
           <option value="normal">일반</option>
-          <option :disabled="getAccountInfo().grade === 'user'" value="notice">공지</option>
+          <option v-if="getAccountInfo().grade !== 'user'" value="notice">공지</option>
           <option value="info">정보/공략</option>
           <option value="ask">질문</option>
           <option value="creative">창작/번역</option>

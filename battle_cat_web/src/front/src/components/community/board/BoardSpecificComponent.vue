@@ -59,6 +59,7 @@
       </div>
       <div class="btn-field">
         <router-link :to="`/userInfo/${board.content.name}`" class="user">작성자 정보 확인</router-link>
+        <div class="view">{{getCountData(board.count, board.content.idx, 'view')}} 조회</div>
         <button class="good" @click="countUpdate(board.content.idx, 'good', proxy.axios)">{{getCountData(board.count, board.content.idx, 'good')}} 추천</button>
         <button class="bad" @click="countUpdate(board.content.idx, 'bad', proxy.axios)">{{getCountData(board.count, board.content.idx, 'bad')}} 비추천</button>
         <button class="report" v-if="getAccountInfo().email !== board.content.email">신고</button>
@@ -240,7 +241,7 @@ main {
   align-items: center;
 }
 
-.btn-field button, .btn-field > a {
+.btn-field button, .btn-field > a, .view {
   width: 10%;
   height: 90%;
   display: flex;
@@ -252,6 +253,10 @@ main {
   font-size: 2.3rem;
   text-decoration: none;
   cursor: pointer;
+}
+
+.view {
+  cursor: default;
 }
 
 .good {
