@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.gujerbit.battle_cat_web.service.UserServiceImpl;
-import com.gujerbit.battle_cat_web.util.Converter;
 import com.gujerbit.battle_cat_web.util.Decoding;
 import com.gujerbit.battle_cat_web.vo.UserVO;
 

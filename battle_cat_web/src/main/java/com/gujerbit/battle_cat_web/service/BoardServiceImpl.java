@@ -72,4 +72,14 @@ public class BoardServiceImpl implements BoardService {
 		return dao.getCommentData(idx);
 	}
 	
+	@Override
+	public int updateComment(CommentVO vo) {
+		return dao.updateComment(vo);
+	}
+	
+	@Override
+	public int deleteComment(CommentVO vo) {
+		return dao.deleteComment(vo);
+	}
+	
 }

@@ -31,4 +31,8 @@ public interface BoardService {
 	
 	List<CommentVO> getCommentData(int idx);
 	
+	int updateComment(CommentVO vo);
+	
+	int deleteComment(CommentVO vo);
+	
 }

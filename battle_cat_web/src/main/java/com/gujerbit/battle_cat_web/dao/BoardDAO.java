@@ -33,4 +33,8 @@ public interface BoardDAO {
 	
 	public List<CommentVO> getCommentData(int idx);
 	
+	public int updateComment(CommentVO vo);
+	
+	public int deleteComment(CommentVO vo);
+	
 }

@@ -14,13 +14,15 @@
                 <p :class="value.grade">{{value.name}}</p>
                 <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
               </div>
-              <p class="comment-data">{{value.comment}}</p>
+              <p v-if="!comment.update" class="comment-data">{{!value.remove ? value.comment : '삭제된 댓글입니다.'}}</p>
+              <textarea v-if="comment.update" class="comment-update" v-model="comment.updateComment"></textarea>
               <div class="comment-btn-area">
                 <button>
                   <router-link :to="`/userInfo/${value.name}`">작성자 정보 확인</router-link>
                 </button>
-                <button v-if="value.email === getAccountInfo().email">수정하기</button>
-                <button v-if="value.email === getAccountInfo().email">삭제하기</button>
+                <button @click="comment.update = true; comment.updateComment = value.comment" v-if="value.email === getAccountInfo().email && !comment.update">수정하기</button>
+                <button @click="updateComment(value.idx, comment.updateComment, proxy.axios)" v-if="value.email === getAccountInfo().email && comment.update">완료</button>
+                <button @click="deleteComment(value.idx, proxy.axios)" v-if="value.email === getAccountInfo().email && !value.remove">삭제하기</button>
                 <button v-if="value.email !== getAccountInfo().email">신고하기</button>
               </div>
             </div>
@@ -32,14 +34,15 @@
               </div>
               <p>
                 <span>└{{value.parent_comment.length > 10 ? (value.parent_comment.substring(0, 10) + '...') : value.parent_comment}}</span>
-                {{value.comment}}
+                {{(!value.remove ? value.comment : '삭제된 댓글입니다.')}}
               </p>
               <div class="comment-btn-area">
                 <button>
                   <router-link :to="`/userInfo/${value.name}`">작성자 정보 확인</router-link>
                 </button>
-                <button v-if="value.email === getAccountInfo().email">수정하기</button>
-                <button v-if="value.email === getAccountInfo().email">삭제하기</button>
+                <button @click="comment.update = true; comment.updateComment = value.comment" v-if="value.email === getAccountInfo().email && !comment.update">수정하기</button>
+                <button @click="updateComment(value.idx, comment.updateComment, proxy.axios)" v-if="value.email === getAccountInfo().email && comment.update">완료</button>
+                <button @click="deleteComment(value.idx, proxy.axios)" v-if="value.email === getAccountInfo().email && !value.remove">삭제하기</button>
                 <button v-if="value.email !== getAccountInfo().email">신고하기</button>
               </div>
             </div>
@@ -74,7 +77,7 @@ import { useRoute } from 'vue-router';
 import { Quill } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { rejectAlert } from '../../../js/util/alert';
-import { countUpdate, getCountData, deleteBoard, writingComment } from '../../../js/community/board/board.js';
+import { countUpdate, getCountData, deleteBoard, writingComment, updateComment, deleteComment } from '../../../js/community/board/board.js';
 import { getAccountInfo } from '../../../js/community/admin/admin.js';
 import { checkReject } from '../../../js/community/user/user';
 
@@ -93,6 +96,8 @@ export default {
       content: '',
       commentIdx: 0,
       parentComment: '',
+      update: false,
+      updateComment: '',
     });
 
     let quill;
@@ -183,7 +188,7 @@ export default {
       }, 100);
     });
 
-    return { board, quill, proxy, comment, countUpdate, getCountData, getAccountInfo, deleteBoard, quillSetting };
+    return { board, quill, proxy, comment, countUpdate, getCountData, getAccountInfo, deleteBoard, quillSetting, updateComment, deleteComment };
   },
 }
 </script>
@@ -411,8 +416,16 @@ button:disabled {
 }
 
 .comment-data {
-  padding-right: 2.5%;
+  margin-right: 2.5%;
   overflow: auto;
+}
+
+.comment-update {
+  margin-right: 2.5%;
+  resize: none;
+  border: none;
+  outline: 0;
+  background-color: #eeeeee;
 }
 
 .comment-data::-webkit-scrollbar {

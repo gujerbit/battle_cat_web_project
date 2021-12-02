@@ -38,6 +38,8 @@ public class BoardController {
 	
 	@PostMapping("/write_board")
 	public @ResponseBody int writing(@RequestBody BoardVO vo) {
+		if(vo.getContent().length() > 10000 || vo.getContent().length() <= 0 || vo.getTitle().length() > 50 || vo.getTitle().length() <= 0) throw new RuntimeException();
+		
 		return boardService.writing(vo);
 	}
 	
@@ -77,28 +79,33 @@ public class BoardController {
 	
 	@PostMapping("/update_board")
 	public @ResponseBody int updateBoard(@RequestBody BoardVO vo) {
-		return boardService.updateBoard(vo);
-	}
-	
-	@PostMapping("/change_board_check")
-	public @ResponseBody boolean deleteBoardCheck(@RequestBody UserVO vo) {
-		String password = vo.getPassword();
-		String digestPassword = hashing.hashing(password.getBytes());
-		String salt = userService.selectSalt(vo.getEmail());
-		String saltingPassword = hashing.hashing((digestPassword + salt).getBytes());
-		vo.setPassword(saltingPassword);
+		if(vo.getContent().length() > 10000 || vo.getContent().length() <= 0 || vo.getTitle().length() > 50 || vo.getTitle().length() <= 0) throw new RuntimeException();
 		
-		return userService.login(vo) != null ? true : false;
+		return boardService.updateBoard(vo);
 	}
 	
 	@PostMapping("/writing_comment")
 	public @ResponseBody int writingComment(@RequestBody CommentVO vo) {
+		if(vo.getComment().length() > 300 || vo.getComment().length() <= 0) throw new RuntimeException();
+		
 		return boardService.writingComment(vo);
 	}
 	
 	@GetMapping("/get_comment_data/{idx}")
 	public @ResponseBody List<CommentVO> getCommentData(@PathVariable int idx) {
 		return boardService.getCommentData(idx);
+	}
+	
+	@PostMapping("/update_comment")
+	public @ResponseBody int updateComment(@RequestBody CommentVO vo) {
+		if(vo.getComment().length() > 300 || vo.getComment().length() <= 0) throw new RuntimeException();
+		
+		return boardService.updateComment(vo);
+	}
+	
+	@PostMapping("/delete_comment")
+	public @ResponseBody int deleteComment(@RequestBody CommentVO vo) {
+		return boardService.deleteComment(vo);
 	}
 	
 }

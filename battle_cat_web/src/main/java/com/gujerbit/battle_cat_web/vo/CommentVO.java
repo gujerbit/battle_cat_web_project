@@ -45,4 +45,7 @@ public class CommentVO {
 	@JsonProperty
 	private String profile_img;
 	
+	@JsonProperty
+	private boolean remove;
+	
 }
