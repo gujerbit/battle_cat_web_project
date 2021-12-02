@@ -357,6 +357,7 @@ nav p:first-child {
 }
   
 .pages p {
+  width: 2.5%;
   display: flex;
   justify-content: center;
   align-items: center;
