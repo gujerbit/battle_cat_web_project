@@ -14,14 +14,12 @@
                 <p :class="value.grade">{{value.name}}</p>
                 <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
               </div>
-              <p v-if="!comment.update" class="comment-data">{{!value.remove ? value.comment : '삭제된 댓글입니다.'}}</p>
-              <textarea v-if="comment.update" class="comment-update" v-model="comment.updateComment"></textarea>
+              <p class="comment-data">{{!value.remove ? value.comment : '삭제된 댓글입니다.'}}</p>
               <div class="comment-btn-area">
                 <button>
                   <router-link :to="`/userInfo/${value.name}`">작성자 정보 확인</router-link>
                 </button>
-                <button @click="comment.update = true; comment.updateComment = value.comment" v-if="value.email === getAccountInfo().email && !comment.update">수정하기</button>
-                <button @click="updateComment(value.idx, comment.updateComment, proxy.axios)" v-if="value.email === getAccountInfo().email && comment.update">완료</button>
+                <button @click="comment.update = true; comment.updateComment = value.comment; comment.updateIdx = value.idx" v-if="value.email === getAccountInfo().email">수정하기</button>
                 <button @click="deleteComment(value.idx, proxy.axios)" v-if="value.email === getAccountInfo().email && !value.remove">삭제하기</button>
                 <button v-if="value.email !== getAccountInfo().email">신고하기</button>
               </div>
@@ -40,8 +38,7 @@
                 <button>
                   <router-link :to="`/userInfo/${value.name}`">작성자 정보 확인</router-link>
                 </button>
-                <button @click="comment.update = true; comment.updateComment = value.comment" v-if="value.email === getAccountInfo().email && !comment.update">수정하기</button>
-                <button @click="updateComment(value.idx, comment.updateComment, proxy.axios)" v-if="value.email === getAccountInfo().email && comment.update">완료</button>
+                <button @click="comment.update = true; comment.updateComment = value.comment; comment.updateIdx = value.idx" v-if="value.email === getAccountInfo().email">수정하기</button>
                 <button @click="deleteComment(value.idx, proxy.axios)" v-if="value.email === getAccountInfo().email && !value.remove">삭제하기</button>
                 <button v-if="value.email !== getAccountInfo().email">신고하기</button>
               </div>
@@ -66,6 +63,16 @@
         <router-link :to="`/board_updating/${board.content.idx}`" v-if="getAccountInfo().email === board.content.email">수정</router-link>
         <button @click="deleteBoard(board.content.idx, proxy.axios)" v-if="getAccountInfo().email === board.content.email">삭제</button>
       </div>
+    </div>
+    <div class="comment-popup" v-if="comment.update">
+      <div class="comment-update">
+        <textarea v-model="comment.updateComment"></textarea>
+        <div class="popup-btn-field">
+          <button @click="updateComment(comment.updateIdx, comment.updateComment, proxy.axios)">완료</button>
+          <button @click="comment.update = false; comment.updateComment = ''; comment.updateIdx = 0">취소</button>
+        </div>
+      </div>
+      <div class="background" />
     </div>
     <router-link to="/" class="main-page">메인 화면으로 돌아가기</router-link>
     <router-link to="/board" class="board-page">게시판 목록으로 돌아가기</router-link>
@@ -98,6 +105,7 @@ export default {
       commentIdx: 0,
       parentComment: '',
       update: false,
+      updateIdx: 0,
       updateComment: '',
     });
 
@@ -446,6 +454,72 @@ button:disabled {
 
 .excess {
   color: #f11212;
+}
+
+.comment-popup {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.comment-update {
+  width: 30%;
+  height: 20%;
+  background-color: #ffffff;
+  display: grid;
+  grid-template-rows: 70% 30%;
+  border: 1.5px solid #ffc038;
+  z-index: 20;
+}
+
+.comment-popup textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  resize: none;
+  border-bottom: 1.5px solid #ffc038;
+  font-size: 2.3rem;
+  outline: 0;
+}
+
+.comment-popup textarea::placeholder {
+  color: #000000;
+}
+
+.popup-btn-field {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.popup-btn-field button {
+  width: 25%;
+  height: 80%;
+  border: 1.5px solid #ffc038;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.popup-btn-field button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  opacity: 0.7;
+  position: absolute;
+  z-index: 10;
 }
 
 .main-page, .board-page {
