@@ -1,6 +1,6 @@
 package com.gujerbit.battle_cat_web.service;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +51,21 @@ public class SessionServiceImpl implements SessionService {
 			
 			if(!claims.getIssuer().equals("nyanko-db.shop")) return false;
 			
-			if(((path.equals("/get_admin_log") || path.equals("/user_reject") || path.equals("/user_forever_reject") || path.equals("/user_reject_release") || path.equals("/user_grade_setting") || path.equals("/set_admin_log"))) && !claims.getSubject().equals("admin") && !claims.getSubject().equals("operator") && !claims.getSubject().equals("developer")) return false;
+			if(((path.equals("/get_admin_log") || path.equals("/user_reject") || path.equals("/user_forever_reject") || path.equals("/user_reject_release") || path.equals("/user_grade_setting") || path.equals("/set_admin_log"))) && claims.getSubject().equals("user")) return false;
 			else if(!claims.getSubject().equals("user") && !claims.getSubject().equals("admin") && !claims.getSubject().equals("operator") && !claims.getSubject().equals("developer")) return false;
+			
+			String temp = claims.get("user").toString().replaceAll("[{}/\s/]", "");
+			String[] arr = temp.split(",");
+			Map<String, String> map = new HashMap<String, String>();
+			
+			for(int i = 0; i < arr.length; i++) {
+				String[] tempArr = arr[i].split("=");
+				
+				if(tempArr.length == 1) map.put(tempArr[0], "");
+				else map.put(tempArr[0], tempArr[1]);
+			}
+			
+			if(Long.parseLong(map.get("reject_end_date")) - System.currentTimeMillis() > 0 || Boolean.parseBoolean(map.get("forever_reject"))) return false;
 			
 			return true;
 		} catch (Exception e) {

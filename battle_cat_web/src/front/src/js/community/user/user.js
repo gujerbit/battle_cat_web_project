@@ -106,40 +106,46 @@ async function checkReject(axios) {
   if(window.sessionStorage.getItem('user-info') !== null && window.sessionStorage.getItem('jwt-auth-token') !== null) {
     const user = JSON.parse(window.sessionStorage.getItem('user-info'));
 
-    try {
-      let { data } = await axios.post('/check_reject', {
-        name: user.name,
-      }, {
-        headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-      });
-
-      if(data.forever_reject) {
-        alert('해당 계정은 영구차단 되었습니다!');
-        removeSessionStorage(['jwt-auth-token', 'user-info']);
-        location.href = '/login';
-      } else if(new Date(data.reject_end_date).getTime() - new Date().getTime() > 0 && new Date(new Date(data.reject_end_date).getTime() - new Date().getTime()).getDate() - 1 > 0) {
-        alert(`해당 계정은 차단된 계정입니다! 남은 차단 일수: ${new Date(new Date(data.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}일`);
-        removeSessionStorage(['jwt-auth-token', 'user-info']);
-        location.href = '/login';
-      } else {
-        try {
-          let { data:grade } = await axios.post('/check_grade', {
-            name: getAccountInfo().name,
-          }, {
-            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-          });
-
-          if(grade !== getAccountInfo().grade) {
-            alert('등급이 변경되었습니다! 다시 로그인해주세요!');
-            removeSessionStorage(['jwt-auth-token', 'user-info']);
-            location.href = '/login';
-          }
-        } catch (error) {
-          rejectAlert();
+    if(user.forever_reject) {
+      alert('해당 계정은 영구차단 되었습니다!');
+      removeSessionStorage(['jwt-auth-token', 'user-info']);
+      location.href = '/login';
+    } else if(new Date(user.reject_end_date).getTime() - new Date().getTime() > 0 && new Date(user.reg_date) !== new Date(user.reject_end_date)) {
+      alert(`해당 계정은 차단된 계정입니다! 남은 차단 일수: 약 ${Math.round(new Date(new Date(user.reject_end_date).getTime() - new Date().getTime()).getTime() / (1000 * 60 * 60 * 24))}일`);
+      removeSessionStorage(['jwt-auth-token', 'user-info']);
+      location.href = '/login';
+    } else {
+      try {
+        let { data } = await axios.post('/check_reject', {
+          name: user.name,
+        }, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+  
+        if(data.forever_reject) {
+          alert('해당 계정은 영구차단 되었습니다!');
+          removeSessionStorage(['jwt-auth-token', 'user-info']);
+          location.href = '/login';
+        } else if(new Date(data.reject_end_date).getTime() - new Date().getTime() > 0 && new Date(data.reg_date) !== new Date(data.reject_end_date)) {
+          alert(`해당 계정은 차단된 계정입니다! 남은 차단 일수: ${new Date(new Date(data.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}일`);
+          removeSessionStorage(['jwt-auth-token', 'user-info']);
+          location.href = '/login';
         }
+  
+        let { data:grade } = await axios.post('/check_grade', {
+          name: getAccountInfo().name,
+        }, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+  
+        if(grade !== getAccountInfo().grade) {
+          alert('등급이 변경되었습니다! 다시 로그인해주세요!');
+          removeSessionStorage(['jwt-auth-token', 'user-info']);
+          location.href = '/login';
+        }
+      } catch (error) {
+        rejectAlert();
       }
-    } catch (error) {
-      rejectAlert();
     }
   } else {
     alert('로그인 후 이용하실 수 있는 시스템입니다.');

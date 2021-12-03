@@ -27,7 +27,7 @@ async function userReject(name, value, targetGrade, axios) {
           }, {
             headers: {
               'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token'),
-              name: name,
+              name: btoa(encodeURIComponent(name)),
               grade: targetGrade,
             }
           });
@@ -72,7 +72,7 @@ async function userForeverReject(name, targetGrade, axios) {
           }, {
             headers: {
               'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token'),
-              name: name,
+              name: btoa(encodeURIComponent(name)),
               grade: targetGrade,
             }
           });
@@ -118,7 +118,7 @@ async function userRejectRelease(name, targetGrade, axios) {
           }, {
             headers: {
               'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token'),
-              name: name,
+              name: btoa(encodeURIComponent(name)),
               grade: targetGrade,
             }
           });

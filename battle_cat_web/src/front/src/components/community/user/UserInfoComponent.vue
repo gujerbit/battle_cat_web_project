@@ -10,7 +10,7 @@
             <p class="name">{{value.name}}
               <span class="grade">[{{value.grade === 'user' ? '유저' : value.grade === 'admin' ? '관리자' : value.grade === 'operator' ? '운영자' : '개발자'}}]</span>
               <span class="reject" v-if="value.forever_reject">[영구 차단됨]</span>
-              <span class="reject" v-else-if="new Date(value.reject_end_date).getTime() - new Date().getTime() > 0 && new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getDate() - 1 > 0">[{{new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getDate() - 1}}일 후 차단해제]</span>
+              <span class="reject" v-else-if="new Date(value.reject_end_date).getTime() - new Date().getTime() > 0 && new Date(value.reg_date) !== new Date(value.reject_end_date)">[약 {{Math.round(new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getTime() / (1000 * 60 * 60 * 24))}}일 후 차단해제]</span>
             </p>
             <p v-if="value.email !== undefined">이메일: {{value.email}}</p>
             <p v-if="value.code !== undefined">문의 코드: {{value.code}}</p>
