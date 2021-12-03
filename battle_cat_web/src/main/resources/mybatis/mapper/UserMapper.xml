@@ -53,7 +53,7 @@
 	</update>
 	
 	<select id="selectUserInfo" resultType="UserVO">
-		SELECT name, grade, reg_date, profile_img, description, reject_end_date, forever_reject, reputation FROM user_data
+		SELECT email, name, code, grade, reg_date, profile_img, description, reject_end_date, forever_reject, reputation FROM user_data
 		<where>
 			name = #{name}
 		</where>

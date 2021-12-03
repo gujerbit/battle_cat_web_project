@@ -162,7 +162,10 @@ public class UserController {
 	
 	@GetMapping("/user_info/{name}")
 	public @ResponseBody UserVO getUserInfo(@PathVariable String name) {
-		return userService.selectUserInfo(name);
+		UserVO vo = userService.selectUserInfo(name);
+		vo.setCode(hashing.decryptAESCBC(vo.getCode()));
+		
+		return vo;
 	}
 	
 	@PostMapping("/change_description")

@@ -3,7 +3,7 @@
       <div class="user-info" v-for="value in userInfo.data" :key="value">
         <div class="summary">
           <div class="profile-img">
-            <img v-if="value.email !== undefined" @click="update.profileImg = true" class="change-image" :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
+            <img v-if="getAccountInfo().email === value.email" @click="update.profileImg = true" class="change-image" :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
             <img v-else :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
           </div>
           <div class="account">
@@ -12,12 +12,12 @@
               <span class="reject" v-if="value.forever_reject">[영구 차단됨]</span>
               <span class="reject" v-else-if="new Date(value.reject_end_date).getTime() - new Date().getTime() > 0 && new Date(value.reg_date) !== new Date(value.reject_end_date)">[약 {{Math.round(new Date(new Date(value.reject_end_date).getTime() - new Date().getTime()).getTime() / (1000 * 60 * 60 * 24))}}일 후 차단해제]</span>
             </p>
-            <p v-if="value.email !== undefined">이메일: {{value.email}}</p>
-            <p v-if="value.code !== undefined">문의 코드: {{value.code}}</p>
+            <p v-if="getAccountInfo().email === value.email">이메일: {{value.email}}</p>
+            <p v-if="getAccountInfo().email === value.email">문의 코드: {{value.code}}</p>
             <p>가입날짜: {{value.reg_date}}</p>
           </div>
           <div class="update">
-            <template v-if="value.email !== undefined">
+            <template v-if="getAccountInfo().email === value.email">
               <button @click="logout()">로그아웃</button>
               <button @click="update.info = true">정보 수정</button>
               <button @click="update.remove = true">회원 탈퇴</button>
@@ -30,11 +30,31 @@
         <div class="description">
           <div class="description-header">
             <p class="title">자기 소개</p>
-            <button v-if="value.email !== undefined" @click="descriptionChange(userInfo, update, proxy.axios)">{{update.description ? '완료' : '수정'}}</button>
+            <button v-if="getAccountInfo().email === value.email" @click="descriptionChange(userInfo.description, value.description, update, proxy.axios)">{{update.description ? '완료' : '수정'}}</button>
             <p class="length" v-if="update.description" :style="userInfo.description.length > 100 ? { color: '#f11212' } : ''">{{userInfo.description.length}}</p>
           </div>
           <textarea v-model="userInfo.description" :disabled="!update.description" onfocus="this.select()" />
         </div>
+        <!-- <div class="board">
+          <div class="board-header">
+            <p>작성한 게시물</p>
+          </div>
+          <div class="board-body">
+            <div class="board-content">
+              
+            </div>
+          </div>
+        </div>
+        <div class="comment">
+          <div class="comment-header">
+            <p>작성한 댓글</p>
+          </div>
+          <div class="comment-body">
+            <div class="comment-content">
+
+            </div>
+          </div>
+        </div> -->
       </div>
       <div class="user-info-update" v-if="update.info">
         <div class="update-popup">
@@ -44,7 +64,7 @@
             <p class="tip">{{tip.name}}</p>
             <div class="input-field">
               <input @input="checkName(userInfo, tip)" type="text" v-model="userInfo.name" :disabled="!update.name" onfocus="this.select()">
-              <button @click="nameChange(userInfo, update, proxy.axios)" :disabled="update.name && tip.name.length > 0">{{update.name ? '완료' : '수정'}}</button>
+              <button @click="nameChange(userInfo.name, userInfo.beforeName, update, proxy.axios)" :disabled="update.name && tip.name.length > 0">{{update.name ? '완료' : '수정'}}</button>
             </div>
           </div>
           <div class="code">
@@ -52,10 +72,10 @@
             <p class="tip">{{tip.code}}</p>
             <div class="input-field">
               <input @input="checkCode(userInfo, tip)" type="text" v-model="userInfo.code" :disabled="!update.code" onfocus="this.select()">
-              <button @click="codeChange(userInfo, update, proxy.axios)" :disabled="update.code && tip.code.length > 0">{{update.code ? '완료' : '수정'}}</button>
+              <button @click="codeChange(userInfo.code, userInfo.beforeCode, update, proxy.axios)" :disabled="update.code && tip.code.length > 0">{{update.code ? '완료' : '수정'}}</button>
             </div>
           </div>
-          <button @click="update.info = false; clear()">취소</button>
+          <button @click="update.info = false;">취소</button>
         </div>
         <div class="background" />
       </div>
@@ -93,6 +113,7 @@ import { getUnitInfo } from '../../../js/unit/unitInfo.js';
 import { logout, checkReject } from '../../../js/community/user/user.js';
 import { descriptionChange, nameChange, codeChange, profileImgChange, userRemove } from '../../../js/community/user/userInfo.js';
 import { rejectAlert } from '../../../js/util/alert.js';
+import { getAccountInfo } from '../../../js/community/admin/admin.js';
 
 export default {
   setup() {
@@ -102,13 +123,10 @@ export default {
     const userInfo = ref({
       data: [],
       description: '',
-      beforeDescription: '',
       name: '',
-      beforeName: '',
       code: '',
+      beforeName: '',
       beforeCode: '',
-      email: '',
-      password: '',
     });
 
     const update = ref({
@@ -129,67 +147,32 @@ export default {
       all: {},
     });
 
-    const getUserInfo = async (name) => {
-      let { data } = await proxy.axios.get(`/user_info/${name}`, {
-        headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-      });
-      
-      if(data.length === 0) {
-        alert('존재하지 않는 유저입니다!');
-        location.href = '/admin';
-      } else {
-        const key = Object.keys(data);
-        const info = {};
-
-        for(let i = 0; i < key.length; i++) if(data[`${key[i]}`] !== null) info[`${key[i]}`] = data[`${key[i]}`];
-        
-        userInfo.value.data.push(info);
-        userInfo.value.description = data.description;
-      }
-    };
-
-    const clear = () => {
-      if(userInfo.value.beforeName.length > 0) userInfo.value.name = userInfo.value.beforeName;
-      if(userInfo.value.beforeCode.length > 0) userInfo.value.code = userInfo.value.beforeCode;
-      update.value.name = false;
-      update.value.code = false;
-      tip.value.name = '';
-      tip.value.code = '';
-    };
-
-    onBeforeMount(() => {
+    onBeforeMount(async () => {
       checkReject(proxy.axios);
 
       try {
-        const userName = route.params.userName;
-        const temp = JSON.parse(window.sessionStorage.getItem('user-info'));
-
-        if(temp !== null && userName === temp.name) {
-          const key = Object.keys(temp);
-          const info = {};
-
-          for(let i = 0; i < key.length; i++) if(temp[`${key[i]}`] !== null) info[`${key[i]}`] = temp[`${key[i]}`];
-
-          userInfo.value.data.push(info);
-          userInfo.value.description = temp.description;
-          userInfo.value.name = temp.name;
-          userInfo.value.code = temp.code;
-          userInfo.value.email = temp.email;
-
-          // const loadData = setInterval(() => {
-          //   if(getUnitInfo(proxy.store) !== undefined) {
-              
-          //     clearInterval(loadData);
-          //   }
-          // }, 100);
+        let { data } = await proxy.axios.get(`/user_info/${route.params.userName}`, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+        
+        if(data.length === 0) {
+          alert('존재하지 않는 유저입니다!');
+          location.href = '/admin';
+        } else {
+          userInfo.value.data.push(data);
+          userInfo.value.description = data.description;
+          userInfo.value.name = data.name;
+          userInfo.value.code = data.code;
+          userInfo.value.beforeName = data.name;
+          userInfo.value.beforeCode = data.code;
           unit.value.all = getUnitInfo(proxy.store);
-        } else getUserInfo(userName);
+        }
       } catch (error) {
         rejectAlert();
       }
     });
 
-    return { userInfo, update, tip, unit, proxy, logout, descriptionChange, nameChange, codeChange, profileImgChange, clear, checkName, checkCode, userRemove };
+    return { userInfo, update, tip, unit, proxy, logout, descriptionChange, nameChange, codeChange, profileImgChange, checkName, checkCode, userRemove, getAccountInfo };
   }
 }
 </script>
