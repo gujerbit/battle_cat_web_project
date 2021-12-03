@@ -1,6 +1,8 @@
 package com.gujerbit.battle_cat_web.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,6 @@ import com.gujerbit.battle_cat_web.util.RSA;
 import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
 import com.gujerbit.battle_cat_web.vo.CommentVO;
-import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @CrossOrigin("*")
 @Controller
@@ -43,19 +44,37 @@ public class BoardController {
 		return boardService.writing(vo);
 	}
 	
-	@GetMapping("/get_board_list")
-	public @ResponseBody List<BoardVO> getAllBoardList() {
-		return boardService.getAllBoardData();
+	@GetMapping("/get_board_list/{size}")
+	public @ResponseBody List<BoardVO> getAllBoardList(@PathVariable int size) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("start", size);
+		map.put("end", size + 99);
+		
+		return boardService.getAllBoardData(map);
+	}
+	
+	@GetMapping("/get_board_count_list/{size}")
+	public @ResponseBody List<BoardCountVO> getAllBoardCountData(@PathVariable int size) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("start", size);
+		map.put("end", size + 99);
+		
+		return boardService.getAllBoardCountData(map);
+	}
+	
+	@GetMapping("/get_board_list_size")
+	public @ResponseBody int getAllBoardListSize() {
+		return boardService.selectAllBoardDataSize();
+	}
+	
+	@GetMapping("/get_board_count_list_size")
+	public @ResponseBody int getAllBoardCountDataSize() {
+		return boardService.selectAllBoardCountDataSize();
 	}
 	
 	@GetMapping("/get_board_data/{idx}")
 	public @ResponseBody BoardVO getBoardData(@PathVariable int idx) {
 		return boardService.getBoardData(idx);
-	}
-	
-	@GetMapping("/get_board_count_list")
-	public @ResponseBody List<BoardCountVO> getAllBoardCountData() {
-		return boardService.getAllBoardCountData();
 	}
 	
 	@PostMapping("/count_update")

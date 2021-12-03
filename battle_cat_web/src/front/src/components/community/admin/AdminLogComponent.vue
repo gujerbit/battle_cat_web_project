@@ -68,9 +68,22 @@ export default {
 
     onBeforeMount(async () => {
       try {
-        let { data } = await proxy.axios.get('/get_admin_log', {
+        let { data:size } = await proxy.axios.get('/get_admin_log_size', {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
+
+        const sizeArr = [];
+        const data = [];
+
+        for(let i = 0; i < Math.ceil(size / 100); i++) sizeArr.push(i * 100);
+
+        for(let i = 0; i < sizeArr.length; i++) {
+          let { data:logs } = await proxy.axios.get(`/get_admin_log/${sizeArr[i]}`, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
+
+          for(let j = 0; j < logs.length; j++) data.push(logs[j]);
+        }
 
         log.value.data = data.reverse();
         contentUpdate();

@@ -8,7 +8,9 @@ import com.gujerbit.battle_cat_web.vo.UnitDataVO;
 
 public interface UnitDataService {
 
-	List<UnitDataVO> selectAllUnitData();
+	List<UnitDataVO> selectAllUnitData(Map<String, Integer> size);
+	
+	int selectAllUnitDataSize();
 	
 	List<UnitDataVO> selectSearchIncludeUnitData(Map<String, ArrayList<String>> map);
 	

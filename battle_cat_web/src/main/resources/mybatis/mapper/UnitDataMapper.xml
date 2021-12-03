@@ -3,11 +3,17 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gujerbit.battle_cat_web.dao.UnitDataDAO">
+	
 	<select id="selectAllUnitData" resultType="UnitDataVO">
 		SELECT * FROM
 		unit_data
 		ORDER BY CONVERT(SUBSTRING_INDEX(id, '-', 1), SIGNED INTEGER),
 		CONVERT(SUBSTRING_INDEX(id, '-', -1), SIGNED INTEGER)
+		LIMIT #{start}, #{end}
+	</select>
+	
+	<select id="selectAllUnitDataSize" resultType="int">
+		SELECT COUNT(id) FROM unit_data
 	</select>
 
 	<select id="selectSearchIncludeUnitData" resultType="UnitDataVO">

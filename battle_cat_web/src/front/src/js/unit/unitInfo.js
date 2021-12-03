@@ -1,8 +1,20 @@
 export { setUnitInfo, getUnitInfo, setSearchUnitInfo, getSearchUnitInfo, getSpecificUnitInfo };
 
 async function setUnitInfo(axios, store) {
-  if(store.getters.getUnitInfo === '') {
-    let { data } = await axios.get('/unit_data');
+  let { data:size } = await axios.get('/unit_data_size');
+
+  if(store.getters.getUnitInfo === '' || store.getters.getUnitInfo.length < size) {
+    const sizeArr = [];
+    const data = [];
+
+    for(let i = 0; i < Math.ceil(size / 100); i++) sizeArr.push(i * 100);
+
+    for(let i = 0; i < sizeArr.length; i++) {
+      let { data:units } = await axios.get(`/unit_data/${sizeArr[i]}`);
+
+      for(let j = 0; j < units.length; j++) data.push(units[j]);
+    }
+    
     store.commit('setUnitInfo', data);
   }
 }

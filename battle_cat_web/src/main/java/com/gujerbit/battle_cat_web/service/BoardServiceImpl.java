@@ -1,6 +1,7 @@
 package com.gujerbit.battle_cat_web.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,18 +24,28 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<BoardVO> getAllBoardData() {
-		return dao.getAllBoardData();
+	public List<BoardVO> getAllBoardData(Map<String, Integer> map) {
+		return dao.getAllBoardData(map);
 	}
 	
+	@Override
+	public List<BoardCountVO> getAllBoardCountData(Map<String, Integer> map) {
+		return dao.getAllBoardCountData(map);
+	}
+	
+	@Override
+	public int selectAllBoardDataSize() {
+		return dao.selectAllBoardDataSize();
+	}
+	
+	@Override
+	public int selectAllBoardCountDataSize() {
+		return dao.selectAllBoardCountDataSize();
+	}
+		
 	@Override
 	public BoardVO getBoardData(int idx) {
 		return dao.getBoardData(idx);
-	}
-	
-	@Override
-	public List<BoardCountVO> getAllBoardCountData() {
-		return dao.getAllBoardCountData();
 	}
 	
 	@Override

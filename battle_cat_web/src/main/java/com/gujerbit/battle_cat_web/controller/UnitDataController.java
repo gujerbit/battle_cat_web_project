@@ -22,11 +22,20 @@ public class UnitDataController {
 	@Autowired
 	private UnitDataServiceImpl service;
 	
-	@GetMapping("/unit_data")
-	public @ResponseBody List<UnitDataVO> getAllUnitData() {
-		List<UnitDataVO> list = service.selectAllUnitData();
+	@GetMapping("/unit_data/{size}")
+	public @ResponseBody List<UnitDataVO> getAllUnitData(@PathVariable int size) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("start", size);
+		map.put("end", size + 99);
+		
+		List<UnitDataVO> list = service.selectAllUnitData(map);
 		
 		return list;
+	}
+	
+	@GetMapping("/unit_data_size")
+	public @ResponseBody int getAllUnitDataSize() {
+		return service.selectAllUnitDataSize();
 	}
 	
 	@GetMapping("/unit_data_search_include/{searchData}")

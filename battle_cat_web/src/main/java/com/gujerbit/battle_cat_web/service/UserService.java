@@ -2,6 +2,7 @@ package com.gujerbit.battle_cat_web.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.gujerbit.battle_cat_web.vo.UserVO;
 
@@ -33,7 +34,9 @@ public interface UserService {
 	
 	int profileImgChange(UserVO vo);
 	
-	List<UserVO> selectAllUserData();
+	List<UserVO> selectAllUserData(Map<String, Integer> size);
+	
+	int selectAllUserDataSize();
 	
 	int userRemove(UserVO vo);
 	

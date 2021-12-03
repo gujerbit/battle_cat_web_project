@@ -1,6 +1,7 @@
 package com.gujerbit.battle_cat_web.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,11 +14,15 @@ public interface BoardDAO {
 
 	public int writing(BoardVO vo);
 	
-	public List<BoardVO> getAllBoardData();
+	public List<BoardVO> getAllBoardData(Map<String, Integer> map);
+	
+	public List<BoardCountVO> getAllBoardCountData(Map<String, Integer> map);
+	
+	public int selectAllBoardDataSize();
+	
+	public int selectAllBoardCountDataSize();
 	
 	public BoardVO getBoardData(int idx);
-	
-	public List<BoardCountVO> getAllBoardCountData();
 	
 	public int duplicateCheck(BoardCountVO vo);
 	

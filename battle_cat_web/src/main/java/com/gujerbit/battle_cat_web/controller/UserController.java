@@ -200,9 +200,18 @@ public class UserController {
 		return userService.profileImgChange(vo);
 	}
 	
-	@GetMapping("/user_data")
-	public @ResponseBody List<UserVO> getAllUserData() {
-		return userService.selectAllUserData();
+	@GetMapping("/user_data/{size}")
+	public @ResponseBody List<UserVO> getAllUserData(@PathVariable int size) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("start", size);
+		map.put("end", size + 99);
+		
+		return userService.selectAllUserData(map);
+	}
+	
+	@GetMapping("/user_data_size")
+	public @ResponseBody int getAllUserDataSize() {
+		return userService.selectAllUserDataSize();
 	}
 	
 	@PostMapping("/user_remove")

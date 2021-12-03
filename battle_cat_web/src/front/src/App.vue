@@ -25,7 +25,7 @@ export default {
         name: window.sessionStorage.getItem('name'),
       });
 
-      onBeforeMount(() => {
+      onBeforeMount(async () => {
         // $(document).ready(() => {
         //   $(document).bind('keydown', e => {
         //     if(e.ctrlKey || e.keyCode == 123) {
@@ -34,12 +34,6 @@ export default {
         //     }
         //   });
         // });
-
-        if(window.sessionStorage.getItem('init') == null) {
-          window.sessionStorage.setItem('init', 'success');
-          window.localStorage.clear();
-          location.reload();
-        }
       });
 
       return { user };

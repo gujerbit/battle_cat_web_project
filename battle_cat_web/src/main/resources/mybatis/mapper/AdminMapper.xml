@@ -29,6 +29,11 @@
 	
 	<select id="getAdminLog" resultType="AdminLogVO">
 		SELECT * FROM admin_log
+		LIMIT #{start}, #{end}
+	</select>
+	
+	<select id="selectAdminLogSize" resultType="int">
+		SELECT COUNT(idx) FROM admin_log
 	</select>
 	
 	<update id="userGradeSetting">

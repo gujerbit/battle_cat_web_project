@@ -89,6 +89,11 @@
 	
 	<select id="selectAllUserData" resultType="UserVO">
 		SELECT name, grade, reg_date, profile_img, description, reject_end_date, forever_reject, reputation FROM user_data
+		LIMIT #{start}, #{end}
+	</select>
+	
+	<select id="selectAllUserDataSize" resultType="int">
+		SELECT COUNT(email) FROM user_data
 	</select>
 	
 	<delete id="userRemove">

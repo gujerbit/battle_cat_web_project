@@ -2,6 +2,7 @@ package com.gujerbit.battle_cat_web.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -36,7 +37,9 @@ public interface UserDAO {
 	
 	public int profileImgChange(UserVO vo);
 	
-	public List<UserVO> selectAllUserData();
+	public List<UserVO> selectAllUserData(Map<String, Integer> size);
+	
+	public int selectAllUserDataSize();
 	
 	public int userRemove(UserVO vo);
 	

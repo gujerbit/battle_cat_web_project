@@ -129,18 +129,44 @@ export default {
       checkReject(proxy.axios);
 
       try {
-        let { data } = await proxy.axios.get('/get_board_list', {
+        let { data:boardSize } = await proxy.axios.get('/get_board_list_size', {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
-        let { data:count } = await proxy.axios.get('/get_board_count_list', {
+        const boardSizeArr = [];
+        const boardData = [];
+
+        for(let i = 0; i < Math.ceil(boardSize / 100); i++) boardSizeArr.push(i * 100);
+
+        for(let i = 0; i < boardSizeArr.length; i++) {
+          let { data:boards } = await proxy.axios.get(`/get_board_list/${boardSizeArr[i]}`, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
+
+          for(let j = 0; j < boards.length; j++) boardData.push(boards[j]);
+        }
+        
+        let { data:countSize } = await proxy.axios.get('/get_board_count_list_size', {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
-        const list = data.reverse().filter(res => !res.remove);
+        const countSizeArr = [];
+        const countData = [];
+
+        for(let i = 0; i < Math.ceil(countSize / 100); i++) countSizeArr.push(i * 100);
+
+        for(let i = 0; i < countSizeArr.length; i++) {
+          let { data:counts } = await proxy.axios.get(`/get_board_count_list/${countSizeArr[i]}`, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
+
+          for(let j = 0; j < counts.length; j++) countData.push(counts[j]);
+        }
+
+        const list = boardData.reverse().filter(res => !res.remove);
         board.value.list = list;
         board.value.data = list;
-        board.value.countList = count;
+        board.value.countList = countData;
         contentUpdate();
       } catch (error) {
         rejectAlert();

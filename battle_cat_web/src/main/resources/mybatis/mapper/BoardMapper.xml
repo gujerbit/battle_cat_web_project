@@ -12,10 +12,20 @@
 		<where>
 			b.email = u.email
 		</where>
+		LIMIT #{start}, #{end}
 	</select>
 	
 	<select id="getAllBoardCountData" resultType="BoardCountVO">
 		SELECT * FROM board_count_data
+		LIMIT #{start}, #{end}
+	</select>
+	
+	<select id="selectAllBoardDataSize" resultType="int">
+		SELECT COUNT(idx) FROM board_data
+	</select>
+	
+	<select id="selectAllBoardCountDataSize" resultType="int">
+		SELECT COUNT(idx) FROM board_count_data
 	</select>
 	
 	<select id="getBoardData" resultType="BoardVO">

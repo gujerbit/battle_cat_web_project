@@ -1,6 +1,7 @@
 package com.gujerbit.battle_cat_web.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
@@ -11,11 +12,15 @@ public interface BoardService {
 
 	int writing(BoardVO vo);
 	
-	List<BoardVO> getAllBoardData();
+	List<BoardVO> getAllBoardData(Map<String, Integer> map);
+	
+	List<BoardCountVO> getAllBoardCountData(Map<String, Integer> map);
+	
+	int selectAllBoardDataSize();
+	
+	int selectAllBoardCountDataSize();
 	
 	BoardVO getBoardData(int idx);
-	
-	List<BoardCountVO> getAllBoardCountData();
 	
 	int duplicateCheck(BoardCountVO vo);
 	

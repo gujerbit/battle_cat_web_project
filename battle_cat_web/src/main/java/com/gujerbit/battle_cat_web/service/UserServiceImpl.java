@@ -2,6 +2,7 @@ package com.gujerbit.battle_cat_web.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,8 +82,13 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<UserVO> selectAllUserData() {
-		return dao.selectAllUserData();
+	public List<UserVO> selectAllUserData(Map<String, Integer> size) {
+		return dao.selectAllUserData(size);
+	}
+	
+	@Override
+	public int selectAllUserDataSize() {
+		return dao.selectAllUserDataSize();
 	}
 	
 	@Override

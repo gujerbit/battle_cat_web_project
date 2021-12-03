@@ -17,8 +17,13 @@ public class UnitDataServiceImpl implements UnitDataService {
 	private UnitDataDAO dao;
 	
 	@Override
-	public List<UnitDataVO> selectAllUnitData() {
-		return dao.selectAllUnitData();
+	public List<UnitDataVO> selectAllUnitData(Map<String, Integer> size) {
+		return dao.selectAllUnitData(size);
+	}
+	
+	@Override
+	public int selectAllUnitDataSize() {
+		return dao.selectAllUnitDataSize();
 	}
 	
 	@Override

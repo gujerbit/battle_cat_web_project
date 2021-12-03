@@ -37,7 +37,7 @@
         </router-link>
         <div class="setting" v-if="value.name !== userInfo.user.name && userInfo.user.grade !== 'user'">
           <div class="reject" v-if="userInfo.user.grade !== 'user' && userInfo.user.grade !== value.grade && ((userInfo.user.grade === 'admin' && value.grade === 'user') || (userInfo.user.grade === 'operator' && (value.grade === 'user' || value.grade === 'admin')) || userInfo.user.grade === 'developer')">
-            <input @mouseleave="scrollPrevent($event)" @mouseover="wheelRejectLengthChange($event, idx)" v-model="reject.length[idx]" type="number" placeholder="차단 기간" onfocus="this.select()">
+            <input @input="reject.length[idx] < 1 ? reject.length[idx] = 1 : reject.length[idx] > 365 ? reject.length[idx] = 365 : reject.length[idx] = reject.length[idx]" @mouseleave="scrollPrevent($event)" @mouseover="wheelRejectLengthChange($event, idx)" v-model="reject.length[idx]" type="number" placeholder="차단 기간" onfocus="this.select()">
             <button :disabled="value.forever_reject" @click="userReject(value.name, reject.length[idx], value.grade, proxy.axios)">차단</button>
             <button :disabled="value.forever_reject" @click="userForeverReject(value.name, value.grade, proxy.axios)">영구 차단</button>
             <button :disabled="!value.forever_reject && new Date(value.reject_end_date).getTime() - new Date().getTime() <= 0" @click="userRejectRelease(value.name, value.grade, proxy.axios)">차단 해제</button>
@@ -79,6 +79,7 @@ export default {
       user: {},
       searchData: [],
       grade: '등급 설정',
+      size: 0,
     });
 
     const searchInfo = ref({
@@ -132,7 +133,7 @@ export default {
       userInfo.value.searchData = searchUser(userInfo.value.data, searchInfo.value.search, searchInfo.value.grade);
     };
 
-    function wheelRejectLengthChange(event, index) {
+    const wheelRejectLengthChange = (event, index) => {
       watching.value.scroll = true;
       let input = event.currentTarget;
       let content = event.currentTarget.closest('.content');
@@ -147,25 +148,38 @@ export default {
           else if(reject.value.length[index] < 1) reject.value.length[index] = 1;
         }
       };
-    }
+    };
 
-    function scrollPrevent(event) {
+    const scrollPrevent = (event) => {
       watching.value.scroll = false;
       let content = event.currentTarget.closest('.content');
       content.style.pointerEvents = 'auto';
-    }
+    };
 
     onBeforeMount(async () => {
       checkReject(proxy.axios);
 
       try {
-        let { data } = await proxy.axios.get('/user_data', {
+        let { data:size } = await proxy.axios.get('/user_data_size', {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
+        const sizeArr = [];
+        const data = [];
+
+        for(let i = 0; i < Math.ceil(size / 100); i++) sizeArr.push(i * 100);
+
+        for(let i = 0; i < sizeArr.length; i++) {
+          let { data:users } = await proxy.axios.get(`/user_data/${sizeArr[i]}`, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
+
+          for(let j = 0; j < users.length; j++) data.push(users[j]);
+        }
+
         userInfo.value.data = data;
         userInfo.value.user = JSON.parse(window.sessionStorage.getItem('user-info'));
-        contentUpdate();        
+        contentUpdate();
       } catch (error) {
         rejectAlert();
       }
