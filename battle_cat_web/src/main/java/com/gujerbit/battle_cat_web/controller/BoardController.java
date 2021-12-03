@@ -127,4 +127,9 @@ public class BoardController {
 		return boardService.deleteComment(vo);
 	}
 	
+//	@GetMapping("/get_user_board_list/{email}")
+//	public @ResponseBody List<BoardVO> getUserBoardList(@PathVariable String name) {
+//		
+//	}
+	
 }
