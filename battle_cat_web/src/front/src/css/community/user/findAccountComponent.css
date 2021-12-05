@@ -11,14 +11,14 @@ main * {
   width: 90%;
   height: 100%;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-items: center;
+  display: flex;
+  /* grid-template-columns: repeat(2, 1fr); */
+  justify-content: center;
   align-items: center;
 }
 
 #find-email, #find-password {
-  width: 60%;
+  width: 30%;
   height: 50%;
   border: 1.5px solid #ffc038;
   display: flex;

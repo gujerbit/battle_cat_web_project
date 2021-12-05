@@ -66,33 +66,34 @@ async function register(registerInfo, axios, router) {
   });
 
   if(checkName) {
-    let { data:checkCode } = await axios.post('/check_code', {
-      code: registerInfo.code
-    });
+    // let { data:checkCode } = await axios.post('/check_code', {
+    //   code: registerInfo.code
+    // });
 
-    if(checkCode) {
-      try {
-        let { data } = await axios.post('/register_process', {
-          email: registerInfo.email,
-          password: registerInfo.password,
-          name: registerInfo.name,
-          code: registerInfo.code,
-          reg_date: new Date(),
-          reject_end_date: new Date(),
-        });
-  
-        if(data > 0) {
-          alert('회원가입이 정상적으로 처리되었습니다');
-          router.push('/login');
-        } else {
-          alert('회원가입 중 문제가 발생했습니다');
-          location.reload();
-        }
-      } catch (error) {
-        alert('회원가입 정보가 올바르지 않습니다!!');
+    // if(checkCode) {
+      
+    // } else alert('중복된 문의코드입니다. 이미 가입한 계정이 있는지 다시 한 번 확인해주세요');
+    try {
+      let { data } = await axios.post('/register_process', {
+        email: registerInfo.email,
+        password: registerInfo.password,
+        name: registerInfo.name,
+        code: registerInfo.code,
+        reg_date: new Date(),
+        reject_end_date: new Date(),
+      });
+
+      if(data > 0) {
+        alert('회원가입이 정상적으로 처리되었습니다');
+        router.push('/login');
+      } else {
+        alert('회원가입 중 문제가 발생했습니다');
         location.reload();
       }
-    } else alert('중복된 문의코드입니다. 이미 가입한 계정이 있는지 다시 한 번 확인해주세요');
+    } catch (error) {
+      alert('회원가입 정보가 올바르지 않습니다!!');
+      location.reload();
+    }
   } else alert('중복된 닉네임입니다');
 }
 

@@ -85,33 +85,34 @@ async function codeChange(code, beforeCode, update, axios) {
 
   if(!update.code) {
     if(beforeCode !== code) {
+      // try {
+      //   let { data:check } = await axios.post('/check_code', {
+      //     code: code
+      //   }, {
+      //     headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+      //   });
+  
+      //   if(check) {
+          
+      //   } else {
+      //     alert('중복된 문의 코드입니다! 이미 가입된 계정이 있는지 다시 한 번 확인해주세요!');
+      //     update.code = true;
+      //   }
+      // } catch (error) {
+      //   rejectAlert();
+      // }
       try {
-        let { data:check } = await axios.post('/check_code', {
+        let { data } = await axios.post('/change_code', {
+          email: getAccountInfo().email,
           code: code
         }, {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
-  
-        if(check) {
-          try {
-            let { data } = await axios.post('/change_code', {
-              email: getAccountInfo().email,
-              code: code
-            }, {
-              headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-            });
-    
-            if(data > 0) alert('문의 코드가 성공적으로 변경되었습니다!');
-            else alert('문의 코드 변경 실패');
 
-            location.reload();
-          } catch (error) {
-            rejectAlert();
-          }
-        } else {
-          alert('중복된 문의 코드입니다! 이미 가입된 계정이 있는지 다시 한 번 확인해주세요!');
-          update.code = true;
-        }
+        if(data > 0) alert('문의 코드가 성공적으로 변경되었습니다!');
+        else alert('문의 코드 변경 실패');
+
+        location.reload();
       } catch (error) {
         rejectAlert();
       }

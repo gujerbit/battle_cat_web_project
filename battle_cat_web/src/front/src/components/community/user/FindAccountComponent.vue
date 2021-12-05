@@ -1,9 +1,9 @@
 <template>
   <main>
     <div id="find" v-if="!show.email && !show.password">
-      <div id="find-email" @click="show.email = true">
+      <!-- <div id="find-email" @click="show.email = true">
         <p>이메일 찾기</p>
-      </div>
+      </div> -->
       <div id="find-password" @click="show.password = true">
         <p>비밀번호 찾기</p>
       </div>

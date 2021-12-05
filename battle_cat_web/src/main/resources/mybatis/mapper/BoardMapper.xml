@@ -29,9 +29,11 @@
 	</select>
 	
 	<select id="getBoardData" resultType="BoardVO">
-		SELECT * FROM board_data
+		SELECT b.idx, b.email, u.name, b.title, b.content, b.text, b.writing_date, b.remove, b.type FROM board_data b, user_data u
 		<where>
 			idx = #{idx}
+			AND
+			b.email = u.email
 		</where>
 	</select>
 	

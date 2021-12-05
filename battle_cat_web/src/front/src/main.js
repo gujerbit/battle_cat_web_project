@@ -5,8 +5,8 @@ import store from './store';
 import axios from 'axios';
 
 const app = createApp(App);
-axios.defaults.baseURL = 'https://localhost';
-// axios.defaults.baseURL = 'https://nyanko-db.shop';
+// axios.defaults.baseURL = 'https://localhost';
+axios.defaults.baseURL = 'https://nyanko-db.shop';
 app.config.globalProperties.axios = axios;
 app.config.globalProperties.store = store;
 app.use(router).use(store).mount('#app');
