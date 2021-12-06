@@ -81,6 +81,15 @@
 		INSERT INTO comment_data(board_idx, comment_idx, salt_idx, email, comment, parent_comment, comment_date, remove) VALUES(#{board_idx}, #{comment_idx}, #{salt_idx}, #{email}, #{comment}, #{parent_comment}, #{comment_date}, false)
 	</insert>
 	
+	<select id="selectCommentListSize" resultType="int">
+		SELECT COUNT(idx) FROM comment_data
+	</select>
+	
+	<select id="selectCommentList" resultType="CommentVO">
+		SELECT * FROM comment_data
+		LIMIT #{start}, #{end}
+	</select>
+	
 	<select id="getCommentData" resultType="CommentVO">
 		SELECT c.idx, c.board_idx, c.comment_idx, c.salt_idx, c.email, u.name, u.grade, c.comment, c.parent_comment, c.comment_date, u.profile_img, c.remove FROM comment_data c, user_data u
 		<where>

@@ -11,7 +11,10 @@
             <div @click="comment.commentIdx = value.idx; comment.parentComment = value.comment" v-if="value.comment_idx <= 0" class="comment-main">
               <img :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
               <div class="comment-info">
-                <p :class="value.grade">{{value.name}}</p>
+                <section>
+                  <img :src="require(`../../../assets/res/etc/item/${value.grade === 'user' ? 'cats_eye_rare.png' : value.grade === 'admin' ? 'cats_eye_super_rare.png' : value.grade === 'operator' ? 'cats_eye_uber_rare.png' : 'cats_eye_legend_rare.png'}`)" alt="">
+                  <p>{{value.name}}</p>
+                </section>
                 <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
               </div>
               <p class="comment-data">{{!value.remove ? value.comment : '삭제된 댓글입니다.'}}</p>
@@ -27,7 +30,10 @@
             <div @click="comment.commentIdx = value.comment_idx; comment.parentComment = value.comment" v-else class="comment-sub">
               <img :src="require(`../../../assets/res/unit/${value.profile_img}`)" alt="">
               <div class="comment-info">
-                <p :class="value.grade">{{value.name}}</p>
+                <section>
+                  <img :src="require(`../../../assets/res/etc/item/${value.grade === 'user' ? 'cats_eye_rare.png' : value.grade === 'admin' ? 'cats_eye_super_rare.png' : value.grade === 'operator' ? 'cats_eye_uber_rare.png' : 'cats_eye_legend_rare.png'}`)" alt="">
+                  <p>{{value.name}}</p>
+                </section>
                 <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
               </div>
               <p>
@@ -391,6 +397,26 @@ main {
   align-items: center;
 }
 
+.comment-info section {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.comment-info section p {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.comment-info section img {
+  width: 6.5%;
+  height: 50%;
+  margin-right: 2.5%;
+}
+
 .comment-btn-area {
   width: 100%;
   height: 100%;
@@ -409,18 +435,6 @@ main {
   width: 100%;
   height: 100%;
   cursor: pointer;
-}
-
-.developer {
-  color: #fe9ec4;
-}
-
-.operator {
-  color: #a97ee4;
-}
-
-.admin {
-  color: #84a9ea;
 }
 
 button:disabled {

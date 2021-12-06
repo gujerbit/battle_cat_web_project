@@ -34,6 +34,10 @@ public interface BoardService {
 	
 	int writingComment(CommentVO vo);
 	
+	public int selectCommentListSize();
+	
+	public List<CommentVO> selectCommentList(Map<String, Integer> map);
+	
 	List<CommentVO> getCommentData(int idx);
 	
 	int updateComment(CommentVO vo);

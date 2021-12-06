@@ -30,12 +30,14 @@
               <span>[{{value.type === 'normal' ? '일반' : value.type === 'notice' ? '공지' : value.type === 'info' ? '정보/공략' : value.type === 'ask' ? '질문' : value.type === 'creative' ? '창작/번역' : '문의/피드백/정보'}}]</span>
               {{value.title.length > 20 ? (value.title.substring(0, 20) + '...') : value.title}}
             </p>
-            <p class="name" :class="value.grade">
+            <p class="name">
+              <img :src="require(`../../../assets/res/etc/item/${value.grade === 'user' ? 'cats_eye_rare.png' : value.grade === 'admin' ? 'cats_eye_super_rare.png' : value.grade === 'operator' ? 'cats_eye_uber_rare.png' : 'cats_eye_legend_rare.png'}`)" alt="">
               {{value.name}}
               <span class="count">
                 <p>조회 {{getCountData(board.countList, value.idx, 'view')}}</p>
                 <p>추천 {{getCountData(board.countList, value.idx, 'good')}}</p>
                 <p>비추천 {{getCountData(board.countList, value.idx, 'bad')}}</p>
+                <p>댓글 {{getCommentData(board.commentList, value.idx)}}</p>
               </span>
             </p>
           </div>
@@ -58,7 +60,7 @@
 import { ref, onBeforeMount, getCurrentInstance } from 'vue';
 import { checkReject } from '../../../js/community/user/user.js';
 import { pagination, pageDivision } from '../../../js/util/pagination.js';
-import { countUpdate, getCountData, searchBoardData } from '../../../js/community/board/board.js';
+import { countUpdate, getCountData, searchBoardData, getCommentData } from '../../../js/community/board/board.js';
 import { rejectAlert } from '../../../js/util/alert.js';
 
 export default {
@@ -69,6 +71,7 @@ export default {
       data: [],
       list: [],
       countList: [],
+      commentList: [],
       current: [],
     });
 
@@ -163,17 +166,35 @@ export default {
           for(let j = 0; j < counts.length; j++) countData.push(counts[j]);
         }
 
+        let { data:commentSize } = await proxy.axios.get('/get_comment_list_size', {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        const commentSizeArr = [];
+        const commentData = [];
+
+        for(let i = 0; i < Math.ceil(commentSize / 100); i++) commentSizeArr.push(i * 100);
+
+        for(let i = 0; i < commentSizeArr.length; i++) {
+          let { data:comments } = await proxy.axios.get(`/get_comment_list/${commentSizeArr[i]}`, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
+
+          for(let j = 0; j < comments.length; j++) commentData.push(comments[j]);
+        }
+        console.log(commentData);
         const list = boardData.reverse().filter(res => !res.remove);
         board.value.list = list;
         board.value.data = list;
         board.value.countList = countData;
+        board.value.commentList = commentData;
         contentUpdate();
       } catch (error) {
         rejectAlert();
       }
     });
 
-    return { menu, board, pageInfo, proxy, nextPage, prevPage, selectPage, countUpdate, getCountData, search };
+    return { menu, board, pageInfo, proxy, nextPage, prevPage, selectPage, countUpdate, getCountData, search, getCommentData };
   },
 }
 </script>
@@ -341,20 +362,14 @@ nav p:first-child {
   font-size: 1.8rem;
 }
 
-.developer {
-  color: #fe9ec4;
-}
-
-.operator {
-  color: #a97ee4;
-}
-
-.admin {
-  color: #84a9ea;
+.name img {
+  width: 3%;
+  height: 85%;
+  margin-right: 1%;
 }
 
 .count {
-  width: 25%;
+  width: 30%;
   height: 100%;
   display: flex;
   justify-content: space-around;

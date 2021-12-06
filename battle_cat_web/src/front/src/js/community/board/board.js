@@ -1,7 +1,7 @@
 import { rejectAlert } from '../../util/alert.js';
 import { getAccountInfo } from '../admin/admin.js';
 
-export { writing, countUpdate, getCountData, searchBoardData, deleteBoard, updating, writingComment, updateComment, deleteComment };
+export { writing, countUpdate, getCountData, searchBoardData, deleteBoard, updating, writingComment, updateComment, deleteComment, getCommentData };
 
 async function writing(title, content, text, type, axios) {
   if(title.length <= 0) {
@@ -253,4 +253,14 @@ async function deleteComment(idx, axios) {
       rejectAlert();
     }
   }
+}
+
+function getCommentData(data, idx) {
+  let count = 0;
+
+  data.forEach(res => {
+    if(res.board_idx === idx) count++;
+  });
+
+  return count;
 }

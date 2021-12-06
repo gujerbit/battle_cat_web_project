@@ -79,6 +79,16 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
+	public int selectCommentListSize() {
+		return dao.selectCommentListSize();
+	}
+	
+	@Override
+	public List<CommentVO> selectCommentList(Map<String, Integer> map) {
+		return dao.selectCommentList(map);
+	}
+	
+	@Override
 	public List<CommentVO> getCommentData(int idx) {
 		return dao.getCommentData(idx);
 	}

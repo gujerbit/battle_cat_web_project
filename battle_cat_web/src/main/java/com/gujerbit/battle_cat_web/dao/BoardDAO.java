@@ -36,6 +36,10 @@ public interface BoardDAO {
 	
 	public int writingComment(CommentVO vo);
 	
+	public int selectCommentListSize();
+	
+	public List<CommentVO> selectCommentList(Map<String, Integer> map);
+	
 	public List<CommentVO> getCommentData(int idx);
 	
 	public int updateComment(CommentVO vo);

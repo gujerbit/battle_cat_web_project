@@ -110,6 +110,20 @@ public class BoardController {
 		return boardService.writingComment(vo);
 	}
 	
+	@GetMapping("/get_comment_list_size")
+	public @ResponseBody int getCommentListSize() {
+		return boardService.selectCommentListSize();
+	}
+	
+	@GetMapping("/get_comment_list/{size}")
+	public @ResponseBody List<CommentVO> getCommentList(@PathVariable int size) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("start", size);
+		map.put("end", size + 99);
+		
+		return boardService.selectCommentList(map);
+	}
+	
 	@GetMapping("/get_comment_data/{idx}")
 	public @ResponseBody List<CommentVO> getCommentData(@PathVariable int idx) {
 		return boardService.getCommentData(idx);
