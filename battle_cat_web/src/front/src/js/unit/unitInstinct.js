@@ -25,13 +25,13 @@ function attackPowerIncrease(idx, unitData, settingUnitData) {
       }
 
       settingUnitData.value.attackPower[2] = attackPowerArr;
-    } else {
-      let combineAttackPower = unitData.value.combineAttackPower[2];
-      
-      if(increaseValue !== 0) combineAttackPower += combineAttackPower * (increaseValue / 100);
-
-      unitData.value.combineAttackPower[2] = Math.round(combineAttackPower);
     }
+
+    let combineAttackPower = unitData.value.combineAttackPower[2];
+      
+    if(increaseValue !== 0) combineAttackPower += combineAttackPower * (increaseValue / 100);
+
+    unitData.value.combineAttackPower[2] = Math.round(combineAttackPower);
   }
 }
 

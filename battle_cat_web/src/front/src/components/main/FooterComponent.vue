@@ -2,7 +2,7 @@
   <footer>
     <div class="content">
       <p>this is battle cat KR info {{'&'}} community page &copy; gujerbit all rights reserved.</p>
-      <p>current version 1.3</p>
+      <p>current version 1.4</p>
     </div>
   </footer>
 </template>
@@ -15,14 +15,14 @@ export default {
 
 <style scoped>
 footer {
-    width: 100%;
-    height: 5%;
-    background-color: #ffc038;
-    position: fixed;
-    bottom: -3%;
-    left: 0;
-    opacity: 0;
-    transition: all 2s;
+  width: 100%;
+  height: 5%;
+  background-color: #ffc038;
+  position: fixed;
+  bottom: -3%;
+  left: 0;
+  opacity: 0;
+  transition: all 2s;
 }
 
 footer:hover {
