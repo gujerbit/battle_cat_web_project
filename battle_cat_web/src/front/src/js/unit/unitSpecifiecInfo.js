@@ -53,7 +53,8 @@ function levelSetting(level, unitData, settingUnitData) {
       let increase = 0;
 
       for(let k = 2; k <= level[i]; k++) {
-        increase = origin * (unitData.value.levelIncreaseRate[Math.floor(k / 10)]);
+        console.log(k, Math.floor((k - 1) / 10), unitData.value.levelIncreaseRate[Math.floor(k / 10)]);
+        increase = origin * (unitData.value.levelIncreaseRate[Math.floor((k - 1) / 10)]);
         attackPower += increase / 100;
       }
 
@@ -70,7 +71,7 @@ function levelSetting(level, unitData, settingUnitData) {
     let increase = 0;
 
     for(let k = 2; k <= level[i]; k++) {
-      increase = origin * (unitData.value.levelIncreaseRate[Math.floor(k / 10)]);
+      increase = origin * (unitData.value.levelIncreaseRate[Math.floor((k - 1) / 10)]);
       hpArr += increase / 100;
     }
 
