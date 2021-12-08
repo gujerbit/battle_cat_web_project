@@ -103,4 +103,24 @@ public class BoardServiceImpl implements BoardService {
 		return dao.deleteComment(vo);
 	}
 	
+	@Override
+	public List<BoardVO> selectUserBoardList(Map<String, Object> map) {
+		return dao.selectUserBoardList(map);
+	}
+	
+	@Override
+	public List<CommentVO> selectUserCommentList(Map<String, Object> map) {
+		return dao.selectUserCommentList(map);
+	}
+	
+	@Override
+	public int selectUserBoardListSize(BoardVO vo) {
+		return dao.selectUserBoardListSize(vo);
+	}
+	
+	@Override
+	public int selectUserCommentListSize(CommentVO vo) {
+		return dao.selectUserCommentListSize(vo);
+	}
+	
 }

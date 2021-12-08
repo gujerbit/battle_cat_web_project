@@ -46,4 +46,12 @@ public interface BoardDAO {
 	
 	public int deleteComment(CommentVO vo);
 	
+	public List<BoardVO> selectUserBoardList(Map<String, Object> map);
+	
+	public List<CommentVO> selectUserCommentList(Map<String, Object> map);
+	
+	public int selectUserBoardListSize(BoardVO vo);
+	
+	public int selectUserCommentListSize(CommentVO vo);
+	
 }

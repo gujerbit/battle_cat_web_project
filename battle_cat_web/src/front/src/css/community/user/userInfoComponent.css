@@ -12,6 +12,11 @@ main * {
   height: 100%;
   margin: 0 auto;
   margin-top: 0.5%;
+  overflow: auto;
+}
+
+.user-info::-webkit-scrollbar {
+  display: none;
 }
 
 .summary {
@@ -337,6 +342,77 @@ button:disabled {
 
 .remove-popup input::placeholder {
   color: #000000;
+}
+
+.user-writing {
+  width: 100%;
+  height: 30%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 0.5%;
+}
+
+.board, .comment {
+  width: 99.5%;
+  height: 100%;
+  border: 1.5px solid #ffc038;
+  border-radius: 5px;
+}
+
+.comment {
+  margin-left: 0.5%;
+}
+
+.board-header, .comment-header {
+  width: 100%;
+  height: 20%;
+  font-size: 3.2rem;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 1%;
+}
+
+.board-body, .comment-body {
+  width: 100%;
+  height: 70%;
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  justify-items: left;
+  align-items: center;
+  font-size: 2.3rem;
+}
+
+.board-content, .comment-content {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  border-top: 1.5px solid #ffc038;
+  padding-left: 1%;
+}
+
+.board-content p:last-child, .comment-content p:last-child {
+  margin-left: 40%;
+}
+
+.page {
+  width: 100%;
+  height: 10%;
+  border-top: 1.5px solid #ffc038;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 2.3rem;
+}
+
+.page p {
+  width: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .main-page, .community-page {

@@ -400,8 +400,8 @@ main {
 .comment-info section {
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: left;
+  display: grid;
+  grid-template-columns: 10% 90%;
   align-items: center;
 }
 
@@ -411,10 +411,14 @@ main {
   align-items: center;
 }
 
-.comment-info section img {
-  width: 6.5%;
-  height: 50%;
-  margin-right: 2.5%;
+.comment-main .comment-info section img {
+  width: 80%;
+  height: 65%;
+}
+
+.comment-sub .comment-info section img {
+  width: 90%;
+  height: 65%;
 }
 
 .comment-btn-area {

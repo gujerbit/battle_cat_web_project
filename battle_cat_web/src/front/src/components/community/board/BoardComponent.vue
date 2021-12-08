@@ -182,7 +182,7 @@ export default {
 
           for(let j = 0; j < comments.length; j++) commentData.push(comments[j]);
         }
-        console.log(commentData);
+        
         const list = boardData.reverse().filter(res => !res.remove);
         board.value.list = list;
         board.value.data = list;
@@ -336,7 +336,7 @@ nav p:first-child {
   grid-template-rows: repeat(2, 1fr);
   justify-items: left;
   align-items: center;
-  margin-left: 1%;
+  margin-left: 0.5%;
 }
 
 .title {
@@ -363,9 +363,8 @@ nav p:first-child {
 }
 
 .name img {
-  width: 3%;
-  height: 85%;
-  margin-right: 1%;
+  width: 3.5%;
+  height: 100%;
 }
 
 .count {

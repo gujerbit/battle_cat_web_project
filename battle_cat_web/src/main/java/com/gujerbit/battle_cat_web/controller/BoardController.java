@@ -20,6 +20,7 @@ import com.gujerbit.battle_cat_web.util.RSA;
 import com.gujerbit.battle_cat_web.vo.BoardCountVO;
 import com.gujerbit.battle_cat_web.vo.BoardVO;
 import com.gujerbit.battle_cat_web.vo.CommentVO;
+import com.gujerbit.battle_cat_web.vo.UserVO;
 
 @CrossOrigin("*")
 @Controller
@@ -141,9 +142,32 @@ public class BoardController {
 		return boardService.deleteComment(vo);
 	}
 	
-//	@GetMapping("/get_user_board_list/{email}")
-//	public @ResponseBody List<BoardVO> getUserBoardList(@PathVariable String name) {
-//		
-//	}
+	@PostMapping("/get_user_board_list/{size}")
+	public @ResponseBody List<BoardVO> getUserBoardList(@RequestBody BoardVO vo, @PathVariable int size) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", vo.getEmail());
+		map.put("start", size);
+		
+		return boardService.selectUserBoardList(map);
+	}
+	
+	@PostMapping("/get_user_comment_list/{size}")
+	public @ResponseBody List<CommentVO> getUserCommentList(@RequestBody CommentVO vo, @PathVariable int size) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", vo.getEmail());
+		map.put("start", size);
+		
+		return boardService.selectUserCommentList(map);
+	}
+	
+	@PostMapping("/get_user_board_list_size")
+	public @ResponseBody int getUserBoardListSize(@RequestBody BoardVO vo) {
+		return boardService.selectUserBoardListSize(vo);
+	}
+	
+	@PostMapping("/get_user_comment_list_size")
+	public @ResponseBody int getUserCommentListSize(@RequestBody CommentVO vo) {
+		return boardService.selectUserCommentListSize(vo);
+	}
 	
 }

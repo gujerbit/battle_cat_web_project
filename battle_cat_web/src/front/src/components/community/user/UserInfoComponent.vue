@@ -35,26 +35,38 @@
           </div>
           <textarea v-model="userInfo.description" :disabled="!update.description" onfocus="this.select()" />
         </div>
-        <!-- <div class="board">
-          <div class="board-header">
-            <p>작성한 게시물</p>
+        <div class="user-writing">
+          <div class="board">
+            <div class="board-header">
+              <p>작성한 게시물</p>
+            </div>
+            <div class="board-body">
+              <router-link :to="`/board_data/${value.idx}`" class="board-content" v-for="value in userInfo.boardData" :key="value">
+                <p>{{value.title}}</p>
+                <p>{{new Date(value.writing_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
+              </router-link>
+            </div>
+            <div class="page">
+              <p>&lt;</p>
+              <p>&gt;</p>
+            </div>
           </div>
-          <div class="board-body">
-            <div class="board-content">
-              
+          <div class="comment">
+            <div class="comment-header">
+              <p>작성한 댓글</p>
+            </div>
+            <div class="comment-body">
+              <div class="comment-content" v-for="value in userInfo.commentData" :key="value">
+                <p>{{value.comment}}</p>
+                <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
+              </div>
+            </div>
+            <div class="page">
+              <p>&lt;</p>
+              <p>&gt;</p>
             </div>
           </div>
         </div>
-        <div class="comment">
-          <div class="comment-header">
-            <p>작성한 댓글</p>
-          </div>
-          <div class="comment-body">
-            <div class="comment-content">
-
-            </div>
-          </div>
-        </div> -->
       </div>
       <div class="user-info-update" v-if="update.info">
         <div class="update-popup">
@@ -122,6 +134,10 @@ export default {
 
     const userInfo = ref({
       data: [],
+      boardData: [],
+      boardStartIdx: 0,
+      commentData: [],
+      commentStartIdx: 0,
       description: '',
       name: '',
       code: '',
@@ -147,6 +163,34 @@ export default {
       all: {},
     });
 
+    const getUserBoardList = async (email) => {
+      try {
+        let { data:board } = await proxy.axios.post(`/get_user_board_list/${userInfo.value.boardStartIdx}`, {
+          email: email,
+        }, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        userInfo.value.boardData = board;
+      } catch (error) {
+        rejectAlert();
+      }
+    };
+
+    const getUserCommentList = async (email) => {
+      try {
+        let { data:comment } = await proxy.axios.post(`/get_user_comment_list/${userInfo.value.commentStartIdx}`, {
+          email: email,
+        }, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        userInfo.value.commentData = comment;
+      } catch (error) {
+        rejectAlert();
+      }
+    };
+
     onBeforeMount(async () => {
       checkReject(proxy.axios);
 
@@ -167,6 +211,9 @@ export default {
           userInfo.value.beforeCode = data.code;
           unit.value.all = getUnitInfo(proxy.store);
         }
+
+        getUserBoardList(data.email);
+        getUserCommentList(data.email);
       } catch (error) {
         rejectAlert();
       }

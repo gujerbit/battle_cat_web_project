@@ -116,5 +116,45 @@
 			email = #{email}
 		</where>
 	</update>
+	
+	<select id="selectUserBoardList" resultType="BoardVO">
+		SELECT idx, title, writing_date FROM board_data
+		<where>
+			email = #{email}
+			AND
+			remove = 0
+		</where>
+		ORDER BY idx DESC
+		LIMIT #{start}, 5
+	</select>
+	
+	<select id="selectUserCommentList" resultType="CommentVO">
+		SELECT comment, comment_date FROM comment_data
+		<where>
+			email = #{email}
+			AND
+			remove = 0
+		</where>
+		ORDER BY idx DESC
+		LIMIT #{start}, 5
+	</select>
+	
+	<select id="selectUserBoardListSize" resultType="int">
+		SELECT COUNT(idx) FROM board_data
+		<where>
+			email = #{email}
+			AND
+			remove = 0
+		</where>
+	</select>
+	
+	<select id="selectUserCommentListSize" resultType="int">
+		SELECT COUNT(idx) FROM comment_data
+		<where>
+			email = #{email}
+			AND
+			remove = 0
+		</where>
+	</select>
 
 </mapper>

@@ -44,4 +44,12 @@ public interface BoardService {
 	
 	int deleteComment(CommentVO vo);
 	
+	List<BoardVO> selectUserBoardList(Map<String, Object> map);
+	
+	List<CommentVO> selectUserCommentList(Map<String, Object> map);
+	
+	int selectUserBoardListSize(BoardVO vo);
+	
+	int selectUserCommentListSize(CommentVO vo);
+	
 }
