@@ -38,32 +38,34 @@
         <div class="user-writing">
           <div class="board">
             <div class="board-header">
-              <p>작성한 게시물</p>
+              <p>작성한 게시물 ({{userInfo.boardSize}})</p>
             </div>
             <div class="board-body">
-              <router-link :to="`/board_data/${value.idx}`" class="board-content" v-for="value in userInfo.boardData" :key="value">
-                <p>{{value.title}}</p>
-                <p>{{new Date(value.writing_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
+              <router-link :to="`/board_data/${item.idx}`" class="board-content" v-for="item in userInfo.boardData" :key="item">
+                <p>{{item.title}}</p>
+                <p>{{new Date(item.writing_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
               </router-link>
             </div>
             <div class="page">
-              <p>&lt;</p>
-              <p>&gt;</p>
+              <p @click="boardPrevPage(value.email)">&lt;</p>
+              <p @click="boardSelectPage(value.email, item)" v-for="item in pageInfo.boardTotalPage[pageInfo.boardViewPage]" :key="item">{{item}}</p>
+              <p @click="boardNextPage(value.email)">&gt;</p>
             </div>
           </div>
           <div class="comment">
             <div class="comment-header">
-              <p>작성한 댓글</p>
+              <p>작성한 댓글 ({{userInfo.commentSize}})</p>
             </div>
             <div class="comment-body">
-              <div class="comment-content" v-for="value in userInfo.commentData" :key="value">
-                <p>{{value.comment}}</p>
-                <p>{{new Date(value.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
-              </div>
+              <router-link :to="`/board_data/${item.board_idx}`" class="comment-content" v-for="item in userInfo.commentData" :key="item">
+                <p>{{item.comment}}</p>
+                <p>{{new Date(item.comment_date).toLocaleString("ko-KR", {timeZone: 'Asia/Seoul'})}}</p>
+              </router-link>
             </div>
             <div class="page">
-              <p>&lt;</p>
-              <p>&gt;</p>
+              <p @click="commentPrevPage(value.email)">&lt;</p>
+              <p @click="commentSelectPage(value.email, item)" v-for="item in pageInfo.commentTotalPage[pageInfo.commentViewPage]" :key="item">{{item}}</p>
+              <p @click="commentNextPage(value.email)">&gt;</p>
             </div>
           </div>
         </div>
@@ -135,14 +137,15 @@ export default {
     const userInfo = ref({
       data: [],
       boardData: [],
-      boardStartIdx: 0,
+      boardSize: 0,
       commentData: [],
-      commentStartIdx: 0,
+      commentSize: 0,
       description: '',
       name: '',
       code: '',
       beforeName: '',
       beforeCode: '',
+      email: '',
     });
 
     const update = ref({
@@ -163,33 +166,126 @@ export default {
       all: {},
     });
 
-    const getUserBoardList = async (email) => {
+    const pageInfo = ref({
+      boardTotalPage: [],
+      commentTotalPage: [],
+      boardDivisionPage: 5,
+      commentDivisionPage: 5,
+      boardCurrentPage: 1,
+      commentCurrentPage: 1,
+      boardViewPage: 0,
+      commentViewPage: 0,
+    });
+
+    const getUserBoardList = async (email, page) => {
       try {
-        let { data:board } = await proxy.axios.post(`/get_user_board_list/${userInfo.value.boardStartIdx}`, {
+        let { data:board } = await proxy.axios.post(`/get_user_board_list/${page}`, {
+          email: email,
+        }, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        let { data:size } = await proxy.axios.post('/get_user_board_list_size', {
           email: email,
         }, {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
         userInfo.value.boardData = board;
+        userInfo.value.boardSize = size;
+
+        boardTotalPageSetting();
       } catch (error) {
         rejectAlert();
       }
     };
 
-    const getUserCommentList = async (email) => {
+    const getUserCommentList = async (email, page) => {
       try {
-        let { data:comment } = await proxy.axios.post(`/get_user_comment_list/${userInfo.value.commentStartIdx}`, {
+        let { data:comment } = await proxy.axios.post(`/get_user_comment_list/${page}`, {
+          email: email,
+        }, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        let { data:size } = await proxy.axios.post('/get_user_comment_list_size', {
           email: email,
         }, {
           headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
         });
 
         userInfo.value.commentData = comment;
+        userInfo.value.commentSize = size;
+
+        commentTotalPageSetting();
       } catch (error) {
         rejectAlert();
       }
     };
+
+    const boardNextPage = (email) => { //다음 페이지
+      if(pageInfo.value.boardViewPage < pageInfo.value.boardTotalPage.length - 1) {
+        pageInfo.value.boardViewPage++;
+        getUserBoardList(email, (pageInfo.value.boardTotalPage[pageInfo.value.boardViewPage][0] * 5) - 5);
+      }
+    };
+
+    const commentNextPage = (email) => {
+      if(pageInfo.value.commentViewPage < pageInfo.value.commentTotalPage.length - 1) {
+        pageInfo.value.commentViewPage++;
+        getUserCommentList(email, (pageInfo.value.commentTotalPage[pageInfo.value.commentViewPage][0] * 5) - 5);
+      }
+    };
+
+    const boardPrevPage = (email) => { //이전 페이지
+      if(pageInfo.value.boardViewPage > 0) {
+        pageInfo.value.boardViewPage--;
+        getUserBoardList(email, (pageInfo.value.boardTotalPage[pageInfo.value.boardViewPage][0] * 5) - 5);
+      }
+    };
+
+    const commentPrevPage = (email) => {
+      if(pageInfo.value.commentViewPage > 0) {
+        pageInfo.value.commentViewPage--;
+        getUserCommentList(email, (pageInfo.value.commentTotalPage[pageInfo.value.commentViewPage][0] * 5) - 5);
+      }
+    };
+
+    const boardSelectPage = (email, page) => { //번호 선택할 때 실행됨
+      page = (page * 5) - 5;
+      getUserBoardList(email, page);
+    };
+
+    const commentSelectPage = (email, page) => {
+      page = (page * 5) - 5;
+      getUserCommentList(email, page);
+    }
+
+    const boardTotalPageSetting = () => {
+      let pageArr = [];
+
+      for(let i = 1; i <= Math.ceil(userInfo.value.boardSize / pageInfo.value.boardDivisionPage); i++) {
+        pageArr.push(i);
+
+        if(i % 5 === 0 || i == Math.ceil(userInfo.value.boardSize / pageInfo.value.boardDivisionPage)) {
+          pageInfo.value.boardTotalPage.push(pageArr);
+          pageArr = [];
+        }
+      }
+    };
+
+    const commentTotalPageSetting = () => {
+      let pageArr = [];
+
+      for(let i = 1; i <= Math.ceil(userInfo.value.commentSize / pageInfo.value.commentDivisionPage); i++) {
+        pageArr.push(i);
+
+        if(i % 5 === 0 || i == Math.ceil(userInfo.value.commentSize / pageInfo.value.commentDivisionPage)) {
+          pageInfo.value.commentTotalPage.push(pageArr);
+          pageArr = [];
+        }
+      }
+    }
 
     onBeforeMount(async () => {
       checkReject(proxy.axios);
@@ -209,17 +305,18 @@ export default {
           userInfo.value.code = data.code;
           userInfo.value.beforeName = data.name;
           userInfo.value.beforeCode = data.code;
+          userInfo.value.email = data.email;
           unit.value.all = getUnitInfo(proxy.store);
         }
 
-        getUserBoardList(data.email);
-        getUserCommentList(data.email);
+        getUserBoardList(data.email, 0);
+        getUserCommentList(data.email, 0);
       } catch (error) {
         rejectAlert();
       }
     });
 
-    return { userInfo, update, tip, unit, proxy, logout, descriptionChange, nameChange, codeChange, profileImgChange, checkName, checkCode, userRemove, getAccountInfo };
+    return { userInfo, update, tip, unit, pageInfo, proxy, logout, descriptionChange, nameChange, codeChange, profileImgChange, checkName, checkCode, userRemove, getAccountInfo, boardNextPage, commentNextPage, boardPrevPage, commentPrevPage, boardSelectPage, commentSelectPage };
   }
 }
 </script>

@@ -129,7 +129,7 @@
 	</select>
 	
 	<select id="selectUserCommentList" resultType="CommentVO">
-		SELECT comment, comment_date FROM comment_data
+		SELECT board_idx, comment, comment_date FROM comment_data
 		<where>
 			email = #{email}
 			AND
