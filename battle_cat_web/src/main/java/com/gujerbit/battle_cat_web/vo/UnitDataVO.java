@@ -50,7 +50,7 @@ public class UnitDataVO {
 	private int attack_freq;
 	
 	@JsonProperty
-	private int attack_range;
+	private String attack_range;
 	
 	@JsonProperty
 	private int cost;
