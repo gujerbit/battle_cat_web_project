@@ -26,7 +26,6 @@ public class UnitDataController {
 	public @ResponseBody List<UnitDataVO> getAllUnitData(@PathVariable int size) {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("start", size);
-		map.put("end", size + 99);
 		
 		List<UnitDataVO> list = service.selectAllUnitData(map);
 		

@@ -9,7 +9,7 @@
 		unit_data
 		ORDER BY CONVERT(SUBSTRING_INDEX(id, '-', 1), SIGNED INTEGER),
 		CONVERT(SUBSTRING_INDEX(id, '-', -1), SIGNED INTEGER)
-		LIMIT #{start}, #{end}
+		LIMIT #{start}, 100
 	</select>
 	
 	<select id="selectAllUnitDataSize" resultType="int">
