@@ -7,7 +7,7 @@
       <div class="search">
         <input @input="search()" v-model="searchInfo.search" type="text" placeholder="유저 닉네임 검색">
         <select v-model="searchInfo.grade" @change="search()">
-          <option selected>모두</option>
+          <option value="all">모두</option>
           <option value="user">유저</option>
           <option value="admin">관리자</option>
           <option value="operator">운영자</option>
@@ -63,7 +63,6 @@
 
 <script>
 import { ref, onBeforeMount, getCurrentInstance, watchEffect } from 'vue';
-import { pagination, pageDivision } from '../../../js/util/pagination.js';
 import { checkReject } from '../../../js/community/user/user.js';
 import { searchUser } from '../../../js/community/user/userInfo.js';
 import { userReject, userForeverReject, userRejectRelease, userGradeSetting } from '../../../js/community/admin/admin.js';
@@ -75,16 +74,16 @@ export default {
 
     const userInfo = ref({
       data: [],
+      size: 0,
       current: [],
       user: {},
       searchData: [],
       grade: '등급 설정',
-      size: 0,
     });
 
     const searchInfo = ref({
       search: '',
-      grade: '모두',
+      grade: 'all',
     });
 
     const reject = ref({
@@ -102,35 +101,57 @@ export default {
       viewPage: 0, //현재 번호
     });
 
-    const nextPage = () => { //다음 페이지
-      if(pageInfo.value.totalPage.length - 1 > pageInfo.value.viewPage) { //전체 페이지 수보다 현재 페이지 수가 적다면
-        pageInfo.value.viewPage++; //현재 페이지 수 증가
-        pageInfo.value.currentPage = pageInfo.value.totalPage[pageInfo.value.viewPage][0]; //해당 페이지에 있는 번호 중 가장 앞 번호를 현재 번호로 설정
-        contentUpdate(); //현재 번호에 해당하는 내용 업데이트
+    const getUserList = async (page) => {
+      try {
+        let { data:user } = await proxy.axios.get(`/user_data/${page}`, {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        let { data:size } = await proxy.axios.get('/user_data_size', {
+          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+        });
+
+        userInfo.value.data = user;
+        userInfo.value.current = user;
+        userInfo.value.size = size;
+
+        userTotalPageSetting();
+      } catch (error) {
+        rejectAlert();
       }
+    };
+
+    const nextPage = () => { //다음 페이지
+      
     };
 
     const prevPage = () => { //이전 페이지
-      if(0 < pageInfo.value.viewPage) { //현재 페이지가 0보다 크다면
-        pageInfo.value.viewPage--; //현재 페이지 감소
-        pageInfo.value.currentPage = pageInfo.value.totalPage[pageInfo.value.viewPage][0]; //해당 페이지에 있는 번호 중 가장 앞 번호를 현재 번호로 설정
-        contentUpdate(); //현재 번호에 해당하는 내용 업데이트
-      }
+      
     };
 
     const selectPage = (page) => { //번호 선택할 때 실행됨
-      pageInfo.value.currentPage = page; //사용자가 누른 번호를 현재 번호로 설정
-      contentUpdate(); //현재 번호에 해당하는 내용 업데이트
+      pageInfo.value.currentPage = page;
+      page = (page * 5) - 5;
+      getUserList(page);
     };
 
-    const contentUpdate = () => { //현재 번호에 해당하는 내용 업데이트
-      userInfo.value.current = pagination(userInfo.value.data, pageInfo.value.currentPage, pageInfo.value.divisionPage); //현재 번호에 해당하는 내용 페이지네이션
-      pageInfo.value.totalPage = pageDivision(userInfo.value.data, pageInfo.value.divisionPage); //현재 요일 전체 데이터를 기반으로 총 페이지 수 정하기
-      reject.value.length = [1, 1, 1, 1, 1];
+    const userTotalPageSetting = () => {
+      pageInfo.value.totalPage = [];
+      let pageArr = [];
+
+      for(let i = 1; i <= Math.ceil(userInfo.value.size / pageInfo.value.divisionPage); i++) {
+        pageArr.push(i);
+
+        if(i % 5 === 0 || i === Math.ceil(userInfo.value.size / pageInfo.value.divisionPage)) {
+          pageInfo.value.totalPage.push(pageArr);
+          pageArr = [];
+        }
+      }
     };
 
     const search = () => {
       userInfo.value.searchData = searchUser(userInfo.value.data, searchInfo.value.search, searchInfo.value.grade);
+      console.log(userInfo.value.searchData);
     };
 
     const wheelRejectLengthChange = (event, index) => {
@@ -159,41 +180,26 @@ export default {
     onBeforeMount(async () => {
       checkReject(proxy.axios);
 
-      try {
-        let { data:size } = await proxy.axios.get('/user_data_size', {
-          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-        });
-
-        const sizeArr = [];
-        const data = [];
-
-        for(let i = 0; i < Math.ceil(size / 100); i++) sizeArr.push(i * 100);
-
-        for(let i = 0; i < sizeArr.length; i++) {
-          let { data:users } = await proxy.axios.get(`/user_data/${sizeArr[i]}`, {
-            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-          });
-
-          for(let j = 0; j < users.length; j++) data.push(users[j]);
-        }
-
-        userInfo.value.data = data;
-        userInfo.value.user = JSON.parse(window.sessionStorage.getItem('user-info'));
-        contentUpdate();
-      } catch (error) {
-        rejectAlert();
-      }
+      getUserList(0);
+      userInfo.value.user = JSON.parse(window.sessionStorage.getItem('user-info'));
     });
 
     watchEffect(() => {
-      if(userInfo.value.searchData.length !== undefined && userInfo.value.searchData.length > 0) {
-        userInfo.value.current = pagination(userInfo.value.searchData, pageInfo.value.currentPage, pageInfo.value.divisionPage); //현재 번호에 해당하는 내용 페이지네이션
-        pageInfo.value.totalPage = pageDivision(userInfo.value.searchData, pageInfo.value.divisionPage); //현재 요일 전체 데이터를 기반으로 총 페이지 수 정하기
-      } else if(userInfo.value.data.length > 0 && searchInfo.value.search.length <= 0) contentUpdate();
-      else if(!userInfo.value.searchData.length) {
-        userInfo.value.current = [];
-        pageInfo.value.totalPage = [1];
-      }
+      // if(userInfo.value.searchData.length > 0) {
+      //   if(searchInfo.value.search.length > 0) {
+      //     userInfo.value.current = userInfo.value.searchData;
+      //     userInfo.value.size = userInfo.value.searchData.length;
+      //     userTotalPageSetting();
+      //   } else if(searchInfo.value.grade === 'all' && searchInfo.value.search.length <= 0) {
+      //     getUserList((pageInfo.value.currentPage * 5) - 5);
+      //   }
+      // } else if(searchInfo.value.search.length > 0 && userInfo.value.searchData.length <= 0) {
+      //   userInfo.value.data = [];
+      //   userInfo.value.size = 0;
+      //   pageInfo.value.totalPage = [1];
+      // } else if(searchInfo.value.search.length <= 0) {
+      //   getUserList((pageInfo.value.currentPage * 5) - 5);
+      // }
     });
 
     return { userInfo, pageInfo, searchInfo, reject, proxy, nextPage, prevPage, selectPage, search, userReject, userForeverReject, userRejectRelease, userGradeSetting, wheelRejectLengthChange, scrollPrevent };

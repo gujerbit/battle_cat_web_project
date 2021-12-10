@@ -89,7 +89,7 @@
 	
 	<select id="selectAllUserData" resultType="UserVO">
 		SELECT name, grade, reg_date, profile_img, description, reject_end_date, forever_reject, reputation FROM user_data
-		LIMIT #{start}, #{end}
+		LIMIT #{start}, 5
 	</select>
 	
 	<select id="selectAllUserDataSize" resultType="int">

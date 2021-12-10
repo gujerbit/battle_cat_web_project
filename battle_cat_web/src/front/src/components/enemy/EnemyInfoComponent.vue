@@ -256,8 +256,6 @@ import contentComponent from '../enemy/EnemyInfoContentComponent.vue';
 export default {
   setup() {
     onBeforeMount(() => {
-      alert('준비중입니다.');
-      location.href = '/';
     });
   },
   data() {

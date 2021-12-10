@@ -207,7 +207,6 @@ public class UserController {
 	public @ResponseBody List<UserVO> getAllUserData(@PathVariable int size) {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("start", size);
-		map.put("end", size + 99);
 		
 		return userService.selectAllUserData(map);
 	}

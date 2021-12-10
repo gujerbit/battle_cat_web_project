@@ -164,18 +164,16 @@ async function userRemove(userInfo, axios) {
 
 function searchUser(data, value, grade) {
   let result = [];
-
+  
   data.forEach(res => {
     if(value.length > 0) {
       if(res.name.includes(value)) {
-        if(grade === res.grade || grade === '모두') result.push(res);
+        if(grade === res.grade || grade === 'all') result.push(res);
       }
     } else {
-      if(grade === res.grade || grade === '모두') result.push(res);
+      if(grade === res.grade || grade === 'all') result.push(res);
     }
   });
-
-  if(result.length <= 0) return false;
 
   return result;
 }

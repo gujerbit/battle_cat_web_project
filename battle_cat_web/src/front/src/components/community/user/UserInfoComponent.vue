@@ -262,12 +262,13 @@ export default {
     }
 
     const boardTotalPageSetting = () => {
+      pageInfo.value.boardTotalPage = [];
       let pageArr = [];
 
       for(let i = 1; i <= Math.ceil(userInfo.value.boardSize / pageInfo.value.boardDivisionPage); i++) {
         pageArr.push(i);
 
-        if(i % 5 === 0 || i == Math.ceil(userInfo.value.boardSize / pageInfo.value.boardDivisionPage)) {
+        if(i % 5 === 0 || i === Math.ceil(userInfo.value.boardSize / pageInfo.value.boardDivisionPage)) {
           pageInfo.value.boardTotalPage.push(pageArr);
           pageArr = [];
         }
@@ -275,6 +276,7 @@ export default {
     };
 
     const commentTotalPageSetting = () => {
+      pageInfo.value.commentTotalPage = [];
       let pageArr = [];
 
       for(let i = 1; i <= Math.ceil(userInfo.value.commentSize / pageInfo.value.commentDivisionPage); i++) {
