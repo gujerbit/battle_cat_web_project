@@ -69,12 +69,7 @@ export default {
     };
 
     onBeforeMount(() => { //dom 부착 전
-      // const loadData = setInterval(() => {
-      //   if(getUnitInfo(proxy.store) !== undefined) {
-          
-      //     clearInterval(loadData);
-      //   }
-      // }, 100);
+      proxy.store.commit('setSearchUnitInfo', []);
       info.value.all = getUnitInfo(proxy.store);
       contentUpdate();
     });
