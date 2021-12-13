@@ -30,4 +30,4 @@ export default {
 };
 </script>
 
-<style scoped src="../../css/main/mainComponent.css" />
+<style src="../../css/main/mainComponent.css" scoped />

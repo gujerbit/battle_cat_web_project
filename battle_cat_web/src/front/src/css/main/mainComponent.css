@@ -35,17 +35,28 @@ main > a > p {
   font-size: 4.5rem;
   text-align: center;
   color: #ffc038;
-  text-shadow: -2px 0 #000000, 0 2px #000000, 2px 0 #000000, 0 -2px #000000;
+  text-shadow: -1.5px 0 #000000, 0 1.5px #000000, 1.5px 0 #000000, 0 -1.5px #000000;
   z-index: 10;
   pointer-events: none;
+  transition: all 1s;
 }
 
 main > a:nth-child(2n - 1):hover {
   transform: translateY(-20%);
 }
 
+main > a:nth-child(2n - 1):hover > p {
+  transition: all 3s;
+  top: 60%;
+}
+
 main > a:nth-child(2n):hover {
   transform: translateY(0);
+}
+
+main > a:nth-child(2n):hover > p {
+  transition: all 3s;
+  top: 40%;
 }
   
 main > a:hover {
