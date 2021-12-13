@@ -16,13 +16,14 @@ export default {
 <style scoped>
 footer {
   width: 100%;
-  height: 5%;
-  background-color: #ffc038;
+  height: 6%;
+  background-color: #ffffff;
+  border-top: 1.5px solid #ffc038;
   position: fixed;
-  bottom: -4.5%;
+  bottom: -5.25%;
   left: 0;
   opacity: 0;
-  transition: all 2s;
+  transition: all 1s;
 }
 
 footer:hover {
@@ -38,8 +39,7 @@ footer:hover {
 }
 
 .content p {
-  color: #ffffff;
-  text-shadow: -0.5px 0 #000000, 0 0.5px #000000, 0.5px 0 #000000, 0 -0.5px #000000;
-  font-size: 1rem;
+  color: #000000;
+  font-size: 1.8rem;
 }
 </style>
