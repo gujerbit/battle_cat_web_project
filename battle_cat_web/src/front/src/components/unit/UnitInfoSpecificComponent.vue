@@ -2,7 +2,7 @@
   <main>
     <div id="content">
       <div class="upgrade">
-        <p @click="changeUpgrade(index + 1)" v-for="(value, index) in unitData.data" :key="value" :class="unitData.upgrade === index + 1 ? 'select' : ''">{{index + 1}}단 진화</p>
+        <p @click="unitData.upgrade = index + 1" v-for="(value, index) in unitData.data" :key="value" :class="unitData.upgrade === index + 1 ? 'select' : ''">{{index + 1}}단 진화</p>
       </div>
       <div v-show="unitData.upgrade === index + 1" class="unit-info" v-for="(value, index) in unitData.data" :key="value">
         <div class="title">
@@ -59,7 +59,7 @@
         <div class="content">
           <section>
             <div class="content-title">
-              <p>체력</p> <p>히트백</p> <p>공격력</p> <p>DPS</p> <p>사거리</p> <p>가격</p>
+              <p>체력</p> <p>히트백</p> <p>공격력</p> <p>DPS</p> <p>인식 사거리 (타격 범위)</p> <p>가격</p>
             </div>
             <div class="content-data">
               <p>{{settingUnitData.hp[index]}}</p>
@@ -162,7 +162,6 @@
                 </div>
                 <div class="input">
                   <input @mouseover="wheelInstinctLevelChange($event, idx, watching, unitData);" @mouseleave="scrollPrevent(watching); overflowScrollApply($event)" class="instinct-level" v-model="unitData.instinctLevel[idx]" type="number" onfocus="this.select()">
-                  <button @click="instinctApply(idx)">{{unitData.instinctApply[idx] === true ? '적용' : '미적용'}}</button>
                 </div>
               </div>
             </div>
@@ -186,7 +185,7 @@
 </template>
 
 <script>
-import { ref, onBeforeMount, getCurrentInstance, watchEffect, onMounted } from 'vue';
+import { ref, onBeforeMount, getCurrentInstance, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { getSpecificUnitInfo } from '../../js/unit/unitInfo.js';
 import { dataSetting, instinctSetting, levelSetting, dpsSetting } from '../../js/unit/unitSpecifiecInfo.js';
@@ -203,106 +202,77 @@ export default {
       rarity: ['normal', 'special', 'rare', 'super_rare', 'uber_rare', 'legend_rare'],
       target: ['red', 'fly', 'black', 'metal', 'angel', 'alien', 'zombie', 'ancient', 'devil']
     };
-
+    //미가공 유닛 데이터
     const unitData = ref({
-      data: [],
-      upgrade: 1,
-      level: [1, 10, 30],
-      instinctLevel: [0, 0, 0, 0, 0],
-      attackPower: [],
-      dps: [],
-      hp: [],
-      hitBack: [],
-      attackSpeed: [],
-      attackEndSpeed: [],
-      attackFreq: [],
-      moveSpeed: [],
-      produceSpeed: [],
-      cost: [],
-      attackRange: [],
-      description: [],
-      property: [],
-      instinct: [],
-      levelIncreaseRate: [],
-      combineAttackPower: [],
-      maxLevel: [],
-      instinctApply: [true, true, true, true, true],
+      data: [], //전체 데이터
+      upgrade: 1, //현재 진화 단계
+      level: [1, 10, 30], //진화 단계별 레벨
+      instinctLevel: [0, 0, 0, 0, 0], //본능별 레벨
+      attackPower: [], //공격력
+      dps: [], //초당 공격력
+      hp: [], //체력
+      hitBack: [], //히트백
+      attackSpeed: [], //선딜
+      attackEndSpeed: [], //후딜
+      attackFreq: [], //공격 빈도
+      moveSpeed: [], //이동 속도
+      produceSpeed: [], //생산 속도
+      cost: [], //가격
+      attackRange: [], //사거리
+      description: [], //인게임 설명
+      property: [], //능력
+      instinct: [], //본능
+      levelIncreaseRate: [], //레벨 당 스펙 증가율
+      combineAttackPower: [], //합산 공격력
+      maxLevel: [], //최대 레벨
     });
-
+    //가공 유닛 데이터
     const settingUnitData = ref({
-      attackPower: [],
-      hp: [],
-      instinct: [],
-      cost: 0,
-      moveSpeed: 0,
-      produceSpeed: 0
+      attackPower: [], //공격력
+      hp: [], //체력
+      instinct: [], //본능
+      cost: 0, //가격
+      moveSpeed: 0, //이동 속도
+      produceSpeed: 0 //생산 속도
     });
-
+    //스크롤 방지
     const watching = ref({
-      ready: false,
-      scroll: true,
+      scroll: true, //스크롤을 해도 되는지
     });
-
-    const changeUpgrade = (value) => {
-      unitData.value.upgrade = value;
-    };
-
+    //본능 레벨 설정
     const instinctLevelSetting = (level) => {
-      for(let i = 0; i < level.length; i++) {
-        let origin = unitData.value.instinct.instinct.increase[i];
-        
-        if(origin !== undefined) origin *= level[i];
-        
-        settingUnitData.value.instinct.instinct.increase[i] = origin;
-      }
+      for(let i = 0; i < level.length; i++) if(unitData.value.instinct.instinct.increase[i] !== undefined) settingUnitData.value.instinct.instinct.increase[i] = unitData.value.instinct.instinct.increase[i] * level[i];
 
       applyInstinct(level, unitData, settingUnitData);
     };
 
-    const instinctApply = (idx) => {
-      unitData.value.instinctApply[idx] = !unitData.value.instinctApply[idx];
-    };
-
     onBeforeMount(() => {
-      unitData.value.data = getSpecificUnitInfo(proxy.store, route.params.unitId);
-      dataSetting(unitData.value);
-      let instinct = unitData.value.instinct;
-
-      for(let i = 0; i < 2; i++) {
-        if(i === 0) unitData.value.instinct = instinctSetting(instinct);
-        else settingUnitData.value.instinct = instinctSetting(instinct);
-      }
-
-      watching.value.ready = true;
-    });
-
-    onMounted(() => {
-      let attackPowerContent = document.querySelectorAll('.attack-power');
-
-      for(let i = 0; i < attackPowerContent.length; i++) {
-        if(settingUnitData.value.attackPower[i].length <= 1) attackPowerContent[i].style.gridTemplateRows = '1fr';
-      }
+      unitData.value.data = getSpecificUnitInfo(proxy.store, route.params.unitId); //유닛 데이터 가져오기
+      dataSetting(unitData.value); //유닛 데이터 설정
+      let instinct = unitData.value.instinct; //설정전 본능
+      unitData.value.instinct = instinctSetting(instinct); //미가공 유닛 데이터에 본능 설정
+      settingUnitData.value.instinct = instinctSetting(instinct); //가공 유닛 데이터에 본능 설정
     });
 
     watchEffect(() => {
-      if(watching.value.ready) {
+      if(settingUnitData.value.instinct.instinct !== undefined) { //본능 설정이 끝났다면
         for(let i = 0; i < unitData.value.maxLevel.length; i++) {
-          if(unitData.value.level[i] > unitData.value.maxLevel[i]) unitData.value.level[i] = unitData.value.maxLevel[i];
-          if(unitData.value.level[i] < 1) unitData.value.level[i] = 1;
+          if(unitData.value.level[i] > unitData.value.maxLevel[i]) unitData.value.level[i] = unitData.value.maxLevel[i]; //유닛 레벨이 최대 레벨 보다 높다면 유닛 레벨을 최대 레벨로 설정
+          if(unitData.value.level[i] < 1) unitData.value.level[i] = 1; //유닛 레벨이 1보다 작다면 유닛 레벨을 1로 설정
         }
 
         for(let i = 0; i < unitData.value.instinct.instinct.maxLevel.length; i++) {
-          if(unitData.value.instinctLevel[i] > unitData.value.instinct.instinct.maxLevel[i] * 1) unitData.value.instinctLevel[i] = unitData.value.instinct.instinct.maxLevel[i] * 1;
-          if(unitData.value.instinctLevel[i] < 0) unitData.value.instinctLevel[i] = 0;
+          if(unitData.value.instinctLevel[i] > unitData.value.instinct.instinct.maxLevel[i] * 1) unitData.value.instinctLevel[i] = unitData.value.instinct.instinct.maxLevel[i] * 1; //본능 레벨이 최대 레벨 보다 높다면 본능 레벨을 최대 레벨로 설정
+          if(unitData.value.instinctLevel[i] < 0) unitData.value.instinctLevel[i] = 0; //본능 레벨이 0보다 작다면 본능 레벨을 0으로 설정
         }
         
-        levelSetting(unitData.value.level, unitData, settingUnitData);
-        instinctLevelSetting(unitData.value.instinctLevel);
-        dpsSetting(unitData.value);
+        levelSetting(unitData.value.level, unitData, settingUnitData); //유닛 레벨 설정
+        instinctLevelSetting(unitData.value.instinctLevel); //유닛 본능 레벨 설정
+        dpsSetting(unitData.value); //유닛 dps 설정
       }
     });
 
-    return { unitData, settingUnitData, elements, watching, changeUpgrade, wheelLevelChange, wheelInstinctLevelChange, scrollPrevent, instinctApply, overflowScrollApply };
+    return { unitData, settingUnitData, elements, watching, wheelLevelChange, wheelInstinctLevelChange, scrollPrevent, overflowScrollApply };
   }
 }
 </script>
