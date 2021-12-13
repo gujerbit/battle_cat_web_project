@@ -87,8 +87,8 @@ export default {
     };
     //OR 검색 & AND 검색 설정
     const setInclude = () => {
-      searchInfo.value.include = !searchInfo.value.include;
-      setSearchUnitInfo(searchInfo.value, proxy.store);
+      searchInfo.value.include = !searchInfo.value.include; //OR라면 AND로, AND라면 OR로
+      setSearchUnitInfo(searchInfo.value, proxy.store); //검색
     };
     //스타일 세팅
     const setStyle = (event) => {
