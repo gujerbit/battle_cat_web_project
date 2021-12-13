@@ -288,13 +288,41 @@ section p {
   border-top: none;
 }
 
-.description > p:first-child, .property > p:first-child, .instinct > p:first-child {
+.description > p:first-child, .instinct > p:first-child {
   background-color: #ffc038;
   font-size: 2.8rem;
   color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.property-header {
+  width: 100%;
+  height: 100%;
+  background-color: #ffc038;
+  position: relative;
+}
+
+.property-header p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 2.8rem !important;
+}
+
+.property-header button {
+  position: absolute;
+  top: 0;
+  right: 0.25%;
+  width: 7.5%;
+  height: 90%;
+  border: none;
+  border: 1.5px solid #000000;
+  border-radius: 5px;
+  background-color: #ffffff;
+  cursor: pointer;
 }
 
 .property .property-content {

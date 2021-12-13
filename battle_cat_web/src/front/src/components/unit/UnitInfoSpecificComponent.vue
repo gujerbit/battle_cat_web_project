@@ -166,10 +166,19 @@
               </div>
             </div>
           </div>
-          <div class="property" v-show="unitData.property[index] != ''">
-            <p>능력/효과</p>
+          <div class="property" v-if="unitData.property[index] != ''">
+            <div class="property-header">
+              <p>능력/효과</p>
+              <button @click="unitData.propertyApply[index] = !unitData.propertyApply[index]">{{unitData.propertyApply[index] ? '적용' : '미적용'}}</button>
+            </div>
             <div class="property-content">
-              <p v-for="item in unitData.property[index]" :key="item">{{item.split(',')[1]}}</p>
+              <p v-for="item in unitData.property[index]" :key="item">
+                <span>{{item.split(',')[1].split('|')[0]}}</span>
+                <span>{{item.split(',')[2]}}</span>
+                <span>{{item.split(',')[1].split('|')[1]}}</span>
+                <span>{{item.split(',')[3]}}</span>
+                <span>{{item.split(',')[1].split('|')[2]}}</span>
+              </p>
             </div>
           </div>
           <div class="description">
@@ -188,8 +197,8 @@
 import { ref, onBeforeMount, getCurrentInstance, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { getSpecificUnitInfo } from '../../js/unit/unitInfo.js';
-import { dataSetting, instinctSetting, levelSetting, dpsSetting } from '../../js/unit/unitSpecifiecInfo.js';
-import { applyInstinct } from '../../js/unit/unitInstinct.js';
+import { dataSetting, propertySetting, instinctSetting, levelSetting, dpsSetting } from '../../js/unit/unitSpecifiecInfo.js';
+import { applyProperty, applyInstinct } from '../../js/unit/unitInstinct.js';
 import { wheelLevelChange, wheelInstinctLevelChange, scrollPrevent, overflowScrollApply } from '../../js/util/wheelControl.js';
 
 export default {
@@ -225,11 +234,13 @@ export default {
       levelIncreaseRate: [], //레벨 당 스펙 증가율
       combineAttackPower: [], //합산 공격력
       maxLevel: [], //최대 레벨
+      propertyApply: [false, false, false],
     });
     //가공 유닛 데이터
     const settingUnitData = ref({
       attackPower: [], //공격력
       hp: [], //체력
+      property: [], //능력
       instinct: [], //본능
       cost: 0, //가격
       moveSpeed: 0, //이동 속도
@@ -249,7 +260,9 @@ export default {
     onBeforeMount(() => {
       unitData.value.data = getSpecificUnitInfo(proxy.store, route.params.unitId); //유닛 데이터 가져오기
       dataSetting(unitData.value); //유닛 데이터 설정
+      let property = unitData.value.property;
       let instinct = unitData.value.instinct; //설정전 본능
+      settingUnitData.value.property = propertySetting(property);
       unitData.value.instinct = instinctSetting(instinct); //미가공 유닛 데이터에 본능 설정
       settingUnitData.value.instinct = instinctSetting(instinct); //가공 유닛 데이터에 본능 설정
     });
@@ -264,6 +277,10 @@ export default {
         for(let i = 0; i < unitData.value.instinct.instinct.maxLevel.length; i++) {
           if(unitData.value.instinctLevel[i] > unitData.value.instinct.instinct.maxLevel[i] * 1) unitData.value.instinctLevel[i] = unitData.value.instinct.instinct.maxLevel[i] * 1; //본능 레벨이 최대 레벨 보다 높다면 본능 레벨을 최대 레벨로 설정
           if(unitData.value.instinctLevel[i] < 0) unitData.value.instinctLevel[i] = 0; //본능 레벨이 0보다 작다면 본능 레벨을 0으로 설정
+        }
+
+        for(let i = 0; i < unitData.value.propertyApply.length; i++) {
+          if(unitData.value.propertyApply[i]) applyProperty(i, unitData, settingUnitData);
         }
         
         levelSetting(unitData.value.level, unitData, settingUnitData); //유닛 레벨 설정

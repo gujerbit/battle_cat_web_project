@@ -1,4 +1,4 @@
-export { dataSetting, instinctSetting, levelSetting, dpsSetting };
+export { dataSetting, propertySetting, instinctSetting, levelSetting, dpsSetting };
 
 function dataSetting(value) {
   value.data.forEach(res => {
@@ -20,6 +20,26 @@ function dataSetting(value) {
   });
 }
 
+function propertySetting(value) {
+  let property = {
+    img: [],
+    description: [],
+    firstValue: [],
+    secondValue: [],
+  };
+
+  for(let i = 0; i < value.length; i++) {
+    let item = value[i][0].split(',');
+    let keys = Object.keys(property);
+
+    for(let j = 0; j < keys.length; j++) {
+      property[`${keys[j]}`].push(item[j]);
+    }
+  }
+
+  return { property };
+}
+
 function instinctSetting(value) {
   let instinct = {
     img: [],
@@ -29,16 +49,16 @@ function instinctSetting(value) {
     init: [],
   };
 
-  for(let j = 0; j < value.length; j++) {
-    let item = value[j].split(',');
+  for(let i = 0; i < value.length; i++) {
+    let item = value[i].split(',');
     let keys = Object.keys(instinct);
 
-    for(let k = 0; k < keys.length; k++) {
-      instinct[`${keys[k]}`].push(item[k]);
+    for(let j = 0; j < keys.length; j++) {
+      instinct[`${keys[j]}`].push(item[j]);
     }
   }
 
-  return {instinct};
+  return { instinct };
 }
 
 function levelSetting(level, unitData, settingUnitData) {

@@ -157,7 +157,6 @@ function includeSetting(data, value, res, result) {
 }
 
 function excludeSetting(arr, value) {
-  console.log(value);
   for(let i = 0; i < arr.length; i++) for(let j = 0; j < value.length; j++) if(arr[i] === value[j]) value = value.filter(res => res !== arr[i]);
 
   return value;

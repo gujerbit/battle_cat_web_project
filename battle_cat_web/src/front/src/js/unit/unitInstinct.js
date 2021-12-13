@@ -1,15 +1,21 @@
-export { applyInstinct };
+export { applyProperty, applyInstinct };
+
+function applyProperty(idx, unitData, settingUnitData) {
+  if(unitData.value.propertyApply[idx] && settingUnitData.value.property.property.img[idx] === 'strength') strength(idx, unitData, settingUnitData);
+}
 
 function applyInstinct(level, unitData, settingUnitData) {
   for(let i = 0; i < level.length; i++) {
     if(unitData.value.instinct.instinct.img[i] === 'attack_power_increase') attackPowerIncrease(i, unitData, settingUnitData);
-    if(unitData.value.instinct.instinct.img[i] === 'hp_increase') hpIncrease(i, unitData, settingUnitData);
+    if(unitData.value.instinct.instinct.img[i] === 'hp_increase') hpIncrease(i, settingUnitData);
     if(unitData.value.instinct.instinct.img[i] === 'cost_decrease') costDecrease(i, unitData, settingUnitData);
     if(unitData.value.instinct.instinct.img[i] === 'attack_power_up') attackPowerUp(i, unitData, settingUnitData);
     if(unitData.value.instinct.instinct.img[i] === 'move_speed_increase') moveSpeedIncrease(i, unitData, settingUnitData);
     if(unitData.value.instinct.instinct.img[i] === 'produce_speed_increase') produceSpeedIncrease(i, unitData, settingUnitData);
+    if(unitData.value.instinct.instinct.img[i] === 'strength') strength(i, unitData, settingUnitData);
   }
 }
+
 
 function attackPowerIncrease(idx, unitData, settingUnitData) {
   let increaseValue = settingUnitData.value.instinct.instinct.increase[idx];
@@ -33,7 +39,7 @@ function attackPowerIncrease(idx, unitData, settingUnitData) {
   unitData.value.combineAttackPower[2] = Math.round(combineAttackPower);
 }
 
-function hpIncrease(idx, unitData, settingUnitData) {
+function hpIncrease(idx, settingUnitData) {
   let increaseValue = settingUnitData.value.instinct.instinct.increase[idx];
   let hp = settingUnitData.value.hp[2];
 
@@ -91,4 +97,27 @@ function produceSpeedIncrease(idx, unitData, settingUnitData) {
   if(decreaseInit != 0 && unitData.value.instinctLevel[idx] > 0) produceSpeed -= decreaseInit;
 
   settingUnitData.value.produceSpeed = produceSpeed;
+}
+
+function strength(idx, unitData, settingUnitData) {
+  let hpIncrease = settingUnitData.value.property.property.firstValue[idx];
+  let attackPowerIncrease = settingUnitData.value.property.property.secondValue[idx];
+
+  let hp = settingUnitData.value.hp[idx];
+
+  hp += hp + Math.round(hp * hpIncrease);
+
+  settingUnitData.value.hp[idx] = hp;
+  //공격력
+  if(settingUnitData.value.attackPower[idx].length > 1) {
+    let attackPowerArr = settingUnitData.value.attackPower[idx];
+
+    for(let i = 0; i < attackPowerArr.length; i++) attackPowerArr[i] += Math.round(attackPowerArr[i] * attackPowerIncrease);
+
+    settingUnitData.value.attackPower[idx] = attackPowerArr;
+  }
+
+  let combineAttackPower = unitData.value.combineAttackPower[idx];
+  combineAttackPower += combineAttackPower * attackPowerIncrease;
+  unitData.value.combineAttackPower[idx] = Math.round(combineAttackPower);
 }
