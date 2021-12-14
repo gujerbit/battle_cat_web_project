@@ -1,4 +1,4 @@
-export { dataSetting, propertySetting, instinctSetting, levelSetting, dpsSetting };
+export { dataSetting, instinctSetting, levelSetting, dpsSetting };
 
 function dataSetting(value) {
   value.data.forEach(res => {
@@ -18,26 +18,6 @@ function dataSetting(value) {
     value.levelIncreaseRate = res.level_increase_rate.split(',');
     value.maxLevel.push(res.max_level);
   });
-}
-
-function propertySetting(value) {
-  let property = {
-    img: [],
-    description: [],
-    firstValue: [],
-    secondValue: [],
-  };
-
-  for(let i = 0; i < value.length; i++) {
-    let item = value[i][0].split(',');
-    let keys = Object.keys(property);
-
-    for(let j = 0; j < keys.length; j++) {
-      property[`${keys[j]}`].push(item[j]);
-    }
-  }
-
-  return { property };
 }
 
 function instinctSetting(value) {

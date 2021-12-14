@@ -66,9 +66,7 @@
               <p>{{unitData.hitBack[index]}}</p>
               <div class="attack-power">
                 <div class="content-division-forward">
-                  <template v-for="(item, idx) in settingUnitData.attackPower[index]" :key="item + idx">
-                    <p v-if="idx === 0">{{unitData.combineAttackPower[index]}}</p>
-                  </template>
+                  <p>{{unitData.combineAttackPower[index]}}</p>
                 </div>
                 <div class="content-division-backend" v-if="settingUnitData.attackPower[index].length > 1">
                   <template v-for="(item, idx) in settingUnitData.attackPower[index]" :key="item + idx">
@@ -169,16 +167,10 @@
           <div class="property" v-if="unitData.property[index] != ''">
             <div class="property-header">
               <p>능력/효과</p>
-              <!-- <button @click="unitData.propertyApply[index] = !unitData.propertyApply[index]">{{unitData.propertyApply[index] ? '적용' : '미적용'}}</button> -->
+              <button @click="unitData.propertyApply[index] = !unitData.propertyApply[index]">{{unitData.propertyApply[index] ? '적용' : '미적용'}}</button>
             </div>
             <div class="property-content">
-              <p v-for="item in unitData.property[index]" :key="item">
-                <span>{{item.split(',')[1].split('|')[0]}}</span>
-                <span>{{item.split(',')[2]}}</span>
-                <span>{{item.split(',')[1].split('|')[1]}}</span>
-                <span>{{item.split(',')[3]}}</span>
-                <span>{{item.split(',')[1].split('|')[2]}}</span>
-              </p>
+              <p v-for="item in unitData.property[index]" :key="item">{{item.split(',')[1]}}</p>
             </div>
           </div>
           <div class="description">
@@ -197,8 +189,9 @@
 import { ref, onBeforeMount, getCurrentInstance, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { getSpecificUnitInfo } from '../../js/unit/unitInfo.js';
-import { dataSetting, propertySetting, instinctSetting, levelSetting, dpsSetting } from '../../js/unit/unitSpecifiecInfo.js';
-import { applyProperty, applyInstinct } from '../../js/unit/unitInstinct.js';
+import { dataSetting, instinctSetting, levelSetting, dpsSetting } from '../../js/unit/unitSpecifiecInfo.js';
+import { applyInstinct } from '../../js/unit/unitInstinct.js';
+import { applyProperty } from '../../js/unit/unitProperty.js';
 import { wheelLevelChange, wheelInstinctLevelChange, scrollPrevent, overflowScrollApply } from '../../js/util/wheelControl.js';
 
 export default {
@@ -240,7 +233,6 @@ export default {
     const settingUnitData = ref({
       attackPower: [], //공격력
       hp: [], //체력
-      property: [], //능력
       instinct: [], //본능
       cost: 0, //가격
       moveSpeed: 0, //이동 속도
@@ -260,9 +252,7 @@ export default {
     onBeforeMount(() => {
       unitData.value.data = getSpecificUnitInfo(proxy.store, route.params.unitId); //유닛 데이터 가져오기
       dataSetting(unitData.value); //유닛 데이터 설정
-      let property = unitData.value.property;
       let instinct = unitData.value.instinct; //설정전 본능
-      settingUnitData.value.property = propertySetting(property);
       unitData.value.instinct = instinctSetting(instinct); //미가공 유닛 데이터에 본능 설정
       settingUnitData.value.instinct = instinctSetting(instinct); //가공 유닛 데이터에 본능 설정
     });
@@ -279,11 +269,8 @@ export default {
           if(unitData.value.instinctLevel[i] < 0) unitData.value.instinctLevel[i] = 0; //본능 레벨이 0보다 작다면 본능 레벨을 0으로 설정
         }
 
-        for(let i = 0; i < unitData.value.propertyApply.length; i++) {
-          if(unitData.value.propertyApply[i]) applyProperty(i, unitData, settingUnitData);
-        }
-        
         levelSetting(unitData.value.level, unitData, settingUnitData); //유닛 레벨 설정
+        applyProperty(unitData, settingUnitData);
         instinctLevelSetting(unitData.value.instinctLevel); //유닛 본능 레벨 설정
         dpsSetting(unitData.value); //유닛 dps 설정
       }
