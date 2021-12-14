@@ -8,6 +8,8 @@ function applyProperty(unitData, settingUnitData) {
       if(property === 'strength') strength(i, unitData, settingUnitData);
       if(property === 'super_damage') superDamage(i, unitData, settingUnitData);
       if(property === 'ultra_damage') ultraDamage(i, unitData, settingUnitData);
+      if(property === 'hard') hard(i, settingUnitData);
+      if(property === 'ultra_hard') ultraHard(i, settingUnitData);
     }
   }
 }
@@ -46,4 +48,12 @@ function ultraDamage(idx, unitData, settingUnitData) {
   }
 
   unitData.value.combineAttackPower[idx] = Math.round(unitData.value.combineAttackPower[idx] * 6);
+}
+//맷집이 좋다
+function hard(idx, settingUnitData) {
+  settingUnitData.value.hp[idx] = Math.round(settingUnitData.value.hp[idx] * 5);
+}
+//초 맷집이 좋다
+function ultraHard(idx, settingUnitData) {
+  settingUnitData.value.hp[idx] = Math.round(settingUnitData.value.hp[idx] * 7);
 }
