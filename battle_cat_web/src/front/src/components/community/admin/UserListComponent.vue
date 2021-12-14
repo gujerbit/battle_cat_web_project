@@ -178,10 +178,14 @@ export default {
     };
 
     onBeforeMount(async () => {
-      checkReject(proxy.axios);
+      const temp = 1;
 
-      getUserList(0);
-      userInfo.value.user = JSON.parse(window.sessionStorage.getItem('user-info'));
+      if(temp !== 1) {
+        checkReject(proxy.axios);
+
+        getUserList(0);
+        userInfo.value.user = JSON.parse(window.sessionStorage.getItem('user-info'));
+      }
     });
 
     watchEffect(() => {

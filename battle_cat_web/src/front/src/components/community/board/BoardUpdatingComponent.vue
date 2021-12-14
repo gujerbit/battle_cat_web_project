@@ -84,18 +84,25 @@ export default {
     };
 
     onBeforeMount(async () => {
-      checkReject(proxy.axios);
+      const temp = 1;
 
-      try {
-        let { data } = await proxy.axios.get(`/get_board_data/${route.params.idx}`, {
-          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-        });
+      if(temp === 1) {
+        alert('개편중입니다');
+        location.href = '/';
+      } else {
+        checkReject(proxy.axios);
 
-        updateInfo.value.title = data.title;
-        updateInfo.value.type = data.type;
-        updateInfo.value.content = data.content;
-      } catch (error) {
-        rejectAlert();
+        try {
+          let { data } = await proxy.axios.get(`/get_board_data/${route.params.idx}`, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
+
+          updateInfo.value.title = data.title;
+          updateInfo.value.type = data.type;
+          updateInfo.value.content = data.content;
+        } catch (error) {
+          rejectAlert();
+        }
       }
     });
 

@@ -129,68 +129,75 @@ export default {
     };
 
     onBeforeMount(async () => {
-      checkReject(proxy.axios);
+      const temp = 1;
 
-      try {
-        let { data:boardSize } = await proxy.axios.get('/get_board_list_size', {
-          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-        });
+      if(temp === 1) {
+        alert('개편중입니다');
+        location.href = '/';
+      } else {
+        checkReject(proxy.axios);
 
-        const boardSizeArr = [];
-        const boardData = [];
-
-        for(let i = 0; i < Math.ceil(boardSize / 100); i++) boardSizeArr.push(i * 100);
-
-        for(let i = 0; i < boardSizeArr.length; i++) {
-          let { data:boards } = await proxy.axios.get(`/get_board_list/${boardSizeArr[i]}`, {
+        try {
+          let { data:boardSize } = await proxy.axios.get('/get_board_list_size', {
             headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
           });
 
-          for(let j = 0; j < boards.length; j++) boardData.push(boards[j]);
-        }
-        
-        let { data:countSize } = await proxy.axios.get('/get_board_count_list_size', {
-          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-        });
+          const boardSizeArr = [];
+          const boardData = [];
 
-        const countSizeArr = [];
-        const countData = [];
+          for(let i = 0; i < Math.ceil(boardSize / 100); i++) boardSizeArr.push(i * 100);
 
-        for(let i = 0; i < Math.ceil(countSize / 100); i++) countSizeArr.push(i * 100);
+          for(let i = 0; i < boardSizeArr.length; i++) {
+            let { data:boards } = await proxy.axios.get(`/get_board_list/${boardSizeArr[i]}`, {
+              headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+            });
 
-        for(let i = 0; i < countSizeArr.length; i++) {
-          let { data:counts } = await proxy.axios.get(`/get_board_count_list/${countSizeArr[i]}`, {
+            for(let j = 0; j < boards.length; j++) boardData.push(boards[j]);
+          }
+          
+          let { data:countSize } = await proxy.axios.get('/get_board_count_list_size', {
             headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
           });
 
-          for(let j = 0; j < counts.length; j++) countData.push(counts[j]);
-        }
+          const countSizeArr = [];
+          const countData = [];
 
-        let { data:commentSize } = await proxy.axios.get('/get_comment_list_size', {
-          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-        });
+          for(let i = 0; i < Math.ceil(countSize / 100); i++) countSizeArr.push(i * 100);
 
-        const commentSizeArr = [];
-        const commentData = [];
+          for(let i = 0; i < countSizeArr.length; i++) {
+            let { data:counts } = await proxy.axios.get(`/get_board_count_list/${countSizeArr[i]}`, {
+              headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+            });
 
-        for(let i = 0; i < Math.ceil(commentSize / 100); i++) commentSizeArr.push(i * 100);
+            for(let j = 0; j < counts.length; j++) countData.push(counts[j]);
+          }
 
-        for(let i = 0; i < commentSizeArr.length; i++) {
-          let { data:comments } = await proxy.axios.get(`/get_comment_list/${commentSizeArr[i]}`, {
+          let { data:commentSize } = await proxy.axios.get('/get_comment_list_size', {
             headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
           });
 
-          for(let j = 0; j < comments.length; j++) commentData.push(comments[j]);
+          const commentSizeArr = [];
+          const commentData = [];
+
+          for(let i = 0; i < Math.ceil(commentSize / 100); i++) commentSizeArr.push(i * 100);
+
+          for(let i = 0; i < commentSizeArr.length; i++) {
+            let { data:comments } = await proxy.axios.get(`/get_comment_list/${commentSizeArr[i]}`, {
+              headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+            });
+
+            for(let j = 0; j < comments.length; j++) commentData.push(comments[j]);
+          }
+          
+          const list = boardData.reverse().filter(res => !res.remove);
+          board.value.list = list;
+          board.value.data = list;
+          board.value.countList = countData;
+          board.value.commentList = commentData;
+          contentUpdate();
+        } catch (error) {
+          rejectAlert();
         }
-        
-        const list = boardData.reverse().filter(res => !res.remove);
-        board.value.list = list;
-        board.value.data = list;
-        board.value.countList = countData;
-        board.value.commentList = commentData;
-        contentUpdate();
-      } catch (error) {
-        rejectAlert();
       }
     });
 

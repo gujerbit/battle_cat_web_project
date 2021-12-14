@@ -169,7 +169,7 @@
           <div class="property" v-if="unitData.property[index] != ''">
             <div class="property-header">
               <p>능력/효과</p>
-              <button @click="unitData.propertyApply[index] = !unitData.propertyApply[index]">{{unitData.propertyApply[index] ? '적용' : '미적용'}}</button>
+              <!-- <button @click="unitData.propertyApply[index] = !unitData.propertyApply[index]">{{unitData.propertyApply[index] ? '적용' : '미적용'}}</button> -->
             </div>
             <div class="property-content">
               <p v-for="item in unitData.property[index]" :key="item">

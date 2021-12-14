@@ -79,9 +79,16 @@ export default {
     });
 
     onBeforeMount(() => {
-      if(window.sessionStorage.getItem('jwt-auth-token') !== null) {
-        alert('로그인 상태에서는 이용하실 수 없습니다');
+      const temp = 1;
+
+      if(temp === 1) {
+        alert('개편중입니다');
         location.href = '/';
+      } else {
+        if(window.sessionStorage.getItem('jwt-auth-token') !== null) {
+          alert('로그인 상태에서는 이용하실 수 없습니다');
+          location.href = '/';
+        }
       }
     });
 

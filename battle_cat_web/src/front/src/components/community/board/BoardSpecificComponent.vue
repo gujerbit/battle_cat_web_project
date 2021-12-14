@@ -139,46 +139,53 @@ export default {
     };
 
     onBeforeMount(async () => {
-      checkReject(proxy.axios);
+      const temp = 1;
 
-      try {
-        let { data } = await proxy.axios.get(`/get_board_data/${route.params.idx}`, {
-          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-        });
+      if(temp === 1) {
+        alert('개편중입니다');
+        location.href = '/';
+      } else {
+        checkReject(proxy.axios);
 
-        board.value.content = data;
+        try {
+          let { data } = await proxy.axios.get(`/get_board_data/${route.params.idx}`, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
 
-        if(data.remove) {
-          alert('해당 게시물은 삭제되었습니다!');
-          location.href = '/board';
-        }
+          board.value.content = data;
 
-        let { data:count } = await proxy.axios.get(`/get_board_count/${route.params.idx}`, {
-          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-        });
+          if(data.remove) {
+            alert('해당 게시물은 삭제되었습니다!');
+            location.href = '/board';
+          }
 
-        board.value.count = count;
+          let { data:count } = await proxy.axios.get(`/get_board_count/${route.params.idx}`, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
 
-        let { data:commentData } = await proxy.axios.get(`/get_comment_data/${route.params.idx}`, {
-          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-        });
+          board.value.count = count;
 
-        comment.value.data = commentData;
-        let temp = {};
+          let { data:commentData } = await proxy.axios.get(`/get_comment_data/${route.params.idx}`, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
 
-        for(let i = 0; i < comment.value.data.length - 1; i++) {
-          for(let j = i; j < comment.value.data.length - 1; j++) {
-            if(comment.value.data.length <= 1) break;
+          comment.value.data = commentData;
+          let temp = {};
 
-            if(comment.value.data[i].salt_idx * 1 > comment.value.data[j + 1].salt_idx * 1) {
-              temp = comment.value.data[i];
-              comment.value.data[i] = comment.value.data[j + 1];
-              comment.value.data[j + 1] = temp;
+          for(let i = 0; i < comment.value.data.length - 1; i++) {
+            for(let j = i; j < comment.value.data.length - 1; j++) {
+              if(comment.value.data.length <= 1) break;
+
+              if(comment.value.data[i].salt_idx * 1 > comment.value.data[j + 1].salt_idx * 1) {
+                temp = comment.value.data[i];
+                comment.value.data[i] = comment.value.data[j + 1];
+                comment.value.data[j + 1] = temp;
+              }
             }
           }
+        } catch (error) {
+          rejectAlert();
         }
-      } catch (error) {
-        rejectAlert();
       }
     });
 

@@ -81,7 +81,14 @@ export default {
     };
 
     onBeforeMount(() => {
-      checkReject(proxy.axios);
+      const temp = 1;
+
+      if(temp === 1) {
+        alert('개편중입니다');
+        location.href = '/';
+      } else {
+        checkReject(proxy.axios);
+      }
     });
 
     onMounted(() => {

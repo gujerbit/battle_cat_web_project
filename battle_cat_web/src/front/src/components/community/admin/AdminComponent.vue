@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 import { getAccountInfo } from '../../../js/community/admin/admin.js';
 
 import userListComponent from './UserListComponent.vue';
@@ -25,6 +25,11 @@ export default {
   setup() {
     const view = ref({
       select: 'userList',
+    });
+
+    onBeforeMount(() => {
+      alert('개편중입니다');
+      location.href = '/';
     });
 
     return { view, getAccountInfo };

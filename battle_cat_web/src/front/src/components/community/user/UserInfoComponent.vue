@@ -290,31 +290,38 @@ export default {
     }
 
     onBeforeMount(async () => {
-      checkReject(proxy.axios);
+      const temp = 1;
 
-      try {
-        let { data } = await proxy.axios.get(`/user_info/${route.params.userName}`, {
-          headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
-        });
-        
-        if(data.length === 0) {
-          alert('존재하지 않는 유저입니다!');
-          location.href = '/admin';
-        } else {
-          userInfo.value.data.push(data);
-          userInfo.value.description = data.description;
-          userInfo.value.name = data.name;
-          userInfo.value.code = data.code;
-          userInfo.value.beforeName = data.name;
-          userInfo.value.beforeCode = data.code;
-          userInfo.value.email = data.email;
-          unit.value.all = getUnitInfo(proxy.store);
+      if(temp === 1) {
+        alert('개편중입니다');
+        location.href = '/';
+      } else {
+        checkReject(proxy.axios);
+
+        try {
+          let { data } = await proxy.axios.get(`/user_info/${route.params.userName}`, {
+            headers: {'jwt-auth-token': window.sessionStorage.getItem('jwt-auth-token')}
+          });
+          
+          if(data.length === 0) {
+            alert('존재하지 않는 유저입니다!');
+            location.href = '/admin';
+          } else {
+            userInfo.value.data.push(data);
+            userInfo.value.description = data.description;
+            userInfo.value.name = data.name;
+            userInfo.value.code = data.code;
+            userInfo.value.beforeName = data.name;
+            userInfo.value.beforeCode = data.code;
+            userInfo.value.email = data.email;
+            unit.value.all = getUnitInfo(proxy.store);
+          }
+
+          getUserBoardList(data.email, 0);
+          getUserCommentList(data.email, 0);
+        } catch (error) {
+          rejectAlert();
         }
-
-        getUserBoardList(data.email, 0);
-        getUserCommentList(data.email, 0);
-      } catch (error) {
-        rejectAlert();
       }
     });
 
