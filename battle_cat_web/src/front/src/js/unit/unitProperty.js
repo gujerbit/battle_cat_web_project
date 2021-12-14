@@ -7,6 +7,7 @@ function applyProperty(unitData, settingUnitData) {
 
       if(property === 'strength') strength(i, unitData, settingUnitData);
       if(property === 'super_damage') superDamage(i, unitData, settingUnitData);
+      if(property === 'ultra_damage') ultraDamage(i, unitData, settingUnitData);
     }
   }
 }
@@ -37,6 +38,12 @@ function superDamage(idx, unitData, settingUnitData) {
   unitData.value.combineAttackPower[idx] = Math.round(unitData.value.combineAttackPower[idx] * 4);
 }
 //극 데미지
-// function ultraDamage(idx, unitData, settingUnitData) {
+function ultraDamage(idx, unitData, settingUnitData) {
+  if(settingUnitData.value.attackPower[idx].length > 1) {
+    let attackPowerArr = settingUnitData.value.attackPower[idx];
 
-// }
+    for(let i = 0; i < attackPowerArr.length; i++) attackPowerArr[i] *= 6;
+  }
+
+  unitData.value.combineAttackPower[idx] = Math.round(unitData.value.combineAttackPower[idx] * 6);
+}
