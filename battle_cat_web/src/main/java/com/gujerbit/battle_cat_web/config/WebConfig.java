@@ -53,7 +53,8 @@ public class WebConfig implements WebMvcConfigurer {
 		"/find_account",
 		"/find_email",
 		"/get_password_change_code",
-		"/change_password"
+		"/change_password",
+		"/enemyInfo/**"
 	};
 	
 	private final String[] INCLUDE_PATHS = {
