@@ -10,6 +10,11 @@ function applyInstinct(level, unitData, settingUnitData) {
     if(unitData.value.instinct.instinct.img[i] === 'produce_speed_increase') produceSpeedIncrease(i, unitData, settingUnitData);
     if(unitData.value.instinct.instinct.img[i] === 'strength') strength(level, i, unitData, settingUnitData);
     if(unitData.value.instinct.instinct.img[i] === 'super_damage') superDamage(level, i, unitData, settingUnitData);
+    if(unitData.value.instinct.instinct.img[i] === 'ultra_damage') ultraDamage(level, i, unitData, settingUnitData);
+    if(unitData.value.instinct.instinct.img[i] === 'hard') hard(level, i, settingUnitData);
+    if(unitData.value.instinct.instinct.img[i] === 'ultra_hard') ultraHard(level, i, settingUnitData);
+    if(unitData.value.instinct.instinct.img[i] === 'critical') critical(level, i, unitData, settingUnitData);
+    if(unitData.value.instinct.instinct.img[i] === 'soul_attack') soulAttack(level, i, unitData, settingUnitData);
   }
 }
 //기본 공격 업
@@ -103,5 +108,55 @@ function superDamage(level, idx, unitData, settingUnitData) {
     }
   
     unitData.value.combineAttackPower[2] = Math.round(unitData.value.combineAttackPower[2] * 4);
+  }
+}
+//극 데미지
+function ultraDamage(level, idx, unitData, settingUnitData) {
+  if(level[idx] > 0) {
+    if(settingUnitData.value.attackPower[2].length > 1) {
+      let attackPowerArr = settingUnitData.value.attackPower[2];
+  
+      for(let i = 0; i < attackPowerArr.length; i++) attackPowerArr[i] *= 6;
+
+      settingUnitData.value.attackPower[2] = attackPowerArr;
+    }
+  
+    unitData.value.combineAttackPower[2] = Math.round(unitData.value.combineAttackPower[2] * 6);
+  }
+}
+//맷집이 좋다
+function hard(level, idx, settingUnitData) {
+  if(level[idx] > 0) settingUnitData.value.hp[2] = Math.round(settingUnitData.value.hp[2] * 5);
+}
+//초 맷집이 좋다
+function ultraHard(level, idx, settingUnitData) {
+  if(level[idx] > 0) settingUnitData.value.hp[2] = Math.round(settingUnitData.value.hp[2] * 7);
+}
+//크리티컬
+function critical(level, idx, unitData, settingUnitData) {
+  if(level[idx] > 0) {
+    if(settingUnitData.value.attackPower[2].length > 1) {
+      let attackPowerArr = settingUnitData.value.attackPower[2];
+  
+      for(let i = 0; i < attackPowerArr.length; i++) attackPowerArr[i] *= 2;
+
+      settingUnitData.value.attackPower[2] = attackPowerArr;
+    }
+  
+    unitData.value.combineAttackPower[2] = Math.round(unitData.value.combineAttackPower[2] * 2);
+  }
+}
+//혼신의 일격
+function soulAttack(level, idx, unitData, settingUnitData) {
+  if(level[idx] > 0) {
+    if(settingUnitData.value.attackPower[2].length > 1) {
+      let attackPowerArr = settingUnitData.value.attackPower[2];
+  
+      for(let i = 0; i < attackPowerArr.length; i++) attackPowerArr[i] *= 3;
+
+      settingUnitData.value.attackPower[2] = attackPowerArr;
+    }
+  
+    unitData.value.combineAttackPower[2] = Math.round(unitData.value.combineAttackPower[2] * 3);
   }
 }
