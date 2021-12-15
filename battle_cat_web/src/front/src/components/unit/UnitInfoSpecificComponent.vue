@@ -20,7 +20,7 @@
         </div>
         <div class="image">
           <div class="image-title">
-            <p>유닛 이미지</p> <p>대항 속성</p> <p>유닛 능력/효과</p>
+            <p>캐릭터 이미지</p> <p>대항 속성</p> <p>캐릭터 능력/효과</p>
           </div>
           <div class="image-content">
             <div class="thumbnail">
