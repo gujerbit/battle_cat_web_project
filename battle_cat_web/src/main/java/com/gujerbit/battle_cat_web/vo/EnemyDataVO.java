@@ -26,19 +26,25 @@ public class EnemyDataVO {
 	private int hit_back;
 	
 	@JsonProperty
-	private int attack_power;
+	private String attack_power;
 	
 	@JsonProperty
 	private int move_speed;
 	
 	@JsonProperty
-	private int attack_speed;
+	private String attack_speed;
+	
+	@JsonProperty
+	private int attack_end_speed;
 	
 	@JsonProperty
 	private int attack_freq;
 	
 	@JsonProperty
-	private int attack_range;
+	private String attack_range;
+	
+	@JsonProperty
+	private int drop_money;
 	
 	@JsonProperty
 	private String attack_type;

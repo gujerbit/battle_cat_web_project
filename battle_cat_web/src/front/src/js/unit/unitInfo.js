@@ -112,7 +112,7 @@ function setSearchUnitInfo(value, store) {
         for(let i = 0; i < unitInfo.length; i++) {
           let instinctArr = unitInfo[i].instinct.split('/');
           let combinePropertyArr = [];
-
+          
           for(let j = 0; j < unitInfo[i].target.split('/').length; j++) combinePropertyArr.push(unitInfo[i].target.split('/')[j]);
 
           for(let j = 0; j < instinctArr.length; j++) {

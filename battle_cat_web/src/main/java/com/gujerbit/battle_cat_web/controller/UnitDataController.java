@@ -22,7 +22,7 @@ public class UnitDataController {
 	@Autowired
 	private UnitDataServiceImpl service;
 	
-	@GetMapping("/unit_data/{size}")
+	@GetMapping("/unit_data/{start}")
 	public @ResponseBody List<UnitDataVO> getAllUnitData(@PathVariable int start) {
 		List<UnitDataVO> list = service.selectAllUnitData(start);
 		

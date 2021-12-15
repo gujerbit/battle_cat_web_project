@@ -47,10 +47,8 @@ function setSearchEnemyInfo(value, store) {
     } else {
       for(let i = 0; i < enemyInfo.length; i++) {
         let propertyArr = enemyInfo[i].property.split('/');
-
-        for(let j = 0; j < propertyArr.length; j++) for(let k = 0; k < value.property.length; k++) if(propertyArr[j].split(',')[0] === value.property[k]) value.property = value.property.filter(res => res !== propertyArr[j].split(',')[0]);
         
-        if(value.property.length === 0) result.push(enemyInfo[i]);
+        if(excludeSetting(propertyArr, value.property).length === 0) result.push(enemyInfo[i]);
       }
 
       if(value.target.length > 0) {
@@ -60,9 +58,7 @@ function setSearchEnemyInfo(value, store) {
         for(let i = 0; i < enemyInfo.length; i++) {
           let targetArr = enemyInfo[i].target.split('/');
 
-          for(let j = 0; j < targetArr.length; j++) for(let k = 0; k < value.target.length; k++) if(targetArr[j] === value.target[k]) value.target = value.target.filter(res => res !== targetArr[j]);
-
-          if(value.target.length === 0) result.push(enemyInfo[i]);
+          if(excludeSetting(targetArr, value.target).length === 0) result.push(enemyInfo[i]);
         }
       }
 
@@ -73,9 +69,7 @@ function setSearchEnemyInfo(value, store) {
         for(let i = 0; i < enemyInfo.length; i++) {
           let attackTypeArr = enemyInfo[i].attack_type.split('/');
 
-          for(let j = 0; j < attackTypeArr.length; j++) for(let k = 0; k < value.attackType.length; k++) if(attackTypeArr[j] === value.attackType[k]) value.attackType = value.attackType.filter(res => res !== attackTypeArr[j]);
-
-          if(value.attackType.length === 0) result.push(enemyInfo[i]);
+          if(excludeSetting(attackTypeArr, value.attackType).length === 0) result.push(enemyInfo[i]);
         }
       }
             
@@ -100,6 +94,12 @@ function includeSetting(data, value, res, result) {
       });
     }
   });
+}
+
+function excludeSetting(arr, value) {
+  for(let i = 0; i < arr.length; i++) for(let j = 0; j < value.length; j++) if(arr[i] === value[j]) value = value.filter(res => res !== arr[i]);
+
+  return value;
 }
 
 function getSearchEnemyInfo(store) {

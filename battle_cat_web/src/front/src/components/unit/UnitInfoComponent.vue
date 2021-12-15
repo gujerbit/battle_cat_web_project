@@ -24,6 +24,7 @@
 import { ref, getCurrentInstance, onBeforeMount, watchEffect } from 'vue';
 import { getUnitInfo, getSearchUnitInfo } from '../../js/unit/unitInfo.js';
 import { pagination, pageDivision } from '../../js/util/pagination.js';
+
 import elementComponent from './UnitInfoElementComponent.vue'
 
 export default {
@@ -86,7 +87,7 @@ export default {
       } else if(info.value.all.length > 0) contentUpdate(); //검색 값이 존재하지 않는다면 현재 번호에 해당하는 내용 업데이트
     });
 
-    return { pageInfo, info, nextPage, prevPage, selectPage };
+    return { info, pageInfo, nextPage, prevPage, selectPage };
   },
   components: {
     elementComponent,

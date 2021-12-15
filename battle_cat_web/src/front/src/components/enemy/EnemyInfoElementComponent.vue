@@ -130,11 +130,6 @@ export default {
   align-items: center;
 }
 
-section {
-  width: 100%;
-  height: 100%;
-}
-
 .target {
   width: 100%;
   height: 100%;

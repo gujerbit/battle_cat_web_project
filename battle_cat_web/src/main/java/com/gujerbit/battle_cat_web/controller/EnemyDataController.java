@@ -22,7 +22,7 @@ public class EnemyDataController {
 	@Autowired
 	private EnemyDataServiceImpl service;
 	
-	@GetMapping("/enemy_data")
+	@GetMapping("/enemy_data/{start}")
 	public @ResponseBody List<EnemyDataVO> getAllEnemyData(@PathVariable int start) {
 		List<EnemyDataVO> list = service.selectAllEnemyData(start);
 		

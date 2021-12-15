@@ -40,7 +40,7 @@ const routes = [
         component: enemyInfoComponent,
     },
     {
-        path: '/enemyInfo/:unitData',
+        path: '/enemyInfo/:unitId',
         component: enemyInfoSpecComponent,
         props: true
     },
