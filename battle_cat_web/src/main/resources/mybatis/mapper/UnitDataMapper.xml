@@ -5,8 +5,7 @@
 <mapper namespace="com.gujerbit.battle_cat_web.dao.UnitDataDAO">
 	
 	<select id="selectAllUnitData" resultType="UnitDataVO">
-		SELECT * FROM
-		unit_data
+		SELECT * FROM unit_data
 		ORDER BY CONVERT(SUBSTRING_INDEX(id, '-', 1), SIGNED INTEGER),
 		CONVERT(SUBSTRING_INDEX(id, '-', -1), SIGNED INTEGER)
 		LIMIT #{start}, 100
@@ -16,7 +15,7 @@
 		SELECT COUNT(id) FROM unit_data
 	</select>
 
-	<select id="selectSearchIncludeUnitData" resultType="UnitDataVO">
+	<!-- <select id="selectSearchIncludeUnitData" resultType="UnitDataVO">
 		SELECT * FROM unit_data
 		<where>
 			<foreach collection="propertys" item="item" close="OR" separator="OR">
@@ -172,5 +171,6 @@
 		<where>
 			SUBSTRING_INDEX(id, '-', 1) LIKE #{unitId}
 		</where>
-	</select>
+	</select>  -->
+	
 </mapper>

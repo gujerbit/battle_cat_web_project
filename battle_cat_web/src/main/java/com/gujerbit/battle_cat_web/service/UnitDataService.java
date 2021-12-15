@@ -8,20 +8,20 @@ import com.gujerbit.battle_cat_web.vo.UnitDataVO;
 
 public interface UnitDataService {
 
-	List<UnitDataVO> selectAllUnitData(Map<String, Integer> size);
+	List<UnitDataVO> selectAllUnitData(int start);
 	
 	int selectAllUnitDataSize();
 	
-	List<UnitDataVO> selectSearchIncludeUnitData(Map<String, ArrayList<String>> map);
-	
-	List<UnitDataVO> selectSearchUnitData(Map<String, ArrayList<String>> map);
-	
-	List<UnitDataVO> selectNameSearchIncludeUnitData(Map<String, ArrayList<String>> map);
-	
-	List<UnitDataVO> selectNameSearchUnitData(Map<String, ArrayList<String>> map);
-	
-	List<UnitDataVO> selectNameUnitData(String unitName);
-	
-	List<UnitDataVO> selectIdUnitData(String unitId);
+//	List<UnitDataVO> selectSearchIncludeUnitData(Map<String, ArrayList<String>> map);
+//	
+//	List<UnitDataVO> selectSearchUnitData(Map<String, ArrayList<String>> map);
+//	
+//	List<UnitDataVO> selectNameSearchIncludeUnitData(Map<String, ArrayList<String>> map);
+//	
+//	List<UnitDataVO> selectNameSearchUnitData(Map<String, ArrayList<String>> map);
+//	
+//	List<UnitDataVO> selectNameUnitData(String unitName);
+//	
+//	List<UnitDataVO> selectIdUnitData(String unitId);
 	
 }

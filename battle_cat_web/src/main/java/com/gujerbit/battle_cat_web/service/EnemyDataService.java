@@ -8,18 +8,20 @@ import com.gujerbit.battle_cat_web.vo.EnemyDataVO;
 
 public interface EnemyDataService {
 
-	List<EnemyDataVO> selectAllEnemyData();
+	List<EnemyDataVO> selectAllEnemyData(int start);
 	
-	List<EnemyDataVO> selectSearchIncludeEnemyData(Map<String, ArrayList<String>> map);
+	int selectAllEnemyDataSize();
 	
-	List<EnemyDataVO> selectSearchEnemyData(Map<String, ArrayList<String>> map);
-	
-	List<EnemyDataVO> selectNameSearchIncludeEnemyData(Map<String, ArrayList<String>> map);
-	
-	List<EnemyDataVO> selectNameSearchEnemyData(Map<String, ArrayList<String>> map);
-	
-	List<EnemyDataVO> selectNameEnemyData(String unitName);
-	
-	List<EnemyDataVO> selectIdEnemyData(String unitId);
+//	List<EnemyDataVO> selectSearchIncludeEnemyData(Map<String, ArrayList<String>> map);
+//	
+//	List<EnemyDataVO> selectSearchEnemyData(Map<String, ArrayList<String>> map);
+//	
+//	List<EnemyDataVO> selectNameSearchIncludeEnemyData(Map<String, ArrayList<String>> map);
+//	
+//	List<EnemyDataVO> selectNameSearchEnemyData(Map<String, ArrayList<String>> map);
+//	
+//	List<EnemyDataVO> selectNameEnemyData(String unitName);
+//	
+//	List<EnemyDataVO> selectIdEnemyData(String unitId);
 	
 }

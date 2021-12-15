@@ -11,20 +11,20 @@ import com.gujerbit.battle_cat_web.vo.UnitDataVO;
 @Mapper
 public interface UnitDataDAO {
 	
-	public List<UnitDataVO> selectAllUnitData(Map<String, Integer> size);
+	public List<UnitDataVO> selectAllUnitData(int start);
 	
 	public int selectAllUnitDataSize();
 	
-	public List<UnitDataVO> selectSearchIncludeUnitData(Map<String, ArrayList<String>> map);
-	
-	public List<UnitDataVO> selectSearchUnitData(Map<String, ArrayList<String>> map);
-	
-	public List<UnitDataVO> selectNameSearchIncludeUnitData(Map<String, ArrayList<String>> map);
-	
-	public List<UnitDataVO> selectNameSearchUnitData(Map<String, ArrayList<String>> map);
-	
-	public List<UnitDataVO> selectNameUnitData(String unitName);
-	
-	public List<UnitDataVO> selectIdUnitData(String unitId);
+//	public List<UnitDataVO> selectSearchIncludeUnitData(Map<String, ArrayList<String>> map);
+//	
+//	public List<UnitDataVO> selectSearchUnitData(Map<String, ArrayList<String>> map);
+//	
+//	public List<UnitDataVO> selectNameSearchIncludeUnitData(Map<String, ArrayList<String>> map);
+//	
+//	public List<UnitDataVO> selectNameSearchUnitData(Map<String, ArrayList<String>> map);
+//	
+//	public List<UnitDataVO> selectNameUnitData(String unitName);
+//	
+//	public List<UnitDataVO> selectIdUnitData(String unitId);
 	
 }

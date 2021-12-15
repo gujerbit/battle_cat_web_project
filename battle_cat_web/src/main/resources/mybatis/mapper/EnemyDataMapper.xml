@@ -3,11 +3,17 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gujerbit.battle_cat_web.dao.EnemyDataDAO">
+
 	<select id="selectAllEnemyData" resultType="EnemyDataVO">
 		SELECT * FROM enemy_data
+		LIMIT #{start}, 100
 	</select>
 	
-	<select id="selectSearchIncludeEnemyData" resultType="EnemyDataVO">
+	<select id="selectAllEnemyDataSize" resultType="int">
+		SELECT COUNT(id) FROM enemy_data
+	</select>
+	
+	<!-- <select id="selectSearchIncludeEnemyData" resultType="EnemyDataVO">
 		SELECT * FROM enemy_data
 		<where>
 			<foreach collection="propertys" item="item" close="OR" separator="OR">
@@ -121,5 +127,6 @@
 		<where>
 			id = #{unitId}
 		</where>
-	</select>
+	</select>  -->
+	
 </mapper>

@@ -17,38 +17,43 @@ public class EnemyDataServiceImpl implements EnemyDataService {
 	private EnemyDataDAO dao;
 	
 	@Override
-	public List<EnemyDataVO> selectAllEnemyData() {
-		return dao.selectAllEnemyData();
+	public List<EnemyDataVO> selectAllEnemyData(int start) {
+		return dao.selectAllEnemyData(start);
 	}
 	
 	@Override
-	public List<EnemyDataVO> selectSearchIncludeEnemyData(Map<String, ArrayList<String>> map) {
-		return dao.selectSearchIncludeEnemyData(map);
+	public int selectAllEnemyDataSize() {
+		return dao.selectAllEnemyDataSize();
 	}
 	
-	@Override
-	public List<EnemyDataVO> selectSearchEnemyData(Map<String, ArrayList<String>> map) {
-		return dao.selectSearchEnemyData(map);
-	}
-	
-	@Override
-	public List<EnemyDataVO> selectNameSearchIncludeEnemyData(Map<String, ArrayList<String>> map) {
-		return dao.selectNameSearchIncludeEnemyData(map);
-	}
-	
-	@Override
-	public List<EnemyDataVO> selectNameSearchEnemyData(Map<String, ArrayList<String>> map) {
-		return dao.selectNameSearchEnemyData(map);
-	}
-	
-	@Override
-	public List<EnemyDataVO> selectNameEnemyData(String unitName) {
-		return dao.selectNameEnemyData(unitName);
-	}
-	
-	@Override
-	public List<EnemyDataVO> selectIdEnemyData(String unitId) {
-		return dao.selectIdEnemyData(unitId);
-	}
+//	@Override
+//	public List<EnemyDataVO> selectSearchIncludeEnemyData(Map<String, ArrayList<String>> map) {
+//		return dao.selectSearchIncludeEnemyData(map);
+//	}
+//	
+//	@Override
+//	public List<EnemyDataVO> selectSearchEnemyData(Map<String, ArrayList<String>> map) {
+//		return dao.selectSearchEnemyData(map);
+//	}
+//	
+//	@Override
+//	public List<EnemyDataVO> selectNameSearchIncludeEnemyData(Map<String, ArrayList<String>> map) {
+//		return dao.selectNameSearchIncludeEnemyData(map);
+//	}
+//	
+//	@Override
+//	public List<EnemyDataVO> selectNameSearchEnemyData(Map<String, ArrayList<String>> map) {
+//		return dao.selectNameSearchEnemyData(map);
+//	}
+//	
+//	@Override
+//	public List<EnemyDataVO> selectNameEnemyData(String unitName) {
+//		return dao.selectNameEnemyData(unitName);
+//	}
+//	
+//	@Override
+//	public List<EnemyDataVO> selectIdEnemyData(String unitId) {
+//		return dao.selectIdEnemyData(unitId);
+//	}
 	
 }

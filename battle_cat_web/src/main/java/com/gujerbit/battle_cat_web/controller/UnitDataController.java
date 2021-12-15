@@ -23,11 +23,8 @@ public class UnitDataController {
 	private UnitDataServiceImpl service;
 	
 	@GetMapping("/unit_data/{size}")
-	public @ResponseBody List<UnitDataVO> getAllUnitData(@PathVariable int size) {
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("start", size);
-		
-		List<UnitDataVO> list = service.selectAllUnitData(map);
+	public @ResponseBody List<UnitDataVO> getAllUnitData(@PathVariable int start) {
+		List<UnitDataVO> list = service.selectAllUnitData(start);
 		
 		return list;
 	}
