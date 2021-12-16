@@ -14,7 +14,7 @@ async function setEnemyInfo(axios, store) {
 
       for(let j = 0; j < enemys.length; j++) data.push(enemys[j]);
     }
-
+    
     store.commit('setEnemyInfo', data);
   }
 }

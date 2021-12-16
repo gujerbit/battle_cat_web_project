@@ -10,9 +10,12 @@
             <p>{{value.id}}</p>
             <p>{{value.name}}</p>
             <div class="increase">
-              <input type="number">
-              <input type="number">
-              <button>통합</button>
+              <input @mouseover="scrollIncreaseSetting(-1)" @mouseleave="watching.scroll = false" v-model="unitData.increase[0]" v-if="unitData.increaseCombination" class="increase-combination" type="number" onfocus="this.select()">
+              <template v-else>
+                <input @mouseover="scrollIncreaseSetting(0)" @mouseleave="watching.scroll = false" v-model="unitData.increase[1]" class="increase-division" type="number" onfocus="this.select()">
+                <input @mouseover="scrollIncreaseSetting(1)" @mouseleave="watching.scroll = false" v-model="unitData.increase[2]" class="increase-division" type="number" onfocus="this.select()">
+              </template>
+              <button @click="unitData.increaseCombination = !unitData.increaseCombination">{{unitData.increaseCombination ? '통합' : '개별'}}</button>
             </div>
           </div>
         </div>
@@ -25,7 +28,9 @@
               <img :src="require(`./../../assets/res/enemy/${value.image_dir}`)" alt="">
             </div>
             <div class="target">
-              <img v-for="item in value.target.split('/')" :key="item" :src="require(`../../assets/res/elements/property/target/${item}.png`)" alt="">
+              <template v-for="item in elements.target" :key="item">
+                <img v-if="value.target.includes(item)" :src="require(`../../assets/res/elements/property/target/${item}.png`)" alt="">
+              </template>
             </div>
             <div class="element">
               <template v-if="value.property.length > 0">
@@ -41,24 +46,24 @@
               <p>체력</p> <p>히트백</p> <p>공격력</p> <p>DPS</p> <p>인식 사거리 (타격 범위)</p> <p>처치 시 돈 획득량</p>
             </div>
             <div class="content-data">
-              <p>{{unitData.hp}}</p>
+              <p>{{settingUnitData.hp}}</p>
               <p>{{value.hit_back}}</p>
               <div class="attack-power">
                 <div class="content-division-forward">
                   <p>{{unitData.combineAttackPower}}</p>
                 </div>
-                <div class="content-division-backend" v-if="unitData.attackPower.length > 1">
-                  <template v-for="(item, idx) in unitData.attackPower" :key="item">
+                <div class="content-division-backend" v-if="value.attack_power.split('/').length > 1">
+                  <template v-for="(item, idx) in value.attack_power.split('/')" :key="item">
                     <p v-if="idx === 0">(</p>
                     <p v-if="idx !== 0">/</p>
                     <p>{{item}}</p>
-                    <p v-if="idx === unitData.attackPower.length - 1">)</p>
+                    <p v-if="idx === value.attack_power.split('/').length - 1">)</p>
                   </template>
                 </div>
               </div>
-              <p>{{unitData.dps}}</p>
-              <p>{{unitData.attackRange}}</p>
-              <p>{{unitData.dropMoney}}</p>
+              <p>{{Math.round(unitData.combineAttackPower / (value.attack_freq / 30))}}</p>
+              <p>{{value.attack_range}}</p>
+              <p>{{value.drop_money}}</p>
             </div>
           </section>
           <section>
@@ -67,63 +72,73 @@
             </div>
             <div class="content-data">
               <div class="attack-freq">
-                <p>{{(unitData.attackFreq / 30).toFixed(1)}}초</p>
-                <p>{{unitData.attackFreq}}F</p>
+                <p>{{(value.attack_freq / 30).toFixed(1)}}초</p>
+                <p>{{value.attack_freq}}F</p>
               </div>
               <div class="attack-cycle">
                 <div class="content-division-forward">
-                  <template v-for="(item, idx) in unitData.attackSpeed" :key="item">
-                    <p v-if="idx !== 0">/</p>
-                    <p>{{Math.abs(((unitData.attackFreq / 30) - (item / 30) - (unitData.attackEndSpeed / 30))).toFixed(1)}}</p>
-                    <p v-if="idx === unitData.attackSpeed.length - 1">초</p>
+                  <template v-if="value.attack_speed.split('/').length > 1">
+                    <template v-for="(item, idx) in value.attack_speed.split('/')" :key="item">
+                      <p v-if="idx !== 0">/</p>
+                      <p>{{Math.abs(((value.attack_freq / 30) - (item / 30) - (value.attack_end_speed / 30))).toFixed(1)}}</p>
+                      <p v-if="idx === value.attack_speed.split('/').length - 1">초</p>
+                    </template>
                   </template>
+                  <p v-else>{{Math.abs((value.attack_freq / 30) - (value.attack_speed / 30) - (value.attack_end_speed / 30)).toFixed(1)}}초</p>
                 </div>
                 <div class="content-division-backend">
-                  <template v-for="(item, idx) in unitData.attackSpeed" :key="item">
-                    <p v-if="idx !== 0">/</p>
-                    <p>{{unitData.attackFreq - item - unitData.attackEndSpeed}}</p>
-                    <p v-if="idx === unitData.attackSpeed.length - 1">F</p>
+                  <template v-if="value.attack_speed.split('/').length > 1">
+                    <template v-for="(item, idx) in value.attack_speed" :key="item">
+                      <p v-if="idx !== 0">/</p>
+                      <p>{{value.attack_freq - item - value.attack_end_speed}}</p>
+                      <p v-if="idx === value.attack_speed.split('/').length - 1">F</p>
+                    </template>
                   </template>
+                  <p v-else>{{value.attack_freq - value.attack_speed - value.attack_end_speed}}F</p>
                 </div>
               </div>
               <div class="attack-speed">
                 <div class="content-division-forward">
-                  <template v-for="(item, idx) in unitData.attackSpeed" :key="item">
-                    <p v-if="idx !== 0">/</p>
-                    <p>{{(item / 30).toFixed(1)}}</p>
-                    <p v-if="idx === unitData.attackSpeed.length - 1">초</p>
+                  <template v-if="value.attack_speed.split('/').length > 1">
+                    <template v-for="(item, idx) in value.attack_speed.split('/')" :key="item">
+                      <p v-if="idx !== 0">/</p>
+                      <p>{{(item / 30).toFixed(1)}}</p>
+                      <p v-if="idx === value.attack_speed.split('/').length - 1">초</p>
+                    </template>
                   </template>
+                  <p v-else>{{(value.attack_speed / 30).toFixed(1)}}초</p>
                 </div>
                 <div class="content-division-backend">
-                  <template v-for="(item, idx) in unitData.attackSpeed" :key="item">
-                    <p v-if="idx !== 0">/</p>
-                    <p>{{item}}</p>
-                    <p v-if="idx === unitData.attackSpeed.length - 1">F</p>
+                  <template v-if="value.attack_speed.split('/').length > 1">
+                    <template v-for="(item, idx) in value.attack_speed" :key="item">
+                      <p v-if="idx !== 0">/</p>
+                      <p>{{item}}</p>
+                      <p v-if="idx === value.attack_speed.split('/').length - 1">F</p>
+                    </template>
                   </template>
+                  <p v-else>{{value.attack_speed}}F</p>
                 </div>
               </div>
               <div class="attack-end-speed">
-                <p>{{(unitData.attackEndSpeed / 30).toFixed(1)}}초</p>
-                <p>{{unitData.attackEndSpeed}}F</p>
+                <p>{{(value.attack_end_speed / 30).toFixed(1)}}초</p>
+                <p>{{value.attack_end_speed}}F</p>
               </div>
               <div class="move-speed">
-                <p v-if="index === 2 && settingUnitData.moveSpeed !== 0">{{settingUnitData.moveSpeed}}</p>
-                <p v-else>{{unitData.moveSpeed}}</p>
+                <p>{{value.move_speed}}</p>
               </div>
             </div>
           </section>
-          <div class="property" v-if="unitData.property.length > 0">
+          <div class="property" v-if="value.property.length > 0">
             <div class="property-header">
               <p>능력/효과</p>
-              <!-- <button @click="unitData.propertyApply[index] = !unitData.propertyApply[index]">{{unitData.propertyApply[index] ? '적용' : '미적용'}}</button> -->
             </div>
             <div class="property-content">
-              <p v-for="item in unitData.property" :key="item">{{item.split(',')[1]}}</p>
+              <p v-for="item in value.property.split('/')" :key="item">{{item.split(',')[1]}}</p>
             </div>
           </div>
           <div class="description">
             <p>인게임 설명</p>
-            <p>{{unitData.description}}</p>
+            <p>{{value.description}}</p>
           </div>
         </div>
       </div>
@@ -134,7 +149,7 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, onBeforeMount } from 'vue';
+import { ref, getCurrentInstance, onBeforeMount, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { getSpecificEnemyInfo } from '../../js/enemy/enemyInfo';
 
@@ -150,28 +165,73 @@ export default {
 
     const unitData = ref({
       data: [],
-      increase: [100, 100], //공격력 배율, 체력 배율
+      increase: [100, 100, 100], //통합 배율, 공격력 배율, 체력 배율
       increaseCombination: true, //배율 통합할건지?
-      attackPower: [],
-      dps: 0,
       hp: 0,
-      hitBack: 0,
-      attackSpeed: [],
-      attackEndSpeed: 0,
-      attackFreq: 0,
-      moveSpeed: 0,
-      attackRange: '',
-      dropMoney: 0, //죽었을 때 돈 드랍량
-      description: '',
-      property: [],
+      attackPower: [],
       combineAttackPower: 0,
     });
 
-    onBeforeMount(() => {
-      unitData.value.data = getSpecificEnemyInfo(proxy.store, route.params.unitId);
+    const settingUnitData = ref({
+      hp: 0,
+      attackPower: [],
     });
 
-    return { elements, unitData };
+    const watching = ref({
+      scroll: false,
+    });
+
+    const scrollIncreaseSetting = (type) => {
+      watching.value.scroll = true;
+
+      window.onmousewheel = e => {
+        if(watching.value.scroll) {
+          if(unitData.value.increaseCombination) unitData.value.increase[0] += e.wheelDelta / 180;
+          else {
+            if(type === 0) unitData.value.increase[1] += e.wheelDelta / 180;
+            else if(type === 1) unitData.value.increase[2] += e.wheelDelta / 180;
+          }
+        }
+      }
+    };
+
+    onBeforeMount(() => {
+      unitData.value.data = getSpecificEnemyInfo(proxy.store, route.params.unitId);
+      unitData.value.hp = unitData.value.data[0].hp;
+      unitData.value.attackPower.push(unitData.value.data[0].attack_power.split('/'));
+
+      settingUnitData.value.attackPower.forEach(res => {
+        unitData.value.combineAttackPower += res * 1;
+      });
+    });
+
+    watchEffect(() => {
+      for(let i = 0; i < unitData.value.increase.length; i++) {
+        if(unitData.value.increase[i] > 1000000) unitData.value.increase[i] = 1000000;
+        if(unitData.value.increase[i] < 1) unitData.value.increase[i] = 1;
+      }
+
+      let hp = unitData.value.hp;
+      let attackPower = unitData.value.attackPower;
+
+      if(unitData.value.increaseCombination) {
+        settingUnitData.value.hp = Math.round(hp * unitData.value.increase[0] / 100);
+        
+        for(let i = 0; i < attackPower.length; i++) settingUnitData.value.attackPower[i] = Math.round(attackPower[i] * unitData.value.increase[0] / 100);
+      } else {
+        settingUnitData.value.hp = Math.round(hp * unitData.value.increase[1] / 100);
+        
+        for(let i = 0; i < attackPower.length; i++) settingUnitData.value.attackPower[i] = Math.round(attackPower[i] * unitData.value.increase[2] / 100);
+      }
+
+      unitData.value.combineAttackPower = 0;
+
+      settingUnitData.value.attackPower.forEach(res => {
+        unitData.value.combineAttackPower += res * 1;
+      });
+    });
+
+    return { elements, unitData, settingUnitData, watching, scrollIncreaseSetting };
   }
 }
 </script>
@@ -253,9 +313,8 @@ main * {
 .increase {
   width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-columns: 45% 45% 10%;
-  justify-items: center;
+  display: flex;
+  justify-content: center;
   align-items: center;
   font-size: 2.3rem;
   border: 1.5px solid #ffc038;
@@ -264,17 +323,34 @@ main * {
 }
 
 .increase input {
-  width: 100%;
+  outline: 0;
+  text-align: center;
+}
+
+.increase input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.increase-combination {
+  width: 80%;
+  height: 100%;
+  border: none;
+  border-right: 1.5px solid #ffc038;
+}
+
+.increase-division {
+  width: 40%;
   height: 100%;
   border: none;
   border-right: 1.5px solid #ffc038;
 }
 
 .increase button {
-  width: 100%;
+  width: 20%;
   height: 100%;
   border: none;
   background-color: #ffffff;
+  cursor: pointer;
 }
   
 .image {
@@ -386,6 +462,10 @@ section p {
   height: 100%;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+}
+
+section:nth-child(2) .content-title, section:nth-child(2) .content-data {
+  grid-template-columns: repeat(5, 1fr);
 }
   
 .content-title p {
@@ -541,7 +621,7 @@ section p {
   filter: grayscale(1);
 }
   
-.main-page, .unit-info-page {
+.main-page, .enemy-info-page {
   width: 4.5%;
   height: 100%;
   border: 2px solid #ffc038;
@@ -564,13 +644,13 @@ section p {
   border-radius: 0 15px 15px 0;
 }
   
-.unit-info-page {
+.enemy-info-page {
   right: 0;
   border-right: none;
   border-radius: 15px 0 0 15px;
 }
   
-.main-page:hover, .unit-info-page:hover {
+.main-page:hover, .enemy-info-page:hover {
   opacity: 1;
 }
 </style>

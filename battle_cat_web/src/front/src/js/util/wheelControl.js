@@ -1,10 +1,10 @@
 export { wheelLevelChange, wheelInstinctLevelChange, scrollPrevent, overflowScrollApply };
 
-function wheelLevelChange(index, wathcing, value) {
-  wathcing.scroll = true;
+function wheelLevelChange(index, watching, value) {
+  watching.scroll = true;
 
   window.onmousewheel = e => {
-    if(wathcing.scroll) value.level[index] += e.wheelDelta / 180;
+    if(watching.scroll) value.level[index] += e.wheelDelta / 180;
   }
 }
 
