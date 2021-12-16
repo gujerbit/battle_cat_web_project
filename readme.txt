@@ -34,3 +34,9 @@ https://github.com/kaodigua/vuex-persist-indexeddb - vuex indexeddb 참조
 커뮤니티
 
 attack_type(attack_type1, start_damage_range, end_damage_range/attack_type2...) -> multi/wide,-500,300
+
+https://waifu2x.me/index.en.html  <- 이미지 고해상도로 바꿔주는 사이트
+Style - Photo
+Noise - None
+Upscaling - 1.7
+Compression - 10

@@ -4,7 +4,7 @@
       <div class="unit-info" v-for="value in unitData.data" :key="value">
         <div class="title">
           <div class="title-header">
-            <p>ID</p> <p>이름</p> <p>배율 (공격력/체력)</p>
+            <p>ID</p> <p>이름</p> <p>배율 % (체력/공격력)</p>
           </div>
           <div class="title-content">
             <p>{{value.id}}</p>
@@ -30,6 +30,7 @@
             <div class="target">
               <template v-for="item in elements.target" :key="item">
                 <img v-if="value.target.includes(item)" :src="require(`../../assets/res/elements/property/target/${item}.png`)" alt="">
+                <img v-else :src="require(`../../assets/res/elements/property/untarget/${item}.png`)" alt="">
               </template>
             </div>
             <div class="element">
@@ -52,12 +53,12 @@
                 <div class="content-division-forward">
                   <p>{{unitData.combineAttackPower}}</p>
                 </div>
-                <div class="content-division-backend" v-if="value.attack_power.split('/').length > 1">
-                  <template v-for="(item, idx) in value.attack_power.split('/')" :key="item">
+                <div class="content-division-backend" v-if="settingUnitData.attackPower.length > 1">
+                  <template v-for="(item, idx) in settingUnitData.attackPower" :key="item">
                     <p v-if="idx === 0">(</p>
                     <p v-if="idx !== 0">/</p>
                     <p>{{item}}</p>
-                    <p v-if="idx === value.attack_power.split('/').length - 1">)</p>
+                    <p v-if="idx === settingUnitData.attackPower.length - 1">)</p>
                   </template>
                 </div>
               </div>
@@ -88,7 +89,7 @@
                 </div>
                 <div class="content-division-backend">
                   <template v-if="value.attack_speed.split('/').length > 1">
-                    <template v-for="(item, idx) in value.attack_speed" :key="item">
+                    <template v-for="(item, idx) in value.attack_speed.split('/')" :key="item">
                       <p v-if="idx !== 0">/</p>
                       <p>{{value.attack_freq - item - value.attack_end_speed}}</p>
                       <p v-if="idx === value.attack_speed.split('/').length - 1">F</p>
@@ -110,7 +111,7 @@
                 </div>
                 <div class="content-division-backend">
                   <template v-if="value.attack_speed.split('/').length > 1">
-                    <template v-for="(item, idx) in value.attack_speed" :key="item">
+                    <template v-for="(item, idx) in value.attack_speed.split('/')" :key="item">
                       <p v-if="idx !== 0">/</p>
                       <p>{{item}}</p>
                       <p v-if="idx === value.attack_speed.split('/').length - 1">F</p>
@@ -198,7 +199,7 @@ export default {
     onBeforeMount(() => {
       unitData.value.data = getSpecificEnemyInfo(proxy.store, route.params.unitId);
       unitData.value.hp = unitData.value.data[0].hp;
-      unitData.value.attackPower.push(unitData.value.data[0].attack_power.split('/'));
+      unitData.value.attackPower = unitData.value.data[0].attack_power.split('/');
 
       settingUnitData.value.attackPower.forEach(res => {
         unitData.value.combineAttackPower += res * 1;
@@ -216,7 +217,7 @@ export default {
 
       if(unitData.value.increaseCombination) {
         settingUnitData.value.hp = Math.round(hp * unitData.value.increase[0] / 100);
-        
+
         for(let i = 0; i < attackPower.length; i++) settingUnitData.value.attackPower[i] = Math.round(attackPower[i] * unitData.value.increase[0] / 100);
       } else {
         settingUnitData.value.hp = Math.round(hp * unitData.value.increase[1] / 100);
@@ -397,8 +398,8 @@ main * {
 }
   
 .thumbnail img {
-  width: 80%;
-  height: 85%;
+  width: 50%;
+  height: 65%;
 }
   
 .target, .element {
