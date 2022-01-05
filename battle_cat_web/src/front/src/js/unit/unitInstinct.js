@@ -48,8 +48,15 @@ function costDecrease(idx, unitData, settingUnitData) {
 }
 //공격력 업
 function attackPowerUp(idx, unitData, settingUnitData) {
-  let increaseValue = settingUnitData.value.instinct.instinct.increase[idx];
-  
+  const instinct = settingUnitData.value.instinct.instinct;
+
+  let increaseValue = instinct.increase[idx];
+  let init = 0;
+
+  if(instinct.init[idx] !== undefined) init = Number(instinct.init[idx]);
+
+  if(increaseValue > 0) increaseValue += init;
+
   if(settingUnitData.value.attackPower[2].length > 1) {
     let attackPowerArr = settingUnitData.value.attackPower[2];
 
