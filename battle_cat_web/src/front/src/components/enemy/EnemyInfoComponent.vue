@@ -38,7 +38,7 @@ export default {
 
     const pageInfo = ref({
       totalPage: [], //전체 페이지
-      divisionPage: 27, //한 번호에 몇 개씩 데이터를 보여줄 것인지 정하는 변수
+      divisionPage: 36, //한 번호에 몇 개씩 데이터를 보여줄 것인지 정하는 변수
       currentPage: 1, //현재 페이지
       viewPage: 0, //현재 페이지 배열의 index
     });

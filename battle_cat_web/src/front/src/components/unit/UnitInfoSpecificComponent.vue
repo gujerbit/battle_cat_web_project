@@ -244,7 +244,7 @@ export default {
     });
     //본능 레벨 설정
     const instinctLevelSetting = (level) => {
-      for(let i = 0; i < level.length; i++) if(unitData.value.instinct.instinct.increase[i] !== undefined) settingUnitData.value.instinct.instinct.increase[i] = unitData.value.instinct.instinct.increase[i] * level[i];
+      for(let i = 0; i < level.length; i++) if(unitData.value.instinct.instinct.increase[i] !== undefined) settingUnitData.value.instinct.instinct.increase[i] = (unitData.value.instinct.instinct.increase[i] * level[i]).toFixed(0);
 
       applyInstinct(level, unitData, settingUnitData);
     };
