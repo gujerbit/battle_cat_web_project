@@ -50,13 +50,13 @@ function costDecrease(idx, unitData, settingUnitData) {
 function attackPowerUp(idx, unitData, settingUnitData) {
   const instinct = settingUnitData.value.instinct.instinct;
 
-  let increaseValue = instinct.increase[idx];
+  let increaseValue = Number(instinct.increase[idx]);
   let init = 0;
 
   if(instinct.init[idx] !== undefined) init = Number(instinct.init[idx]);
 
   if(increaseValue > 0) increaseValue += init;
-
+  
   if(settingUnitData.value.attackPower[2].length > 1) {
     let attackPowerArr = settingUnitData.value.attackPower[2];
 
