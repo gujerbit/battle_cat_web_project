@@ -138,7 +138,7 @@
               <p v-for="item in value.property.split('/')" :key="item">{{item.split(',')[1]}}</p>
             </div>
           </div>
-          <div class="description">
+          <div class="description" v-if="value.description.length > 0">
             <p>인게임 설명</p>
             <p>{{value.description}}</p>
           </div>
