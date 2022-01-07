@@ -26,6 +26,7 @@
           <div class="image-content">
             <div class="thumbnail">
               <img :src="require(`./../../assets/res/enemy/${value.image_dir}`)" alt="">
+              <!-- <img src="../../assets/res/enemy/none/collaboration/etc/tankType10.png" alt=""> -->
             </div>
             <div class="target">
               <template v-for="item in elements.target" :key="item">
