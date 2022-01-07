@@ -80,6 +80,11 @@ export default {
         if(getSearchEnemyInfo(proxy.store).length > 0) { //검색 결과가 존재한다면
           info.value.current = pagination(getSearchEnemyInfo(proxy.store), pageInfo.value.currentPage, pageInfo.value.divisionPage); //현재 번호에 해당하는 검색 결과 페이지네이션
           pageInfo.value.totalPage = pageDivision(getSearchEnemyInfo(proxy.store), pageInfo.value.divisionPage); //페이지 배열 설정
+
+          if(pageInfo.value.viewPage > pageInfo.value.totalPage.length - 1) {
+            pageInfo.value.viewPage = pageInfo.value.totalPage.length - 1;
+            pageInfo.value.currentPage = pageInfo.value.totalPage[pageInfo.value.viewPage][0];
+          }
         } else { //검색 결과가 존재하지 않는다면
           info.value.current = []; //현재 값 초기화
           pageInfo.value.totalPage = [1]; //전체 페이지 번호 1로 고정
