@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <!-- <header-component /> -->
+    <header-component />
     <div id="wrapper">
       <router-view v-slot="{ Component }">
         <transition name="slide">
@@ -15,7 +15,7 @@
 <script>
 import { ref, onBeforeMount } from 'vue';
 // import $ from 'jquery';
-// import headerComponent from './components/main/HeaderComponent.vue';
+import headerComponent from './components/main/HeaderComponent.vue';
 import footerComponent from './components/main/FooterComponent.vue';
 
 export default {
@@ -39,7 +39,7 @@ export default {
       return { user };
     },
     components: {
-      // headerComponent,
+      headerComponent,
       footerComponent
     },
 }

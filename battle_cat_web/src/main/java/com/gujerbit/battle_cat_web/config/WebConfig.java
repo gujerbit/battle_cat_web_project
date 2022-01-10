@@ -57,6 +57,7 @@ public class WebConfig implements WebMvcConfigurer {
 		"/check_code",
 		"/board_writing",
 		"/board_updating/**",
+		"/stageInfo/**"
 	};
 	
 	private final String[] INCLUDE_PATHS = {
