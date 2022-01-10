@@ -4,7 +4,7 @@
       <stage-info-element-component />
       <section>
         <div class="content">
-
+          {{info.all}}
         </div>
       </section>
     </div>
@@ -13,16 +13,26 @@
 </template>
 
 <script>
-import { onBeforeMount } from 'vue';
+import { ref, getCurrentInstance, onBeforeMount } from 'vue';
 
 import stageInfoElementComponent from './stageInfoElementComponent.vue';
+import { getStageInfo } from '../../js/stage/stageInfo.js';
 
 export default {
   setup() {
-    onBeforeMount(() => {
-      alert('제작중입니다');
-      history.back();
+    const { proxy } = getCurrentInstance();
+
+    const info = ref({
+      all: [],
+      current: [],
     });
+
+    onBeforeMount(() => {
+      proxy.store.commit('setSearchStageInfo', []);
+      info.value.all = getStageInfo(proxy.store);
+    });
+
+    return { info };
   },
   components: {
     stageInfoElementComponent

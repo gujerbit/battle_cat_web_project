@@ -40,3 +40,8 @@ Style - Photo
 Noise - None
 Upscaling - 1.7
 Compression - 10
+
+-- 인증서 갱신
+서버 중지하고 sudo certbot renew
+cd /etc/letsencrypt/live/www.nyanko-db.shop
+openssl pkcs12 -export -in fullchain.pem -inkey privkey.pem -out keystore.p12 -name airpageserver -CAfile chain.pem -caname root
