@@ -11,6 +11,7 @@
 import { onBeforeMount, getCurrentInstance } from 'vue';
 import { setUnitInfo } from '../../js/unit/unitInfo.js';
 import { setEnemyInfo } from '../../js/enemy/enemyInfo.js';
+import { setStageInfo } from '../../js/stage/stageInfo.js';
 
 export default {
   setup() {
@@ -25,7 +26,8 @@ export default {
     onBeforeMount(() => {
       setUnitInfo(proxy.axios, proxy.store); //store에 데이터 담기
       setEnemyInfo(proxy.axios, proxy.store);
-    })
+      setStageInfo(proxy.axios, proxy.store);
+    });
 
     return { elements };
   }

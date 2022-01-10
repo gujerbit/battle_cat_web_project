@@ -17,9 +17,6 @@ public class StageDataVO {
 	private String sortation;
 	
 	@JsonProperty
-	private int step;
-	
-	@JsonProperty
 	private int base_hp;
 	
 	@JsonProperty
@@ -30,9 +27,6 @@ public class StageDataVO {
 	
 	@JsonProperty
 	private int stamina;
-	
-	@JsonProperty
-	private int drop_xp;
 	
 	@JsonProperty
 	private int stage_length;

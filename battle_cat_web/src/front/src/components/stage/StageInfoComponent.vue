@@ -20,6 +20,8 @@ import stageInfoElementComponent from './stageInfoElementComponent.vue';
 export default {
   setup() {
     onBeforeMount(() => {
+      alert('제작중입니다');
+      history.back();
     });
   },
   components: {

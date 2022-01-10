@@ -3,7 +3,20 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gujerbit.battle_cat_web.dao.StageDataDAO">
-	<select id="selectAllWorldStageData" resultType="StageDataVO">
+	
+	<select id="selectAllStageData" resultType="StageDataVO">
+		SELECT * FROM stage_data
+		ORDER BY CONVERT(SUBSTRING_INDEX(id, '-', 1), SIGNED INTEGER),
+		CONVERT(SUBSTRING_INDEX(SUBSTRING_INDEX(id, '-', 2), -1), SIGEND INTEGER),
+		CONVERT(SUBSTRING_INDEX(id, '-', -1), SIGNED INTEGER)
+		LIMIT #{start}, 100
+	</select>
+	
+	<select id="selectAllStageDataSize" resultType="int">
+		SELECT COUNT(id) FROM stage_data
+	</select>
+	
+	<!-- <select id="selectAllWorldStageData" resultType="StageDataVO">
 		SELECT * FROM stage_data
 		<where>
 			sortation = '세계편'
@@ -122,5 +135,6 @@
 			(name LIKE CONCAT('%',#{name},'%') OR
 			SUBSTRING_INDEX(SUBSTRING_INDEX(sortation, '/', 2), '/', -1) LIKE CONCAT('%',#{name},'%'))
 		</where>
-	</select>
+	</select> -->
+	
 </mapper>

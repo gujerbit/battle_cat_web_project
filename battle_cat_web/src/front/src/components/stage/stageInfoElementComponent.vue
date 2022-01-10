@@ -47,9 +47,8 @@ export default {
 
 .content {
   width: 90%;
-  height: 100%;
+  height: 70%;
   margin: 0 auto;
-  border-bottom: 1.5px solid #ffc038;
 }
 
 .main {
@@ -72,7 +71,8 @@ export default {
 }
 
 .main > li:hover {
-  background-color: #dddddd;
+  padding-top: 1.5px;
+  border-bottom: 1.5px solid #ffc038;
 }
 
 .subs {
@@ -91,10 +91,16 @@ export default {
 
 .sub > li {
   width: 100%;
-  height: 50%;
+  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 1s;
+  cursor: pointer;
+  font-size: 1.8rem;
+}
+
+.sub > li:hover {
+  padding-top: 1.5px;
+  border-bottom: 1.5px solid #ffc038;
 }
 </style>

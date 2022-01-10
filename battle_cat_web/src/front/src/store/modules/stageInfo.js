@@ -1,21 +1,21 @@
-export const enemyInfo = {
+export const stageInfo = {
   state: () => ({
     info: '',
     searchInfo: '',
   }),
   mutations: {
-    setEnemyInfo(state, value) {
+    setStageInfo(state, value) {
       state.info = value;
     },
-    setSearchEnemyInfo(state, value) {
+    setSearchStageInfo(state, value) {
       state.searchInfo = value;
     }
   },
   getters: {
-    getEnemyInfo(state) {
+    getStageInfo(state) {
       return state.info;
     },
-    getSearchEnemyInfo(state) {
+    getSearchStageInfo(state) {
       return state.searchInfo;
     }
   }
