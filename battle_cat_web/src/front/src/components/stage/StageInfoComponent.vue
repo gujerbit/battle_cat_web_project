@@ -5,36 +5,48 @@
       <section>
         <div class="content">
           <div class="stage" v-for="value in info.current" :key="value">
-            <!-- {{value.reward.split('/')[0].split(',')[0]}} -->
-            <div class="header">
-              <p>스테이지 이름</p>
-              <p>적 출격 정보</p>
-              <p>클리어 보상</p>
-              <p>소비 통솔력</p>
-              <p>출격 제한</p>
-            </div>
-            <div class="content">
-              <p class="name">{{value.name}}</p>
-              <div class="enemy-info" v-for="item in value.enemy_info.split('/')" :key="item">
-                <div class="enemy-header">
-                  <p>이미지</p>
-                  <p>이름</p>
-                  <p>배율</p>
-                  <p>출격 수</p>
-                </div>
-                <div class="enemy-content">
-                  <img :src="require(`../../assets/res/enemy/${getEnemy(item.split(',')[0]).image_dir}`)" alt="">
-                  <p class="enemy-name">{{getEnemy(item.split(',')[0]).name}}</p>
-                  <p class="enemy-power">{{item.split(',')[1]}}%</p>
-                  <p class="enemy-count">{{item.split(',')[2] > 0 ? item.split(',')[2] : '무제한'}}</p>
-                </div>
+            <template v-if="value != null">
+              <div class="header">
+                <p>스테이지 이름</p>
+                <p>적 출격 정보</p>
+                <p>클리어 보상</p>
+                <p>소비 통솔력</p>
               </div>
-              <div class="reward" v-for="item in value.reward.split('/')" :key="item">
-                <p class="reward-type">{{item.split(',')[0]}}</p>
-                <p class="reward-content">{{item.split(',')[1]}}</p>
-                <p class="reward-drop">{{item.split(',')[2]}}%</p>
+              <div class="stage-content">
+                <p class="name">{{value.name}}</p>
+                <div class="enemy-info">
+                  <div class="enemy-header">
+                    <p>이미지</p>
+                    <p>이름</p>
+                    <p>배율</p>
+                    <p>출격 수</p>
+                  </div>
+                  <div class="enemy-content-area">
+                    <div class="enemy-content" v-for="item in value.enemy_info.split('/')" :key="item">
+                      <img :src="require(`../../assets/res/enemy/${getEnemy(item.split(',')[0]).image_dir}`)" alt="">
+                      <p class="enemy-name">{{getEnemy(item.split(',')[0]).name}}</p>
+                      <p class="enemy-power">{{item.split(',')[1]}}%</p>
+                      <p class="enemy-count">{{item.split(',')[2] > 0 ? item.split(',')[2] : '무제한'}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="reward">
+                  <div class="reward-header">
+                    <p>이름</p>
+                    <p>획득량</p>
+                    <p>확률</p>
+                  </div>
+                  <div class="reward-content-area">
+                    <div class="reward-content" v-for="item in value.reward.split('/')" :key="item">
+                      <p class="reward-name">{{item.split(',')[0]}}</p>
+                      <p class="reward-count">{{item.split(',')[1]}}</p>
+                      <p class="reward-drop">{{item.split(',')[2]}}</p>
+                    </div>
+                  </div>
+                </div>
+                <p class="stamina">{{value.stamina}}</p>
               </div>
-            </div>
+            </template>
           </div>
         </div>
         <div class="pages">
@@ -115,7 +127,7 @@ export default {
 
     watchEffect(() => {
       info.value.all = getSearchStageInfo(proxy.store);
-      contentUpdate();
+      if(info.value.all !== undefined) contentUpdate();
     });
 
     return { info, pageInfo, nextPage, prevPage, selectPage, getEnemy };
@@ -150,12 +162,121 @@ section {
   margin: 0 auto;
   display: grid;
   grid-template-rows: 94.5% 4.5%;
+  overflow: auto;
 }
 
 .content {
   width: 100%;
   height: 100%;
+  display: grid;
+  grid-template-rows: repeat(10, 20%);
+}
+
+.stage {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: 20% 80%;
+  justify-items: center;
+  align-items: center;
+}
+
+.header, .stage-content {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 15% 50% 30% 5%;
+  grid-template-rows: repeat(1, 100%);
+  justify-items: center;
+  align-items: center;
+}
+
+.enemy-info {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 25% 75%;
+  justify-items: center;
+  align-items: center;
+}
+
+.enemy-header {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 35% 25% 20% 20%;
+  justify-items: center;
+  align-items: center;
+}
+
+.enemy-content-area {
+  width: 100%;
+  height: 100%;
   overflow: auto;
+}
+
+.enemy-content-area::-webkit-scrollbar {
+  display: none;
+}
+
+.enemy-content {
+  width: 100%;
+  height: 60%;
+  display: grid;
+  grid-template-columns: 35% 25% 20% 20%;
+  justify-items: center;
+  align-items: center;
+}
+
+.enemy-content > img {
+  width: 45%;
+  height: 95%;
+}
+
+.reward {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 25% 75%;
+  justify-items: center;
+  align-items: center;
+}
+
+.reward-header {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+
+.reward-content-area {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.reward-content-area::-webkit-scrollbar {
+  display: none;
+}
+
+.reward-content {
+  width: 100%;
+  height: 60%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+
+.stamina {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pages {
