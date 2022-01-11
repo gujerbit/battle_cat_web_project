@@ -80,6 +80,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   position: relative;
+  box-shadow: 0px 4px 4px -4px #3d3d3d;
 }
 
 .main > li {
@@ -119,11 +120,12 @@ export default {
   align-items: center;
   cursor: pointer;
   font-size: 1.8rem;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 4px -4px #3d3d3d;
 }
 
 .sub > li:hover {
-  padding-top: 1.5px;
-  border-bottom: 1.5px solid #ffc038;
+  background-color: #efefef;
 }
 
 .select {

@@ -4,7 +4,7 @@
       <stage-info-element-component />
       <section>
         <div class="content">
-          <div class="stage" v-for="value in info.current" :key="value">
+          <router-link :to="`/stageInfo/${value.id}`" class="stage" v-for="value in info.current" :key="value">
             <template v-if="value != null">
               <div class="header">
                 <p>스테이지 이름</p>
@@ -40,14 +40,14 @@
                     <div class="reward-content" v-for="item in value.reward.split('/')" :key="item">
                       <p class="reward-name">{{item.split(',')[0]}}</p>
                       <p class="reward-count">{{item.split(',')[1]}}</p>
-                      <p class="reward-drop">{{item.split(',')[2]}}</p>
+                      <p class="reward-drop">{{item.split(',')[2]}}%</p>
                     </div>
                   </div>
                 </div>
                 <p class="stamina">{{value.stamina}}</p>
               </div>
             </template>
-          </div>
+          </router-link>
         </div>
         <div class="pages">
           <p class="prev" @click="prevPage()">&lt;</p>
@@ -151,7 +151,6 @@ main * {
 .wrap {
   width: 100%;
   height: 100%;
-  margin-top: 0.25%;
   display: grid;
   grid-template-rows: 10% 90%;
 }
@@ -174,22 +173,37 @@ section {
 
 .stage {
   width: 100%;
-  height: 100%;
+  height: 97.5%;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   grid-template-rows: 20% 80%;
   justify-items: center;
   align-items: center;
+  border: 1.5px solid #ffc038;
+  border-top: none;
 }
 
 .header, .stage-content {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 15% 50% 30% 5%;
+  grid-template-columns: 10% 50% 30% 10%;
   grid-template-rows: repeat(1, 100%);
   justify-items: center;
   align-items: center;
+}
+
+.header {
+  font-size: 2.5rem;
+  background-color: #ffc038;
+}
+
+.header > p {
+  color: #ffffff;
+}
+
+.stage-content > p {
+  font-size: 2rem;
 }
 
 .enemy-info {
@@ -208,6 +222,8 @@ section {
   grid-template-columns: 35% 25% 20% 20%;
   justify-items: center;
   align-items: center;
+  font-size: 2.3rem;
+  background-color: #f7edd9;
 }
 
 .enemy-content-area {
@@ -227,6 +243,7 @@ section {
   grid-template-columns: 35% 25% 20% 20%;
   justify-items: center;
   align-items: center;
+  font-size: 2rem;
 }
 
 .enemy-content > img {
@@ -250,6 +267,8 @@ section {
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
   align-items: center;
+  font-size: 2.3rem;
+  background-color: #f7edd9;
 }
 
 .reward-content-area {
@@ -269,6 +288,7 @@ section {
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
   align-items: center;
+  font-size: 2rem;
 }
 
 .stamina {
