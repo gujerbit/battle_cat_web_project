@@ -2,7 +2,7 @@
   <footer>
     <div class="content">
       <p>this is battle cat KR info {{'&'}} community page &copy; gujerbit all rights reserved.</p>
-      <p>current version 1.5.3</p>
+      <p>current version 1.6</p>
     </div>
   </footer>
 </template>

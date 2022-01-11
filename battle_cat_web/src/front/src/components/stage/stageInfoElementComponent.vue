@@ -5,7 +5,7 @@
         <li :class="searchInfo.search.split('_')[0] === value.split('/')[1] ? 'select' : ''" @click="selectMenu(idx, index)" @mouseover="subMenuShowTrigger.show[idx] = true; subMenuShowTrigger.render = true;" @mouseleave="subMenuShowTrigger.show[idx] = false;" v-for="(value, idx) in mainMenus" :key="value">{{value.split('/')[0]}}</li>
         <div class="subs" v-if="subMenuShowTrigger.render">
           <ul @mouseover="subMenuShowTrigger.show[idx] = true; subMenuShowTrigger.render = true;" @mouseleave="subMenuShowTrigger.show[idx] = false; subMenuShowTrigger.render = false;" class="sub" v-for="(value, idx) in subMenus" :key="value">
-            <li @click="selectMenu(idx, index)" v-show="subMenuShowTrigger.show[idx]" v-for="(item, index) in value" :key="item">{{item.split('/')[0]}}</li>
+            <li :class="searchInfo.search.split('_')[1] === item.split('/')[1] ? searchInfo.search.split('_')[0] === mainMenus[idx].split('/')[1] ? 'select' : '' : ''" @click="selectMenu(idx, index)" v-show="subMenuShowTrigger.show[idx]" v-for="(item, index) in value" :key="item">{{item.split('/')[0]}}</li>
           </ul>
         </div>
       </ul>
@@ -14,11 +14,15 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, getCurrentInstance, onBeforeMount } from 'vue';
+import { getStageInfo, setSearchStageInfo } from '../../js/stage/stageInfo.js';
 
 export default {
   setup() {
-    const mainMenus = ['세계편/world', '미래편/future', '우주편/space', '마계편/hell', '레전드 스토리/legend', '신레전드 스토리/origin_legend', '스페셜 스테이지/special', '콜라보 스테이지/collaboration'];
+    const { proxy } = getCurrentInstance();
+
+    const mainMenus = ['세계편/world', '미래편/future', '우주편/space', '마계편/hell', '레전드 스토리/legend', '신레전드 스토리/originLegend', '스페셜 스테이지/special', '콜라보 스테이지/collaboration'];
+
     const subMenus = [
       ['메인/main', '좀비 습격/zombie'],
       ['메인/main', '좀비 습격/zombie'],
@@ -29,22 +33,28 @@ export default {
       ['게릴라/guerrilla', '요일/week', '월간/month', '드롭/drop', '각성/arousal', '발굴/excavation', '이벤트/event', '기타/etc'],
       [],
     ];
+
     let subMenuShowTrigger = ref({
       show: [false, false, false, false, false, false, false, false],
       render: false,
     });
+
     let searchInfo = ref({
-      search: '',
+      origin: [],
+      search: 'world_main',
     });
 
     const selectMenu = (main, sub) => {
-      searchInfo.value.search = mainMenus[main].split('/')[1];
+      if(subMenus[main].length > 0 && sub !== undefined) searchInfo.value.search = mainMenus[main].split('/')[1] + '_' + subMenus[main][sub].split('/')[1];
+      else if(subMenus[main].length <= 0) searchInfo.value.search = mainMenus[main].split('/')[1];
 
-      if(subMenus[main].length > 0) {
-        if(sub !== undefined) searchInfo.value.search += ('_' + subMenus[main][sub].split('/')[1]);
-        else return;
-      }
+      setSearchStageInfo(searchInfo.value.origin, searchInfo.value.search, proxy.store);
     };
+
+    onBeforeMount(() => {
+      searchInfo.value.origin = getStageInfo(proxy.store);
+      setSearchStageInfo(searchInfo.value.origin, searchInfo.value.search, proxy.store);
+    });
 
     return { mainMenus, subMenus, subMenuShowTrigger, searchInfo, selectMenu };
   }

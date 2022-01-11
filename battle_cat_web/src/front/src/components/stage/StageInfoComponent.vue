@@ -4,7 +4,38 @@
       <stage-info-element-component />
       <section>
         <div class="content">
-          {{info.current}}
+          <div class="stage" v-for="value in info.current" :key="value">
+            <!-- {{value.reward.split('/')[0].split(',')[0]}} -->
+            <div class="header">
+              <p>스테이지 이름</p>
+              <p>적 출격 정보</p>
+              <p>클리어 보상</p>
+              <p>소비 통솔력</p>
+              <p>출격 제한</p>
+            </div>
+            <div class="content">
+              <p class="name">{{value.name}}</p>
+              <div class="enemy-info" v-for="item in value.enemy_info.split('/')" :key="item">
+                <div class="enemy-header">
+                  <p>이미지</p>
+                  <p>이름</p>
+                  <p>배율</p>
+                  <p>출격 수</p>
+                </div>
+                <div class="enemy-content">
+                  <img :src="require(`../../assets/res/enemy/${getEnemy(item.split(',')[0]).image_dir}`)" alt="">
+                  <p class="enemy-name">{{getEnemy(item.split(',')[0]).name}}</p>
+                  <p class="enemy-power">{{item.split(',')[1]}}%</p>
+                  <p class="enemy-count">{{item.split(',')[2] > 0 ? item.split(',')[2] : '무제한'}}</p>
+                </div>
+              </div>
+              <div class="reward" v-for="item in value.reward.split('/')" :key="item">
+                <p class="reward-type">{{item.split(',')[0]}}</p>
+                <p class="reward-content">{{item.split(',')[1]}}</p>
+                <p class="reward-drop">{{item.split(',')[2]}}%</p>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="pages">
           <p class="prev" @click="prevPage()">&lt;</p>
@@ -18,11 +49,12 @@
 </template>
 
 <script>
-import { ref, getCurrentInstance, onBeforeMount } from 'vue';
+import { ref, getCurrentInstance, onBeforeMount, watchEffect } from 'vue';
 
 import stageInfoElementComponent from './stageInfoElementComponent.vue';
-import { getStageInfo } from '../../js/stage/stageInfo.js';
+import { getSearchStageInfo } from '../../js/stage/stageInfo.js';
 import { pagination, pageDivision } from '../../js/util/pagination.js';
+import { getEnemyInfo } from '../../js/enemy/enemyInfo';
 
 export default {
   setup() {
@@ -31,6 +63,7 @@ export default {
     const info = ref({
       all: [],
       current: [],
+      enemy: [],
     });
 
     const pageInfo = ref({
@@ -66,13 +99,26 @@ export default {
       pageInfo.value.totalPage = pageDivision(info.value.all, pageInfo.value.divisionPage); //페이지 배열 설정
     };
 
+    const getEnemy = (id) => {
+      let enemy = {};
+
+      info.value.enemy.forEach(res => {
+        if(res.id === id) enemy = res;
+      });
+
+      return enemy;
+    }
+
     onBeforeMount(() => {
-      proxy.store.commit('setSearchStageInfo', []);
-      info.value.all = getStageInfo(proxy.store);
+      info.value.enemy = getEnemyInfo(proxy.store);
+    });
+
+    watchEffect(() => {
+      info.value.all = getSearchStageInfo(proxy.store);
       contentUpdate();
     });
 
-    return { info, pageInfo, nextPage, prevPage, selectPage };
+    return { info, pageInfo, nextPage, prevPage, selectPage, getEnemy };
   },
   components: {
     stageInfoElementComponent
@@ -109,6 +155,7 @@ section {
 .content {
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 
 .pages {
