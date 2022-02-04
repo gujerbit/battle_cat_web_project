@@ -8,12 +8,13 @@
             <template v-if="value != null">
               <div class="header">
                 <p>스테이지 이름</p>
+                <p>소비 통솔력</p>
                 <p>적 출격 정보</p>
                 <p>클리어 보상</p>
-                <p>소비 통솔력</p>
               </div>
               <div class="stage-content">
                 <p class="name">{{value.name}}</p>
+                <p class="stamina">{{value.stamina}}</p>
                 <div class="enemy-info">
                   <div class="enemy-header">
                     <p>이미지</p>
@@ -44,7 +45,6 @@
                     </div>
                   </div>
                 </div>
-                <p class="stamina">{{value.stamina}}</p>
               </div>
             </template>
           </router-link>
@@ -187,7 +187,7 @@ section {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 10% 50% 30% 10%;
+  grid-template-columns: 10% 10% 50% 30%;
   grid-template-rows: repeat(1, 100%);
   justify-items: center;
   align-items: center;

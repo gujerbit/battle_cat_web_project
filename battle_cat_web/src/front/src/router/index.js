@@ -49,7 +49,7 @@ const routes = [
         component: stageInfoComponent,
     },
     {
-        path: '/stageInfo/:stageData',
+        path: '/stageInfo/:stageId',
         component: stageInfoSpecComponent,
         props: true
     },

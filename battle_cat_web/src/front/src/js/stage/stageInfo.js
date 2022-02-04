@@ -1,4 +1,4 @@
-export { setStageInfo, getStageInfo, setSearchStageInfo, getSearchStageInfo };
+export { setStageInfo, getStageInfo, setSearchStageInfo, getSearchStageInfo, getSpecificStageInfo };
 
 async function setStageInfo(axios, store) {
   let { data:size } = await axios.get('/stage_data_size');
@@ -35,4 +35,8 @@ function setSearchStageInfo(value, search, store) {
 
 function getSearchStageInfo(store) {
   if(store.getters.getSearchStageInfo !== '') return store.getters.getSearchStageInfo;
+}
+
+function getSpecificStageInfo(store, id) {
+  return store.getters.getStageInfo.filter(res => res.id === id);
 }
